@@ -20,3 +20,21 @@ if (hostname) {
     // load local OpenAPI spec
     rapidoc.setAttribute("spec-url", "./definitions/openapi_latest.json");
 }
+
+// add header to each request
+rapidoc.addEventListener('before-try', (e) => {
+    // add custom header so CORS headers are returned
+    e.detail.request.headers.append('X-BlueConic-OpenApi-Request', 'true');
+});
+
+const versionSelect = document.getElementById("versionSelect");
+const wrapper = document.getElementById("versionSelectWrapper");
+if (versionSelect.options.length == 1) {
+    wrapper.style.display = "none";
+}
+
+// change spec on change
+versionSelect.addEventListener("change", () => {
+    // change spec
+    rapidoc.setAttribute("spec-url", `./definitions/${versionSelect.value}.json`);
+});

@@ -1,7 +1,7 @@
-<!doctype html> <!-- Important: must specify -->
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8"> <!-- Important: rapi-doc uses utf8 characters -->
+    <meta charset="utf-8"> 
     <script src="./libs/rapidoc-min.js"></script>
 	<title>BlueConic OpenAPI documentation</title>
   </head>
@@ -25,7 +25,13 @@
     	header-color="#293C47" 
     	primary-color="#FED780" 
     	regular-font="'Poppins', sans-serif">
-    	<img slot="nav-logo" src="https://theme.zdassets.com/theme_assets/489431/e70ffe7953004191817bd274b1a208d3ac3905b6.svg" style="height:32px"/>
+    		<img slot="nav-logo" src="./static/logo.svg" style="height:32px"/>
+			<div id="versionSelectWrapper" style="font-family: var(--font-regular), sans-serif; color: white; position:absolute; bottom: 10px; left:10px;">
+				Version: <select id="versionSelect">
+					<option selected="selected" value="openapi_latest">Current (R89)</option>
+					<!--<option value="r90">R90</option>-->
+				</select>
+			</div>
     	</rapi-doc>
 		<script src="./scripts/main.js"></script>
   </body>
