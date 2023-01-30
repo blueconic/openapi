@@ -5,6 +5,10 @@ function getQueryStringParam(key) {
     return params[key];
 }
 
+const versionSelect = document.getElementById("versionSelect");
+const wrapper = document.getElementById("versionSelectWrapper");
+
+
 let hostname = getQueryStringParam("hostname");
 const rapidoc = document.getElementById("doc");
 if (hostname) {
@@ -21,20 +25,19 @@ if (hostname) {
     rapidoc.setAttribute("spec-url", "./definitions/openapi_latest.json");
 }
 
+if (hostname || versionSelect.options.length == 1) {
+    // don't show version pulldown, it's always pointing to the actual spec
+    wrapper.style.display = "none";
+} else {
+    // change spec on change
+    versionSelect.addEventListener("change", () => {
+        // change spec
+        rapidoc.setAttribute("spec-url", `./definitions/${versionSelect.value}.json`);
+    });
+}
+
 // add header to each request
 rapidoc.addEventListener('before-try', (e) => {
     // add custom header so CORS headers are returned
     e.detail.request.headers.append('X-BlueConic-OpenApi-Request', 'true');
-});
-
-const versionSelect = document.getElementById("versionSelect");
-const wrapper = document.getElementById("versionSelectWrapper");
-if (versionSelect.options.length == 1) {
-    wrapper.style.display = "none";
-}
-
-// change spec on change
-versionSelect.addEventListener("change", () => {
-    // change spec
-    rapidoc.setAttribute("spec-url", `./definitions/${versionSelect.value}.json`);
 });
