@@ -58,7 +58,7 @@ export default class SchemaTable extends LitElement {
         width: 150px;
       }
       .collapsed-all-descr .tr:not(.expanded-descr) {
-        max-height: calc(var(--font-size-small) + var(--font-size-small));
+        /* max-height: calc(var(--font-size-small) + var(--font-size-small)); */
       }
 
       .obj-toggle {
@@ -95,7 +95,7 @@ export default class SchemaTable extends LitElement {
           ${this.allowSchemaDescriptionExpandToggle === 'true'
             ? html`
               <div style="flex:1"></div>
-              <div part="schema-multiline-toggle" class='toolbar-item schema-multiline-toggle' > 
+              <div part="schema-multiline-toggle" class='toolbar-item schema-multiline-toggle' >
                 ${this.schemaDescriptionExpanded === 'true' ? 'Single line description' : 'Multiline description'}
               </div>
             `
@@ -117,9 +117,9 @@ export default class SchemaTable extends LitElement {
                 this.data['::array-type'],
               )}`
             : ''
-          }  
+          }
         </div>
-      </div>  
+      </div>
     `;
   }
 
@@ -213,7 +213,7 @@ export default class SchemaTable extends LitElement {
                     ? html`<span class="key-label" style="display:inline-block; margin-left:-6px;">${data['::deprecated'] ? '✗' : ''} ${keyLabel.substring(0, keyLabel.length - 1)}</span><span style='color:var(--red);'>*</span>`
                     : html`<span class="key-label" style="display:inline-block; margin-left:-6px;">${data['::deprecated'] ? '✗' : ''} ${keyLabel === '::props' ? '' : keyLabel}</span>`
                 }
-                ${data['::type'] === 'xxx-of' && dataType === 'array' ? html`<span style="color:var(--primary-color)">ARRAY</span>` : ''} 
+                ${data['::type'] === 'xxx-of' && dataType === 'array' ? html`<span style="color:var(--primary-color)">ARRAY</span>` : ''}
               </div>
               <div class='td key-type' title="${data['::readwrite'] === 'readonly' ? 'Read-Only' : data['::readwrite'] === 'writeonly' ? 'Write-Only' : ''}">
                 ${(data['::type'] || '').includes('xxx-of') ? '' : detailObjType}
@@ -224,12 +224,12 @@ export default class SchemaTable extends LitElement {
           : html`
             ${data['::type'] === 'array' && dataType === 'array'
               ? html`
-                <div class='tr'> 
-                  <div class='td key'></div> 
+                <div class='tr'>
+                  <div class='td key'></div>
                   <div class='td key-type'>
                     ${arrayType && arrayType !== 'object' ? `${dataType} of ${arrayType}` : dataType}
-                  </div> 
-                  <div class='td key-descr'></div> 
+                  </div>
+                  <div class='td key-descr'></div>
                 </div>`
               : ''
             }`
@@ -283,12 +283,12 @@ export default class SchemaTable extends LitElement {
     const descrExpander = `${constraint || defaultValue || allowedValues || pattern ? '<span class="descr-expand-toggle">➔</span>' : ''}`;
     let dataTypeHtml = '';
     if (dataType === 'array') {
-      dataTypeHtml = html` 
+      dataTypeHtml = html`
         <div class='td key-type ${dataTypeCss}' title="${readOrWrite === 'readonly' ? 'Read-Only' : readOrWriteOnly === 'writeonly' ? 'Write-Only' : ''}">
           [${type}] ${readOrWrite === 'readonly' ? '🆁' : readOrWrite === 'writeonly' ? '🆆' : ''}
         </div>`;
     } else {
-      dataTypeHtml = html` 
+      dataTypeHtml = html`
         <div class='td key-type ${dataTypeCss}' title="${readOrWriteOnly === '🆁' ? 'Read-Only' : readOrWriteOnly === '🆆' ? 'Write-Only' : ''}">
           ${type} ${readOrWriteOnly}
         </div>`;

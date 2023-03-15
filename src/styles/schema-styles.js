@@ -30,7 +30,7 @@ export default css`
 }
 
 .key-descr .descr-expand-toggle {
-  display:inline-block;
+  display:none;
   user-select:none;
   color: var(--fg);
   cursor: pointer;
@@ -63,14 +63,14 @@ export default css`
 }
 
 .xxx-of-key {
-  font-size: calc(var(--font-size-small) - 2px); 
-  font-weight:bold; 
-  background-color:var(--primary-color); 
-  color:var(--primary-color-invert); 
+  font-size: calc(var(--font-size-small) - 2px);
+  font-weight:bold;
+  background-color:var(--primary-color);
+  color:var(--primary-color-invert);
   border-radius:2px;
   line-height:calc(var(--font-size-small) + 6px);
-  padding:0px 5px; 
-  margin-bottom:1px; 
+  padding:0px 5px;
+  margin-bottom:1px;
   display:inline-block;
 }
 

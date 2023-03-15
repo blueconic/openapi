@@ -638,7 +638,10 @@ function generateMarkdownForArrayAndObjectDescription(schema, level = 0) {
     if (schema.items.maxProperties) {
       itemsMarkdown = `${itemsMarkdown} <b>Max Properties:</b> ${schema.items.maxProperties}`;
     }
-    markdown = `${markdown} ⮕ ${itemsMarkdown} [ ${schema.items.description} ] `;
+    if (schema.description?.length !== schema.items?.description.length) {
+      // only add nested schema description when it's actually different from the schema description
+      markdown = `${markdown} ⮕ ${itemsMarkdown} [ ${schema.items.description} ] `;
+    }
   }
   return markdown;
 }
