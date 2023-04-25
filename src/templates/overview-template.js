@@ -26,17 +26,17 @@ export default function overviewTemplate() {
           </div>
           <div id="api-info" style="font-size:calc(var(--font-size-regular) - 1px); margin-top:8px;">
             ${this.resolvedSpec.info.contact?.email
-              ? html`<span>${this.resolvedSpec.info.contact.name || 'Email'}: 
+              ? html`<span>${this.resolvedSpec.info.contact.name || 'Email'}:
                 <a href="mailto:${this.resolvedSpec.info.contact.email}" part="anchor anchor-overview">${this.resolvedSpec.info.contact.email}</a>
               </span>`
               : ''
             }
             ${this.resolvedSpec.info.contact?.url
-              ? html`<span>URL: <a href="${this.resolvedSpec.info.contact.url}" part="anchor anchor-overview">${this.resolvedSpec.info.contact.url}</a></span>`
+              ? html`<span>URL: <a href="${this.resolvedSpec.info.contact.url}" part="anchor anchor-overview" target="_blank">${this.resolvedSpec.info.contact.name}</a></span>`
               : ''
             }
             ${this.resolvedSpec.info.license
-              ? html`<span>License: 
+              ? html`<span>License:
                 ${this.resolvedSpec.info.license.url
                 ? html`<a href="${this.resolvedSpec.info.license.url}" part="anchor anchor-overview">${this.resolvedSpec.info.license.name}</a>`
                 : this.resolvedSpec.info.license.name
