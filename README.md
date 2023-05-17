@@ -1,3 +1,5 @@
+NOTE: This repository is in alpha stage and not ready to be used externally.
+
 # BlueConic OpenAPI Alpha Test
 The OpenAPI definitions for the BlueConic v2 REST API.
 
