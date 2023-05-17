@@ -10,7 +10,7 @@
     },
     "license" : {
       "name" : "BlueConic",
-      "url" : "https://www.blueconic.com/pricing"
+      "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
     "version" : "89.0-SNAPSHOT"
   },
