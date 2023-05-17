@@ -4,11 +4,11 @@ NOTE: This repository is in alpha stage and not ready to be used externally.
 The OpenAPI definitions for the BlueConic v2 REST API.
 
 # Using latest published OpenAPI specification
-* Open https://blueconic.github.io/openapi
+* Open  https://rest.apidoc.blueconic.com
 
 # Using actual OpenAPI specification of a given BlueConic tenant
-* Open https://blueconic.github.io/openapi/?hostname=mytenantname.blueconic.net
-* Open https://blueconic.github.io/openapi/?hostname=localhost
+* Open https://rest.apidoc.blueconic.com/?hostname=mytenantname.blueconic.net
+* Open https://rest.apidoc.blueconic.com/?hostname=localhost
 
 # Running it on a local machine
 * Run `npx http-server`
