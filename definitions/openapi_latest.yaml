@@ -1,95 +1,2352 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
-  title: BlueConic public API
-  description: "This is the public OpenApi Specification for [BlueConic](https://www.blueconic.com).\
-    \ You can find out more about information at [https://spec.openapis.org/oas/latest.html](https://spec.openapis.org/oas/latest.html)."
-  termsOfService: https://www.blueconic.com
+  title: BlueConic REST API
+  description: "The [BlueConic](https://www.blueconic.com) REST API provides access\
+    \ to BlueConic visitor profiles, segments, interactions, and audit events.\n\n\
+    # Authorizing an application to use the BlueConic REST API via OAuth 2.0\n\nIf\
+    \ you have an external software application that needs to communicate with BlueConic,\
+    \ you need to allow access to the BlueConic REST API. The authorization process\
+    \ in BlueConic for this access is built to OAuth 2.0 specifications. You can use\
+    \ either of two authorization flows: the authorization code flow and the client\
+    \ credentials flow. The most secure flow is the authorization code flow, intended\
+    \ for use with a user who can log in to BlueConic and authenticate the application\
+    \ to use the BlueConic API. The client credentials flow is easier to implement\
+    \ but lacks security features present in the authorization code flow. The client\
+    \ credentials flow is intended for machine-to-machine applications. \n\n## Using\
+    \ the Authorization code flow\n\nTo use the BlueConic REST API with OAuth 2.0\
+    \ according to the authorization code flow you need to complete the following\
+    \ steps:\n\n1.  Configure BlueConic so your external OAuth 2.0 application can\
+    \ authenticate and use the REST API. This means that you have to:\n    - Have\
+    \ a BlueConic user with the \"Applications\" permission. This user can configure\
+    \ the details of the external application in BlueConic.\n    - Have a BlueConic\
+    \ user with the \"Authorize Applications\" permission. This user can authorize\
+    \ the external application via the redirect page served by the authorization server.\n\
+    \    - Configure the external application on the BlueConic Access management >\
+    \ Applications tab, so BlueConic can store public client ID and the client secret.\
+    \ The external app uses these properties to perform the initial request for an\
+    \ authorization code.\n\n\n2. Develop an application that can execute OAuth 2.0\
+    \ REST API requests. Specifically, that means an application that is able to:\n\
+    \    - Generate a code verifier and code challenge.\n    - Store the public client\
+    \ ID and client secret as configured in BlueConic (see step 1). \n    - Request\
+    \ an authorization code from the BlueConic authorization server. Include the code\
+    \ challenge in the request. \n    - Show the user the redirect page served by\
+    \ the BlueConic authorization server, so the user can authenticate with credentials\
+    \ and consent to giving the application BlueConic REST API access.\n    - Receive\
+    \ the authorization code from the BlueConic authorization server.\n    - Use the\
+    \ authorization code to request an access token (and refresh token) from the BlueConic\
+    \ authorization server. Include the code verifier in the request.\n    - Use the\
+    \ access token to perform REST API requests. \n    - Revoke access if the user\
+    \ of the app so chooses (meaning that after this revocation, a new authorization\
+    \ grant is required to use the BlueConic REST API).\n    - Handle refresh token\
+    \ rotation. This means that whenever a new access token is requested using the\
+    \ refresh token, a new refresh token is also supplied along with the new access\
+    \ token.\n    - Handle all possible responses from the BlueConic REST API appropriately.\n\
+    \n[Read more about the Authorization Code Flow](https://support.blueconic.com/hc/en-us/articles/14912561861403)\n\
+    \n## Using the Client credentials flow\n\nTo make use of the BlueConic REST API\
+    \ with OAuth 2.0 following the client credentials flow, you need to complete the\
+    \ following steps:\n\n1. Configure BlueConic so your external OAuth 2.0 application\
+    \ can use the REST API. This means that you have to:\n    - Have a user with the\
+    \ \"Applications\" permission. This user can configure the details of the external\
+    \ application in BlueConic.\n    - Have a user with the \"Authorize Applications\"\
+    \ permission, who also has all permissions needed to use the REST API endpoint\
+    \ that you intend to use.\n    - Configure the external application on the Access\
+    \ management > Applications tab, so BlueConic can generate and store the public\
+    \ client ID and client secret for client authentication. Also select at least\
+    \ one scope so the app has access to that part of the REST API.\n   \n2. Develop\
+    \ an application that can execute OAuth 2.0 REST API requests. Specifically that\
+    \ means an application that is able to:\n    - Store the public client ID and\
+    \ client secret as configured in BlueConic (see above).\n    - Use the client\
+    \ ID and client secret to request an access token from the BlueConic authorization\
+    \ server.\n    - Use the access token to perform REST API requests.\n    - Handle\
+    \ all possible responses from the BlueConic REST API appropriately.\n\n[Read more\
+    \ about the Client Credentials Flow](https://support.blueconic.com/hc/en-us/articles/14912655111963)\n\
+    \n# General functionality for all endpoints\n\n1. By using `prettyPrint`, the\
+    \ JSON data is formatted in a way that makes it easier to read and work with.\
+    \ This can be especially useful when working with large or complex JSON datasets.\
+    \ Add the following to the query string of a request to pretty print JSON: `&prettyPrint=true`.\n\
+    2. Gzip encoding is a method of compressing data and is commonly used to reduce\
+    \ the size of files sent over the Internet. BlueConic supports this so a client\
+    \ can set the request header `Accept-Encoding: gzip`. BlueConic will then compress\
+    \ the data in its response and send it back to the client with the `Content-Encoding:\
+    \ gzip` header. \n\n"
+  termsOfService: https://www.blueconic.com/blueconic-terms-and-conditions
   contact:
-    email: info@blueconic.com
+    name: Contact us
+    url: https://support.blueconic.com/hc/en-us/requests/new
   license:
     name: BlueConic
-    url: https://www.blueconic.com/pricing
-  version: "1.0"
+    url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
+  version: 89.0-SNAPSHOT
 servers:
-- url: "{blueconic-hostname}/rest/v2"
+- url: https://fasttrack.sb.blueconic.net/rest/v2
   description: The BlueConic server
 tags:
-- name: Domains
-  description: "The domain API. The following methods allow you to create, modify,\
-    \ retrieve properties from, and delete BlueConic domains, channels, and positions."
+- name: Audit Events
+  description: "The Audit Event API allows users to connect BlueConic to a SIEM system.\
+    \ We recommend using this API to periodically receive security-related activities\
+    \ based on a rolling window. The API has a 30-day retention period.\n\nThe API\
+    \ logs the following audit events:\n\n| Object                               \
+    \     | Events                                                               \
+    \                          |\n| :---------------------------------------- |:-----------------------------------------------------------------------------------------------|\n\
+    | BlueConic hostname                        | Create, Update, Delete         \
+    \                                                                |\n| BlueConic\
+    \ Support Access                  | Update (for each change)                 \
+    \                                                      |\n| Channel          \
+    \                         | Create, Update, Delete                           \
+    \                                              |\n| Clean up rule            \
+    \                 | Create, Update, Delete                                   \
+    \                                      |\n| Connection                       \
+    \         | Create, Update, Delete, Manual run, Scheduled run                \
+    \                              |\n| Dashboard                                \
+    \ | Create, Update, Delete                                                   \
+    \                      |\n| Dialogue                                  | Create,\
+    \ Update, Delete                                                             \
+    \            |\n| Domain Group                              | Create, Update,\
+    \ Delete                                                                     \
+    \    |\n| Group                                     | Read, Update, Delete   \
+    \                                                                        |\n|\
+    \ Group type                                | Create, Update, Delete         \
+    \                                                                |\n| Ip range\
+    \                                  | Create, Update, Delete                  \
+    \                                                       |\n| Language        \
+    \                          | Create, Update, Delete                          \
+    \                                               |\n| Lifecycle               \
+    \                  | Create, Update, Delete                                  \
+    \                                       |\n| Merge rule                      \
+    \          | Create, Update, Delete                                          \
+    \                               |\n| Notebook                                \
+    \  | Create, Update, Delete, Manual run, Scheduled run, Editor run           \
+    \                       |\n| Objective                                 | Create,\
+    \ Update, Delete                                                             \
+    \            |\n| Plugin                                    | Create, Update,\
+    \ Delete                                                                     \
+    \    |\n| Privacy setting                           | Update (for each change)\
+    \                                                                       |\n| Profile\
+    \                                   | Read, Update, Delete                   \
+    \                                                        |\n| Profile property\
+    \                          | Create, Update, Delete                          \
+    \                                               |\n| Role                    \
+    \                  | Create, Update, Delete                                  \
+    \                                       |\n| Segment                         \
+    \          | Create, Update, Delete                                          \
+    \                               |\n| Single Sign On Setting                  \
+    \  | Update (for each change)                                                \
+    \                       |\n| Supported Legislation Zone                | Create,\
+    \ Delete, Update                                                             \
+    \            |\n| Tracker                                   | Create, Update,\
+    \ Delete                                                                     \
+    \    |\n| User                                      | Login, Login failed, Logout,\
+    \ Create, Update, Delete, Password reset requested, Password change |\n\n\nOnly\
+    \ Profile and Group viewed, updated, or deleted by a user from the Profile and\
+    \ Groups tab are logged.\n\nThe following events are not considered as human actions,\
+    \ and therefore not covered in the Platform\nAudit Event API:\n\n- Connections\
+    \ that import or export profiles.\n- Profile and group creation (Profiles can\
+    \ only be created by a visitor or an import connection).\n\n**Event data**\n\n\
+    The following event data is available:\n\n| Field                  | Description\
+    \      | Example values                                                      \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                   |\n| :---                   | :---             |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+    |date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt\
+    \ format.| 2023-04-15T11:24:01.183Z                                          \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                     |\n|username|(BlueConic) Identifier (email address) of the\
+    \ user who did the action.<br /><br />Value is empty for failed login attempts.|\
+    \ test@blueconic.com                                                         \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \            |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUPvGROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
+    \ |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of\
+    \ LOGIN_FAILED and a user tried to login with an invalid format email address,\
+    \ it could be that the user filled the password in the email address field. In\
+    \ that case the objectId is empty</li></ul></li><li>Grouptype_GroupID in case\
+    \ of a group</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectId\
+    \ is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li>\
+    \ For BLUECONIC_SUPPORT_ACCESS_SETTING the objectID contains the new settings.<ul><li>\
+    \ `\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or </li><li>`\"\
+    objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\"\
+    \ },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }], (contains\
+    \ the new list)` or</li><li>`\"objects\" : [ {\"name\" : \"All BlueConic support\
+    \ employees\", \"id\" : \"all\" } ],`</li></ul></li><li>UUID or identifier in\
+    \ case of other object types.</li></ul>| <ul><li>1b1e50a5-c46a-4309-a95c-d4e19985fbbb</li><li>test@blueconic.com</li><li>test_objective</li><li>test_profile_property</li></ul>\
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                             |\n|objectName|<p>Human readable name of the object.</p><p>For\
+    \ Profiles, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic\
+    \ ID (UUID)</li></ol><p>For Users, the name is determined by the first value that\
+    \ is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In the case\
+    \ of LOGIN_FAILED and a user tried to login with an invalid format email address,\
+    \ it could be that the user filled the password in the email address field. In\
+    \ that case, the objectName is empty.</li></ul><p>For groups, the name is the\
+    \ group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName\
+    \ is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For\
+    \ BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"\
+    objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li\
+    \ ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\"\
+    \ },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }],` (contains\
+    \ the new list) or</p></li><li><p>`\"objects\" : [ {\"name\" : \"All BlueConic\
+    \ support employees\", \"id\" : \"all\" } ],`</p></li></ul>| <ul><li>SFTP connection</li><li>test@blueconic.om</li><li>Keyword\
+    \ Interest Ranking</li>                                                      \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                      |\n|operation| Action performed on the object.        \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \             | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>\
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \     \n|ipAddress| The source IP address from which the event was triggered.\
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                       | 192.168.1.100\
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                            \
+    \                                                                          |\n\
+    \n"
+- name: Interaction events
+  description: "Page view, view, click, conversion events for profiles on a website.\
+    \ [Read more](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions#watch-the-video-analyzing-dialogues-the-metrics-0-0)."
+- name: Interactions
+  description: "Get the interactions (i.e. listeners and/or dialogues) that must be\
+    \ executed for a given profile that visits a certain page. Read more about [Dialogues](https://support.blueconic.com/hc/en-us/articles/202425271-Dialogues-Overview)\
+    \ or [Listeners](https://support.blueconic.com/hc/en-us/articles/202531942-Listeners-Overview)."
+- name: Pageview events
+  description: The following method allows you to register a pageview event for reporting.
+- name: OAuth 2.0
+  description: "The OAuth 2.0 API allows external applications to be authenticated\
+    \ and authorized to access the public BlueConic API. The OAuth 2.0 specification\
+    \ is implemented according to [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)."
+- name: Profile events
+  description: The following methods allow you to retrieve the events of a profile.
+- name: Profile properties
+  description: The following methods allow you to retrieve and update profile properties.
 - name: Profiles
-  description: "The profile API. The following methods allow you to create, modify,\
-    \ retrieve properties from, and delete BlueConic visitor profiles, as well as\
-    \ retrieve BlueConic segment information."
+  description: "The following methods allow you to create, modify, retrieve properties\
+    \ from, and delete BlueConic visitor profiles, as well as retrieve BlueConic segment\
+    \ information."
 - name: Segments
-  description: The segment API. The following methods allow you to retrieve properties
-    from segments.
+  description: The segment API. The following methods allow you to retrieve information
+    from segments and the profiles within a given segment.
+- name: Recommendations
+  description: "Generate individualized content and product recommendations for a\
+    \ given profile. [Read more](https://support.blueconic.com/hc/en-us/articles/115005971169-Overview-Content-and-Product-Recommendations).\
+    \ To work with recommendations, you have to set up a [content collector](https://support.blueconic.com/hc/en-us/articles/115003214945-Content-Collector)\
+    \ or a [product collector](https://support.blueconic.com/hc/en-us/articles/115003214685-Product-Collector)."
+- name: URL mappings
+  description: "The following methods allow you to create, modify, and retrieve URL\
+    \ mappings (tracking pixel or shortened URL). These can be created via the External\
+    \ tracker tab, but can also be created as a separate object (not visible in the\
+    \ UI) via this REST API directly. You can use external trackers to track customer\
+    \ or visitor activity outside domains in your BlueConic tenant. [Read more](https://support.blueconic.com/hc/en-us/articles/202531862-External-Trackers)."
 paths:
-  /domains/{domain}:
+  /auditEvents:
     get:
       tags:
-      - Domains
-      summary: Get one domain
-      description: Retrieves one domain.
-      operationId: getDomain
+      - Audit Events
+      summary: Get audit events
+      description: Retrieves the audit events.
+      operationId: query
       parameters:
-      - name: domain
-        in: path
-        description: The ID of the domain.
+      - name: fromDate
+        in: query
+        description: Only return entries that are created later than this date. The
+          fromDate is in the https://www.ietf.org/rfc/rfc3339.txt format.
+        schema:
+          type: string
+        example: 2023-01-22T11:21:33.872Z
+      - name: count
+        in: query
+        description: Page size for the result.<br />Maximum limit is 1000
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      responses:
+        "200":
+          description: Returns the audit events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEventsBean'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "auditEvents": [
+                        {
+                          "date": "2023-04-15T11:21:33.872Z",
+                          "userName": "test@blueconic.com",
+                          "objects": [
+                            {
+                              "id": "68a02413-98d0-4a2b-b65c-4617a3c26fd0",
+                              "name": "Campaign Tracker Listener ds"
+                            }
+                          ],
+                          "objectType": "LISTENER",
+                          "operation": "UPDATE",
+                          "ipAddress": "192.168.1.100"
+                        },
+                        {
+                          "date": "2023-04-15T11:21:33.672Z",
+                          "userName": "test@blueconic.com",
+                          "objectType": "PROFILEPROPERTY",
+                          "objects": [
+                            {
+                              "id": "responded_to_campaigns",
+                              "name": "responded_to_campaigns"
+                            }
+                          ],
+                          "operation": "CREATE",
+                          "ipAddress": "192.168.1.100"
+                        },
+                        {
+                          "date": "2023-04-15T12:51:32.702Z",
+                          "userName": "test@blueconic.com",
+                          "objectType": "USER",
+                          "objects": [
+                            {
+                              "id": "test@blueconic.com",
+                              "name": "test@blueconic.com"
+                            }
+                          ],
+                          "operation": "LOGIN",
+                          "ipAddress": "192.168.1.100"
+                        },
+                        {
+                          "date": "2023-04-15T12:51:32.702Z",
+                          "objectType": "USER",
+                          "objects": [
+                            {
+                              "id": "wrongpassword@blueconic.com",
+                              "name": "wrongpassword@blueconic.com"
+                            }
+                          ],
+                          "operation": "LOGIN_FAILED",
+                          "ipAddress": "192.168.1.100"
+                        },
+                        {
+                          "date": "2023-04-15T12:51:32.702Z",
+                          "objectType": "USER",
+                          "objects": [
+                            {
+                              "id": "",
+                              "name": ""
+                            }
+                          ],
+                          "operation": "LOGIN_FAILED",
+                          "ipAddress": "192.168.1.100"
+                        },
+                        {
+                          "date": "2023-04-15T12:51:32.702Z",
+                          "objectType": "USER",
+                          "objects": [
+                            {
+                              "id": "nonexistinguserName@blueconic.com",
+                              "name": "nonexistinguserName@blueconic.com"
+                            }
+                          ],
+                          "operation": "LOGIN_FAILED",
+                          "ipAddress": "192.168.1.100"
+                        },
+                        {
+                          "date": "2023-04-15T12:51:32.702Z",
+                          "userName": "test@blueconic.com",
+                          "objectType": "PROFILE",
+                          "objects": [
+                            {
+                              "id": "4dc2a97e-707e-4049-a03a-badcce564f3c",
+                              "name": "4dc2a97e-707e-4049-a03a-badcce564f3c"
+                            },
+                            {
+                              "id": "test@blueconic.com",
+                              "name": "33f53658-3dc8-4946-b239-ecb65dea9827"
+                            }
+                          ],
+                          "operation": "READ",
+                          "ipAddress": "192.168.1.100"
+                        }
+                      ]
+                    }
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "401":
+          description: Authentication failed (unauthorized).
+      security:
+      - oauth2:
+        - read:audit-events
+  /interactionEvents:
+    post:
+      tags:
+      - Interaction events
+      summary: Create interaction event
+      description: "Register an interaction event for a profile. When optional parameter\
+        \ `profile` is set, the interaction ID will be added to the profile property\
+        \ \"interactions_viewed\" (in case of \"VIEW\"), \"interactions_clicked\"\
+        \ (in case of \"CLICK\"), or \"interactions_converted\" (in case of \"CONVERSION\"\
+        ) of that profile."
+      operationId: createEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InteractionEventBean'
+        required: true
+      responses:
+        "200":
+          description: No specific content.
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "503":
+          description: The server is too busy to handle the request.
+  /interactions:
+    get:
+      tags:
+      - Interactions
+      summary: Get interactions
+      operationId: getInteractions
+      parameters:
+      - name: profile
+        in: query
+        description: The ID (UUID) of the profile.
+        schema:
+          type: string
+          format: uuid
+        examples:
+          BlueConic Profile UUID:
+            description: BlueConic Profile UUID
+            value: f448c035-92c1-44d9-810e-40dbf869285f
+      - name: url
+        in: query
+        description: The URL of the current page.
         required: true
         schema:
           type: string
-      - name: subSortBy
+        example: https://www.example.com
+      responses:
+        "200":
+          description: Returns the interactions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/interactions'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "interactions": [
+                        {
+                          "defaultLocale": "en_US",
+                          "id": "2b65eba6-d1c7-4cf9-b1f4-03e3615a42f8",
+                          "interactionType": {
+                            "id": "listener_adblock",
+                            "type": "listener"
+                          },
+                          "name": "AdBlock Detection",
+                          "parameters": [
+                            {
+                              "id": "property",
+                              "values": [
+                                {
+                                  "locale": "en_US",
+                                  "value": [
+                                    "adblock_detected"
+                                  ]
+                                },
+                                {
+                                  "locale": "nl_NL",
+                                  "value": [
+                                    "adblock_detected"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "defaultLocale": "en_US",
+                          "id": "2b65eba6-d1c7-4cf9-b1f4-03e3615a42f8",
+                          "name": "AdBlock Detection"
+                        }
+                      ]
+                    }
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "503":
+          description: The server is too busy to handle the request.
+  /pageviewEvents:
+    post:
+      tags:
+      - Pageview events
+      summary: Create page view event
+      description: Register that a profile visited a certain web page.
+      operationId: createPageviewEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageViewEventBean'
+        required: true
+      responses:
+        "200":
+          description: No specific content.
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "503":
+          description: The server is too busy to handle the request.
+  /oauth/authorize:
+    get:
+      tags:
+      - OAuth 2.0
+      summary: Start Authorization Code Flow
+      description: "Starts the Authorization Code Flow. The user will be redirected\
+        \ to the authorization server where the user can grant or deny the external\
+        \ application access. The Proof Key for Code Exchange ([PKCE](https://www.rfc-editor.org/rfc/rfc7636))\
+        \ extension is enforced for the Authorization Code Flow."
+      operationId: authorize
+      parameters:
+      - name: response_type
         in: query
+        description: The response type. Currently only supports the authorization
+          code grant type.
+        required: true
         schema:
           type: string
-      - name: subSortOrder
+          enum:
+          - code
+        example: code
+      - name: client_id
         in: query
+        description: The client ID of the external application. The client ID is assigned
+          during client registration.
+        required: true
         schema:
           type: string
-      - name: subStartIndex
+        example: Zl3QZFUGOKQrABbX2RoGwmgUDOiFAhLq
+      - name: redirect_uri
         in: query
+        description: The redirect URI to which the user is redirected to after successful
+          authentication. The redirect URI must exactly match the redirect URI provided
+          at client registration.
+        required: true
+        schema:
+          type: string
+        example: https://client.example.com/cb
+      - name: code_challenge
+        in: query
+        description: The code challenge for PKCE.
+        required: true
+        schema:
+          type: string
+        example: 4MwafmutlwDy7ly8QOtO-bUvSVzU3I_OQEDgmB3Pn5A
+      - name: code_challenge_method
+        in: query
+        description: The code challenge method for PKCE.
+        schema:
+          type: string
+          default: PLAIN
+          enum:
+          - PLAIN
+          - S256
+        example: S256
+      - name: state
+        in: query
+        description: An opaque value provided by the client to maintain state between
+          the request and redirect URI. The state value is added to the redirect URI
+          upon redirection.
+        schema:
+          type: string
+        example: xyz
+      responses:
+        "302":
+          description: Redirects to the redirect URI with the error added to the query
+            component of the redirect URI.
+        "303":
+          description: Redirects to the authorization server.
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "503":
+          description: The server is too busy to handle the request.
+  /oauth/revoke:
+    post:
+      tags:
+      - OAuth 2.0
+      summary: Revoke token
+      description: Revokes access and/or refresh tokens.
+      operationId: revoke
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: The access or refresh token to revoke.
+                token_type_hint:
+                  type: string
+                  description: A token type hint to optimize token retrieval during
+                    revocation. The token type hint will be ignored if it contains
+                    an invalid value.
+                  enum:
+                  - access_token
+                  - refresh_token
+              required:
+              - token
+      responses:
+        "200":
+          description: Token has been revoked.
+        "400":
+          description: One or more required parameters are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenErrorResponse'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "error_description": "Unsupported grant type",
+                      "error": "unsupported_grant_type"
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenErrorResponse'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "error_description": "Client authentication failed",
+                      "error": "invalid_client"
+                    }
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - basicAuth: []
+  /oauth/token:
+    post:
+      tags:
+      - OAuth 2.0
+      summary: Get token
+      description: "Obtains an access token and optional refresh token by presenting\
+        \ an authorization grant or refresh token. [Refresh Token Rotation](https://www.rfc-editor.org/rfc/rfc6819#section-5.2.2.3)\
+        \ is supported by default for the Authorization Code Flow."
+      operationId: token
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  description: The grant type.
+                  enum:
+                  - authorization_code
+                  - client_credentials
+                  - refresh_token
+                code:
+                  type: string
+                  description: "The authorization code, which serves as the grant.\
+                    \ Only required when `grant_type=authorizaton_code`."
+                redirect_uri:
+                  type: string
+                  description: The redirect URI passed in the authorization request.
+                    Only required when `grant_type=authorizaton_code`.
+                code_verifier:
+                  type: string
+                  description: The code verifier for PKCE.
+                refresh_token:
+                  type: string
+                  description: The refresh token with which to obtain a new access
+                    and refresh token. Only required when `grant_type=refresh_token`.
+              required:
+              - grant_type
+      responses:
+        "200":
+          description: Returns an access token and optional refresh token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenSuccessResponse'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "access_token": "2YotnFZFEjr1zCsicMWpAA",
+                      "refresh_token": "tGzv3JOkF0XG5Qx2TlKWIB",
+                      "token_type": "Bearer",
+                      "expires_in": 3600
+                    }
+        "400":
+          description: One or more required parameters are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenErrorResponse'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "error_description": "Unsupported grant type",
+                      "error": "unsupported_grant_type"
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenErrorResponse'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "error_description": "Client authentication failed",
+                      "error": "invalid_client"
+                    }
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - basicAuth: []
+  /profileEvents/{profileId}:
+    get:
+      tags:
+      - Profile events
+      summary: Get profile events
+      description: Retrieves the consent management events for a profile; consent
+        changed or permission level changed.
+      operationId: get
+      parameters:
+      - name: profileId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        examples:
+          BlueConic Profile UUID:
+            description: BlueConic Profile UUID
+            value: f448c035-92c1-44d9-810e-40dbf869285f
+      - name: startIndex
+        in: query
+        description: Specifies the index of the first item to include in the result.
         schema:
           type: integer
           format: int32
-      - name: subCount
+          default: 0
+        example: 0
+      - name: count
         in: query
+        description: Specifies the number of results to return.
         schema:
           type: integer
           format: int32
-      - name: subFilterValue
+          default: 20
+        example: 20
+      responses:
+        "200":
+          description: Returns the events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileEvents'
+              examples:
+                Example profile events response:
+                  description: Example profile events response
+                  value: |-
+                    {
+                      "events": [
+                        {
+                          "date": "2022-08-13T19:35:21.951Z",
+                          "properties": [
+                            {
+                              "id": "FromRefused",
+                              "values": []
+                            },
+                            {
+                              "id": "ToConsented",
+                              "values": [
+                                "TestBlueConic"
+                              ]
+                            },
+                            {
+                              "id": "Message",
+                              "values": [
+                                "REST API - Update single profile"
+                              ]
+                            },
+                            {
+                              "id": "ToRefused",
+                              "values": []
+                            },
+                            {
+                              "id": "FromConsented",
+                              "values": []
+                            },
+                            {
+                              "id": "FromLegislation",
+                              "values": [
+                                "NONE"
+                              ]
+                            },
+                            {
+                              "id": "ToLegislation",
+                              "values": [
+                                "GDPR"
+                              ]
+                            },
+                            {
+                              "id": "Source",
+                              "values": [
+                                "REST"
+                              ]
+                            }
+                          ],
+                          "type": "ConsentChanged"
+                        },
+                        {
+                          "date": "2023-05-04T11:36:25.531Z",
+                          "properties": [
+                            {
+                              "id": "FromRefused",
+                              "values": [
+                                "dialogue_objective"
+                              ]
+                            },
+                            {
+                              "id": "ToConsented",
+                              "values": [
+                                "dialogue_objective"
+                              ]
+                            },
+                            {
+                              "id": "ToRefused",
+                              "values": []
+                            },
+                            {
+                              "id": "Referrer",
+                              "values": [
+                                "https://www.blueconic.test/"
+                              ]
+                            },
+                            {
+                              "id": "FromConsented",
+                              "values": []
+                            },
+                            {
+                              "id": "FromLegislation",
+                              "values": [
+                                "GDPR"
+                              ]
+                            },
+                            {
+                              "id": "ToLegislation",
+                              "values": [
+                                "GDPR"
+                              ]
+                            },
+                            {
+                              "id": "Source",
+                              "values": [
+                                "CLIENTSIDE"
+                              ]
+                            }
+                          ],
+                          "type": "ConsentChanged"
+                        },
+                        {
+                          "date": "2023-05-04T11:39:07.652Z",
+                          "properties": [
+                            {
+                              "id": "FromRefused",
+                              "values": []
+                            },
+                            {
+                              "id": "ToConsented",
+                              "values": [
+                                "dialogue_objective",
+                                "track_number_of_visits"
+                              ]
+                            },
+                            {
+                              "id": "ToRefused",
+                              "values": []
+                            },
+                            {
+                              "id": "Referrer",
+                              "values": [
+                                "https://www.blueconic.test/"
+                              ]
+                            },
+                            {
+                              "id": "FromConsented",
+                              "values": [
+                                "dialogue_objective"
+                              ]
+                            },
+                            {
+                              "id": "FromLegislation",
+                              "values": [
+                                "GDPR"
+                              ]
+                            },
+                            {
+                              "id": "ToLegislation",
+                              "values": [
+                                "GDPR"
+                              ]
+                            },
+                            {
+                              "id": "Source",
+                              "values": [
+                                "CLIENTSIDE"
+                              ]
+                            }
+                          ],
+                          "type": "ConsentChanged"
+                        },
+                        {
+                          "date": "2023-05-04T12:43:37.990Z",
+                          "properties": [
+                            {
+                              "id": "FromLevel",
+                              "values": [
+                                "PERSONAL"
+                              ]
+                            },
+                            {
+                              "id": "Message",
+                              "values": [
+                                "Set by  (1f6961ad-f121-404c-9161-419183f81fc2)"
+                              ]
+                            },
+                            {
+                              "id": "ToLevel",
+                              "values": [
+                                "PERSONAL"
+                              ]
+                            },
+                            {
+                              "id": "Source",
+                              "values": [
+                                "CLIENTSIDE"
+                              ]
+                            },
+                            {
+                              "id": "Referrer",
+                              "values": [
+                                "https://www.blueconic.test/tenants/bc01s01.html"
+                              ]
+                            }
+                          ],
+                          "type": "PermissionLevelChanged"
+                        }
+                      ],
+                      "itemsPerPage": 20,
+                      "startIndex": 0,
+                      "totalPages": 1,
+                      "totalResults": 4
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+        "404":
+          description: The profile doesn't exist.
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:profiles
+  /profileProperties/{profilePropertyId}:
+    get:
+      tags:
+      - Profile properties
+      summary: Get one profile property
+      description: Retrieves a single profile property.
+      operationId: getProfileProperty
+      parameters:
+      - name: profilePropertyId
+        in: path
+        description: The ID of the profile property.
+        required: true
+        schema:
+          type: string
+        examples:
+          Browser name (most recent):
+            description: Browser name (most recent)
+            value: currentbrowsername
+          Operating system version (all):
+            description: Operating system version (all)
+            value: osversion
+      responses:
+        "200":
+          description: ' Returns the profile property.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileProperty'
+              examples:
+                Response body:
+                  description: Response body
+                  value: |-
+                    {
+                      "availableForSegmentation" : true,
+                      "canDelete" : true,
+                      "canRead" : true,
+                      "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
+                      "createNewProfile" : false,
+                      "creationDate" : "2023-03-22T09:33:26.319Z",
+                      "creator" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "dataSensitivity" : "NON_PII",
+                      "description" : "Test description.",
+                      "favorite" : false,
+                      "filterType" : "RANGE",
+                      "id" : "test_property",
+                      "indexed" : false,
+                      "isIdProperty" : false,
+                      "lastModifiedDate" : "2023-03-22T09:41:21.491Z",
+                      "lastModifiedUser" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "links" : [ {
+                        "href" : "https://localhost/rest/v2/profileProperties/test_property",
+                        "rel" : "alt",
+                        "type" : "application/json"
+                      } ],
+                      "mergeStrategy" : "HIGHEST",
+                      "name" : "Test property",
+                      "permissionLevel" : "ANONYMOUS",
+                      "precision" : 0,
+                      "profileCount" : 0,
+                      "readOnly" : false,
+                      "showInUI" : true,
+                      "tags" : [ "Tech", "Metrics" ],
+                      "totalProfileCount" : 130300,
+                      "useValidation" : true,
+                      "values" : [ ]
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+        "404":
+          description: ' The specified profile property doesn''t exist.'
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:profile-properties
+    put:
+      tags:
+      - Profile properties
+      summary: Create/update profile property
+      operationId: createOrUpdateProfileProperty
+      parameters:
+      - name: profilePropertyId
+        in: path
+        description: "The ID of the profile property to create or update. A valid\
+          \ id may consist of letters, numbers, hyphens (-), and underscores (_) and\
+          \ is at least one character long."
+        required: true
+        schema:
+          type: string
+        examples:
+          Browser name (most recent):
+            description: Browser name (most recent)
+            value: currentbrowsername
+      requestBody:
+        description: Creates or updates a profile property.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/profileProperty'
+            examples:
+              Example request body:
+                description: Example request body
+                value: |-
+                  {
+                    "id": "test_property",
+                    "indexed": false,
+                    "createNewProfile": false,
+                    "availableForSegmentation": true,
+                    "showInUI": true,
+                    "canRead": true,
+                    "canWrite": true,
+                    "filterType": "RANGE",
+                    "description": "The profile property description",
+                    "permissionLevel": "PERSONAL",
+                    "mergeStrategy": "BOTH",
+                    "dataSensitivity": "NON_PII",
+                    "tags": [],
+                    "values": [],
+                    "precision": 0,
+                    "unit": {
+                      "id": ""
+                    },
+                    "name": "Test property"
+                  }
+        required: true
+      responses:
+        "200":
+          description: Returns the created / updated profile property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileProperty'
+              examples:
+                Response body with currency:
+                  description: Response body with currency
+                  value: |-
+                    {
+                      "availableForSegmentation" : true,
+                      "canDelete" : true,
+                      "canRead" : true,
+                      "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
+                      "createNewProfile" : false,
+                      "creationDate" : "2023-03-22T09:43:58.910Z",
+                      "creator" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "currency" : {
+                        "isoCode" : "USD",
+                        "name" : "United States dollar",
+                        "precision" : 2,
+                        "symbol" : "$"
+                      },
+                      "dataSensitivity" : "NON_PII",
+                      "description" : "The description for the currency",
+                      "favorite" : false,
+                      "filterType" : "CURRENCY",
+                      "id" : "test_currency",
+                      "indexed" : false,
+                      "isIdProperty" : false,
+                      "lastModifiedDate" : "2023-03-22T09:43:58.910Z",
+                      "lastModifiedUser" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "links" : [ {
+                        "href" : "https://localhost/rest/v2/profileProperties/test_currency",
+                        "rel" : "alt",
+                        "type" : "application/json"
+                      } ],
+                      "mergeStrategy" : "BOTH",
+                      "name" : "Test currency",
+                      "permissionLevel" : "ANONYMOUS",
+                      "precision" : 2,
+                      "profileCount" : 0,
+                      "readOnly" : false,
+                      "showInUI" : true,
+                      "tags" : [ "Metrics" ],
+                      "totalProfileCount" : 130300,
+                      "useValidation" : true,
+                      "values" : [ ]
+                    }
+                Response body with unit pixel:
+                  description: Response body with unit pixel
+                  value: |-
+                    {
+                      "availableForSegmentation" : true,
+                      "canDelete" : true,
+                      "canRead" : true,
+                      "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
+                      "createNewProfile" : false,
+                      "creationDate" : "2023-03-22T09:47:26.491Z",
+                      "creator" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "dataSensitivity" : "NON_PII",
+                      "description" : "Test unit pixel description.",
+                      "favorite" : false,
+                      "filterType" : "RANGE",
+                      "id" : "test_unit_pixels",
+                      "indexed" : false,
+                      "isIdProperty" : false,
+                      "lastModifiedDate" : "2023-03-22T09:47:26.491Z",
+                      "lastModifiedUser" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "links" : [ {
+                        "href" : "https://localhost/rest/v2/profileProperties/test_unit_pixels",
+                        "rel" : "alt",
+                        "type" : "application/json"
+                      } ],
+                      "mergeStrategy" : "HIGHEST",
+                      "name" : "Test unit pixels",
+                      "permissionLevel" : "ANONYMOUS",
+                      "precision" : 0,
+                      "profileCount" : 0,
+                      "readOnly" : false,
+                      "showInUI" : true,
+                      "tags" : [ "Tech", "Metrics" ],
+                      "totalProfileCount" : 130300,
+                      "unit" : {
+                        "id" : "pixels",
+                        "name" : {
+                          "label" : [ {
+                            "content" : "Pixels",
+                            "locale" : "nl_NL"
+                          }, {
+                            "content" : "Pixels",
+                            "locale" : "en_US"
+                          } ]
+                        }
+                      },
+                      "useValidation" : true,
+                      "values" : [ ]
+                    }
+        "400":
+          description: "The JSON is invalid or: Either, the specified profile property\
+            \ exists but is created by a plugin and cannot be created / updated through\
+            \ REST, or the id, filtertype, permission level, or merge strategy is\
+            \ invalid."
+        "401":
+          description: Authentication failed (unauthorized).
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - write:profile-properties
+    delete:
+      tags:
+      - Profile properties
+      summary: Delete profile property
+      description: Deletes a profile property.
+      operationId: deleteProfileProperty
+      parameters:
+      - name: profilePropertyId
+        in: path
+        description: The ID of the profile property.
+        required: true
+        schema:
+          type: string
+        examples:
+          Browser name (most recent):
+            description: Browser name (most recent)
+            value: currentbrowsername
+          Operating system version (all):
+            description: Operating system version (all)
+            value: osversion
+      responses:
+        "200":
+          description: Returns the deleted profile property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileProperty'
+              examples:
+                Response body:
+                  description: Response body
+                  value: |-
+                    {
+                      "availableForSegmentation" : true,
+                      "canDelete" : true,
+                      "canRead" : true,
+                      "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
+                      "createNewProfile" : false,
+                      "creationDate" : "2023-03-22T09:33:26.319Z",
+                      "creator" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "dataSensitivity" : "NON_PII",
+                      "description" : "Test description.",
+                      "favorite" : false,
+                      "filterType" : "RANGE",
+                      "id" : "test_property",
+                      "indexed" : false,
+                      "isIdProperty" : false,
+                      "lastModifiedDate" : "2023-03-22T09:41:21.491Z",
+                      "lastModifiedUser" : {
+                        "fullName" : "test@blueconic.com",
+                        "userName" : "test@blueconic.com"
+                      },
+                      "links" : [ {
+                        "href" : "https://localhost/rest/v2/profileProperties/test_property",
+                        "rel" : "alt",
+                        "type" : "application/json"
+                      } ],
+                      "mergeStrategy" : "HIGHEST",
+                      "name" : "Test property",
+                      "permissionLevel" : "ANONYMOUS",
+                      "precision" : 0,
+                      "profileCount" : 0,
+                      "readOnly" : false,
+                      "showInUI" : true,
+                      "tags" : [ "Tech", "Metrics" ],
+                      "totalProfileCount" : 130300,
+                      "useValidation" : true,
+                      "values" : [ ]
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+        "404":
+          description: ' The specified profile property doesn''t exist.'
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - write:profile-properties
+  /profileProperties:
+    get:
+      tags:
+      - Profile properties
+      summary: Get all profile properties
+      description: Retrieves the profile properties.
+      operationId: getProfileProperties
+      parameters:
+      - name: count
         in: query
+        description: Specifies the number of results to return.
+        schema:
+          type: integer
+          format: int64
+          default: 20
+          example: 10
+      - name: startIndex
+        in: query
+        description: Specifies the index of the first item to include in the result.
+        schema:
+          type: integer
+          format: int64
+          default: 0
+          example: 10
+      - name: filterType
+        in: query
+        description: "The filterType of the profile properties e.g. \"SELECT\",\"\
+          RANGE\", AND \"DATETIME\". Multiple values are allowed."
+        schema:
+          type: array
+          enum:
+          - RANGE
+          - CURRENCY
+          - DECIMAL
+          - SELECT
+          - EMAIL
+          - DATETIME
+          example: DATETIME
+          items:
+            type: string
+            enum:
+            - RANGE
+            - CURRENCY
+            - DECIMAL
+            - SELECT
+            - EMAIL
+            - DATETIME
+            example: DATETIME
+      - name: filterValue
+        in: query
+        description: "If specified, the name of the profile properties must match\
+          \ the value. "
         schema:
           type: string
       responses:
         "200":
-          description: Returns one domain.
+          description: ' Returns the profile property.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/domain'
+                $ref: '#/components/schemas/profileProperties'
+              examples:
+                Response body:
+                  description: Response body
+                  value: |-
+                    {
+                      "itemsPerPage": 20,
+                      "startIndex" : 0,
+                      "totalPages" : 8,
+                      "totalResults" : 144,
+                      "links": {
+                        "links": [{
+                          "href": "https://localhost/rest/v2/profileProperties",
+                          "rel": "alt",
+                          "type": "application/json"
+                        }]
+                      },
+                      "profileProperties": [{
+                        "availableForSegmentation": true,
+                        "canDelete": true,
+                        "canRead": true,
+                        "canWrite": true,
+                        "createNewProfile": false,
+                        "creationDate": "2023-03-20T13:53:34.687Z",
+                        "dataSensitivity": "NON_PII",
+                        "description": "The unique Facebook Ads custom audience IDs to which a user has been added by BlueConic.",
+                        "favorite": false,
+                        "filterType": "SELECT",
+                        "id": "_facebookAdsAudiences",
+                        "indexed": false,
+                        "isIdProperty": false,
+                        "lastModifiedDate": "2023-03-20T13:53:34.687Z",
+                        "links": [{
+                          "href": "https://localhost/rest/v2/profileProperties/_facebookAdsAudiences?alt=application%2Fjson",
+                          "rel": "self",
+                          "type": "application/json"
+                        }],
+                        "mergeStrategy": "BOTH",
+                        "name": "Facebook Ads synced custom audience IDs",
+                        "permissionLevel": "ANONYMOUS",
+                        "precision": 0,
+                        "profileCount": 0,
+                        "readOnly": false,
+                        "showInUI": false,
+                        "tags": ["Identifier"],
+                        "totalProfileCount": 130300,
+                        "useValidation": true,
+                        "values": []
+                      }, {
+                        "availableForSegmentation" : true,
+                        "canDelete" : true,
+                        "canRead" : true,
+                        "canWrite" : true,
+                        "compositionStrategy" : "BOTH",
+                        "createNewProfile" : false,
+                        "creationDate" : "2023-03-20T13:53:35.046Z",
+                        "dataSensitivity" : "NON_PII",
+                        "description" : "Indicates whether an ad blocker was detected for the visitor. Will contain the value \"yes\" if one was detected.",
+                        "favorite" : false,
+                        "filterType" : "SELECT",
+                        "id" : "adblock_detected",
+                        "indexed" : false,
+                        "isIdProperty" : false,
+                        "lastModifiedDate" : "2023-03-22T09:34:55.568Z",
+                        "lastModifiedUser" : {
+                          "fullName" : "test@blueconic.com",
+                          "userName" : "test@blueconic.com"
+                        },
+                        "links" : [ {
+                          "href" : "https://localhost/rest/v2/profileProperties/adblock_detected?alt=application%2Fjson",
+                          "rel" : "self",
+                          "type" : "application/json"
+                        } ],
+                        "mergeStrategy" : "BOTH",
+                        "name" : "AdBlock usage detected",
+                        "permissionLevel" : "ANONYMOUS",
+                        "precision" : 0,
+                        "profileCount" : 0,
+                        "readOnly" : false,
+                        "showInUI" : true,
+                        "tags" : [ "Address", "Process" ],
+                        "totalProfileCount" : 130300,
+                        "useValidation" : true,
+                        "values" : [ ]
+                      }]
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:profile-properties
+  /profiles:
+    get:
+      tags:
+      - Profiles
+      summary: Search profiles
+      description: Search for BlueConic profiles based on a specific value for an
+        indexed (unique) property. Multiple name/value pairs can be used to refine
+        the search.
+      operationId: get_1
+      parameters:
+      - name: property
+        in: query
+        description: Specifies the id of the profile property to search for.
+        schema:
+          type: array
+          items:
+            type: string
+        examples:
+          List of profile property IDs:
+            description: List of profile property IDs
+            value: email
+      - name: value
+        in: query
+        description: The value of the property to search for.
+        schema:
+          type: array
+          items:
+            type: string
+        examples:
+          List of profile property values:
+            description: List of profile property values
+            value: john.smith@blueconic.com
+      responses:
+        "200":
+          description: Searches for BlueConic profiles based on a specific value for
+            an indexed (unique) property. Multiple name/value pairs can be used to
+            refine the search.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profiles'
+              examples:
+                Example response:
+                  description: Example response
+                  value: |-
+                    {
+                      "profiles": [
+                        {
+                          "id": "61835134-e910-49da-a09e-79d41af9b96"
+                        },
+                        {
+                          "id": "45e2a650-ca17-4e03-8e8d-12d00ed4d9b3"
+                        }
+                      ],
+                      "itemsPerPage": 5,
+                      "startIndex": 0,
+                      "totalPages": 1,
+                      "totalResults": 2
+                    }
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "401":
+          description: Authentication failed (unauthorized).
+        "501":
+          description: The specified property is not classified as indexed (unique)
+            (not implemented).
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:profiles
+    put:
+      tags:
+      - Profiles
+      summary: "Create, update, or delete one or more profiles"
+      description: |-
+        Create, update, or delete one or more profiles in a single request. This is the recommended way of creating or updating profiles.
+
+         The query string may contain an â€œobjectiveIdsâ€ parameter. If present, these objective IDs are matched against the consented objectives of a profile update, in case the profile is governed by one or more legislation zones.
+      operationId: updateProfileAsync
+      parameters:
+      - name: objectiveIds
+        in: query
+        description: |-
+          A list of IDs that should map on objectives that are configured in the BlueConic UI. If passed, the profiles to be updated that are in the privacy legislation zone are matched against these objectives. If there is no match, the profile wonâ€™t be updated (or created, for that matter).
+           If a profile would have been created/updated, but is skipped because of an objective mismatch, the response will contain a `CONSENT_MISMATCH` state for that profile.
+        schema:
+          type: string
+          format: uuid
+          default: ""
+        examples:
+          Comma separated list of objective IDs:
+            description: Comma separated list of objective IDs
+            value: "objective1,objective2"
+      requestBody:
+        description: "**Timeline event types**\n\nTimeline event types can be accessed\
+          \ through **Timeline event types** tab in BlueConic. In this tab you can\
+          \ create a new timeline event type, update, or delete existing ones.\n\n\
+          It's possible to add, update, or remove properties and nested properties\
+          \ from a timeline event type. The property ID of timeline event property\
+          \ can only be changed until it's saved.\nTo update the property ID after\
+          \ saving, the property will have to be deleted and recreated with the desired\
+          \ ID.\n\n**Timeline events**\n\nEvents are data points tied to the [BlueConic\
+          \ Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic)\
+          \ of a profile, e.g. an order the customer placed. BlueConic comes out of\
+          \ the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types).\
+          \ \nEvents can be HIGH or LOW priority. There is a maximum number of 250\
+          \ events per profile allowed.\nLOW priority events have a retention period\
+          \ between 1 and 365 days (the default is 30 days).\nHIGH priority events\
+          \ have a retention period of 1 day and up.\nThe default is indefinitely;\
+          \ however, they are constrained by the total number of events and take precedence\
+          \ over LOW priority events, which are capped at 50 if there are 200 or more\
+          \ HIGH priority events.\n\n**Privacy legislations and consent management**\n\
+          \nAny `objectiveIds` passed in the query string are matched against the\
+          \ profile that is being created.\nMatching is done against the special profile\
+          \ property `consented_objectives`, which reflects the objective IDs that\
+          \ the profile has explicitly consented to. So, for the profile to be created,\
+          \ the â€œpropertiesâ€ should at least contain one of the objective IDs passed\
+          \ in the querystring, for the property with id `consented_objectives`. Otherwise,\
+          \ the `CONSENT_MISMATCH` state is returned in the response.\n\nThe following\
+          \ values are valid privacy legislation zone values.\n\n| Name          \
+          \          | Description |\n| :---------------------- | :---------- |\n\
+          | CCPA                    | A profile is governed by CCPA in the State of\
+          \ California. |\n| GDPR                    | A profile is governed by GDPR\
+          \ in Europe. |\n| NYPA                    | A profile is governed by NYPA\
+          \ in the State of New York. |\n| PIPEDA                  | A profile is\
+          \ governed by PIPEDA in Canada. |\n| SB220                   | A profile\
+          \ is governed by SB220 in the State of Nevada. |\n| PERU_DPL           \
+          \     | A profile is governed by the Personal Data Protection Law (PDPL)\
+          \ of Peru. |\n| ARGENTINA_DPL           | A profile is governed by the Personal\
+          \ Data Protection Law (PDPL) of Argentina. |\n| SB1392                 \
+          \ | A profile is governed by SB1392 of the Commonwealth of Virginia |\n\
+          | SB190                   | A profile is governed by the State of Colorado.\
+          \ |\n| BRAZIL_LGPD             | A profile is governed by the Brazilian\
+          \ General Protection Law. |\n| ISRAEL_PPL              | A profile is governed\
+          \ by the Israel Protection Privacy Law. |\n| JAPAN_APPI              | A\
+          \ profile is governed by the Japan APPI. |\n| NEW_ZEALAND_PRIVACY_ACT |\
+          \ A profile is governed by the New Zealand Privacy Act. |\n| SWITZERLAND_DPA\
+          \         | A profile is governed by the Switzerland Data Protection Act\
+          \ (DPA). |\n| UK_GDPR                 | A profile is governed by the United\
+          \ Kingdom General Data Protection Regulation. |\n| CHINA_PIPL          \
+          \    | A profile is governed by the People's Republic of China PIPL. |\n\
+          | AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy\
+          \ Act. |\n| NONE                    | The profile is not governed by a known\
+          \ privacy legislation zone; profile will just be created. NONE legislations\
+          \ are also targeted when 'Rest of World' is selected in an objective. |\n\
+          \n**Profile strategy**\n\nThe following values are valid strategies for\
+          \ profile operations. These can be used to create, update or delete profiles.\n\
+          \n| Name         | Description |\n| :----------- | :---------- |\n| UPSERT\
+          \   | Will update (and insert if not found) the profile based on the rules\
+          \ passed along. |\n| UPDATE   | Will update (but doesnâ€™t insert if not found)\
+          \ the profile based on the rules passed along. |\n| DELETE   | Will delete\
+          \ the profile with the given ID. |\n\n**Timeline Strategy**\n\nThe following\
+          \ values are valid timeline strategies. These can either be used for the\
+          \ strategy property for a timeline event as a whole, or when passing rules\
+          \ to apply on nested timeline event properties.\n\n| Name     | Description\
+          \ |\n| :--------| :---------- |\n| SET      | Timeline event will be added\
+          \ to the profile timeline as is, possibly replacing the existing event with\
+          \ the same ID, event type ID, and date. |\n| UPSERT   | Will update (and\
+          \ insert if not found) the timeline event with the given ID, event type\
+          \ ID, and date, based on the rules that are passed along. |\n| UPDATE  \
+          \ | Will update (but doesnâ€™t insert if not found) the timeline event with\
+          \ the given ID, event type ID, and date, based on the rules that are passed\
+          \ along. |\n| DELETE   | Will delete the timeline event with the given ID,\
+          \ event type ID and, optionally, a date. If not passed, all events matching\
+          \ the ID and event type ID will be deleted. |\n\n**Profile and Timeline\
+          \ property strategy**\n\nThe following values are valid property strategies.\
+          \ These rules apply on profile and timeline event properties.\n\n| Name\
+          \         | Description |\n| :----------- | :---------- |\n| ADD       \
+          \   | Values will be added to the values that already existed in the profile\
+          \ or timeline event property. Duplicates will not be added. |\n| SET   \
+          \       | Values will overwrite the values that already existed in the profile\
+          \ or timeline event property. |\n| SET_IF_EMPTY | Only set values if the\
+          \ profile or timeline event property is empty. |\n| SUM          | Add the\
+          \ value to the value already stored in the profile property. This is not\
+          \ supported for timeline event properties. |\n| REMOVE       | Remove the\
+          \ value from the list of values already stored in the profile property.\
+          \ This is not yet supported for timeline event properties. |\n\n**Partial\
+          \ updates**\n\nIn case of a partial update the snippet below:\n\n<ul>\n\
+          \    <li>Will update (or insert if not exists) the order event with the\
+          \ given ID.\n        <ul><li> date is optional and may be omitted, causing\
+          \ all events with the given ID to be updated.</li></ul>\n    </li>\n   \
+          \ <li>Will add (or update if it exists) a product with id:PRODUCT-5469878987\
+          \ to product.\n        <ul><li> Note that the strategy can be left empty\
+          \ when the identifier is specified</li></ul>\n    </li>\n    <li>Will set\
+          \ quantity to 2 if the product does not have quantity set yet.</li>\n  \
+          \  <li>Will add FREETV-CHRISTMAS-SPECIAL to coupon for the product.</li>\n\
+          \    <li>Will set quantity to 1 for this order.</li>\n</ul>\n\nNotes on\
+          \ using an _identifier_ for nested timeline event properties:\n\n<li>A timeline\
+          \ event type property marked as identifier can only contain one value; more\
+          \ values will be ignored (first value is used).</li>\n<li>When sending an\
+          \ identifier in the bulk API, it cannot be empty.</li>\n\n```json\n{\n \
+          \ \"id\": \"eb20c911-4d23-4791-a3e7-d113e7a326d9\",\n  \"date\": \"2023-01-01T00:00Z\"\
+          ,\n  \"eventTypeId\": \"order\",\n  \"data\": [\n    {\n      \"id\": \"\
+          product\",\n      \"values\": [\n        {\n          \"id\": \"id\",\n\
+          \          \"values\": [\"PRODUCT-5469878987\"]\n        },\n        {\n\
+          \          \"id\": \"quantity\",\n          \"values\": [2],\n         \
+          \ \"strategy\": \"SET_IF_EMPTY\"\n        },\n        {\n          \"id\"\
+          : \"coupon\",\n          \"values\": [\"FREETV-CHRISTMAS-SPECIAL\"],\n \
+          \         \"strategy\": \"ADD\"\n        }\n      ],\n      \"strategy\"\
+          : \"UPSERT\"\n    },\n    {\n      \"id\": \"quantity\",\n      \"values\"\
+          : [1],\n      \"strategy\": \"SET\"\n    }\n  ],\n  \"strategy\": \"UPSERT\"\
+          \n}\n```\n\n**Another example**\n\nThis request contains three operations:\n\
+          <ul>\n    <li>The first operation looks up a specific BlueConic profile\
+          \ by its id, then sets the property with id crm_id to 003Kz4Bsaa14 and adds\
+          \ a new entry to email property. If the profile cannot be found, nothing\
+          \ will happen.</li>\n    <li>The second operation deletes a specific BlueConic\
+          \ profile by its id.</li>\n    <li>The third operation tries to find profiles\
+          \ that either have an email address jane@example.com or a crm_id of 002wC4BadR1w\
+          \ in the specified domain. If any profile is found, three properties and\
+          \ timeline event will be set:\n        <ul>\n            <li>ZIP codes 02111\
+          \ and 02112 will be added.</li>\n            <li>Email address will be set\
+          \ to jane@example.com.</li>\n            <li>crm_id will be set to 002wC4BadR1w.</li>\n\
+          \            <li>An order event will be added to the profiles timeline:\n\
+          \                <ul>\n                    <li>quantity 2</li>\n       \
+          \             <li>net price 3.45</li>\n                    <li>coupon \"\
+          FREETV\"</li>\n                    <li>delivery date 23/1/2023 at 11:45\
+          \ PM</li>\n                </ul>\n            </li>\n        </ul>\n   \
+          \     If no profile can be found, a new profile is created in the specified\
+          \ domain. The three properties and the timeline event will be set on the\
+          \ profile.\n    </li>\n</ul>\n"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkInputEntryV2'
+            examples:
+              Bulk example body:
+                description: Bulk example body
+                value: |-
+                  [
+                    {
+                      "profileId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
+                      "properties": [{
+                        "id": "crm_id",
+                        "values": ["003Kz4Bsaa11"],
+                        "strategy": "SET"
+                      }, {
+                        "id": "email",
+                        "values": ["user_0000@gmail.com"],
+                        "strategy": "ADD"
+                      }]
+                    },
+                    {
+                      "profileId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
+                      "strategy": "DELETE"
+                    },
+                    {
+                      "matching": [
+                        [{
+                          "id": "email",
+                          "value": "jane@example.com"
+                        }],
+                        [{
+                          "id": "crm_id",
+                          "value": "002wC5BadR1w"
+                        }]
+                      ],
+                      "properties": [{
+                        "id": "zipcode",
+                        "values": ["02111", "02112"],
+                        "strategy": "ADD"
+                      },
+                        {
+                          "id": "email",
+                          "values": ["jane99@example.com"],
+                          "strategy": "ADD"
+                        },
+                        {
+                          "id": "crm_id",
+                          "values": ["002wC5BadR1w"],
+                          "strategy": "SET"
+                        }],
+                      "timeline": [{
+                        "eventTypeId": "order",
+                        "data": [{
+                          "id": "product",
+                          "values": [[
+                            {
+                              "id": "quantity",
+                              "values": [2]
+                            }, {
+                              "id": "netprice",
+                              "values": [3.45]
+                            }, {
+                              "id": "coupon",
+                              "values": ["FREETV"]
+                            }, {
+                              "id": "deliverydate",
+                              "values": ["2023-01-23T23:45:56.789Z"]
+                            }
+                          ]]
+                        }, {
+                          "id": "quantity",
+                          "values": [1]
+                        }],
+                        "strategy": "SET"
+                      }],
+                      "strategy": "UPSERT",
+                      "domainGroup": "85ee8f33-15a3-4e95-aff5-abfa5bc457ab"
+                    }
+                  ]
+        required: true
+      responses:
+        "200":
+          description: "Bulk response \n\n**JSON Response**\n\nEvery bulk operation\
+            \ is returned in the response as well.\nThe state can be one of the following\
+            \ values: `CREATED`, `MODIFIED`, `UNCHANGED`, `NOTFOUND`, `RESTRICTION_MISMATCH`\
+            \ or `CONSENT_MISMATCH`.\n\n```json\n[{\n    \"state\": \"CREATED\",\n\
+            \    \"profileId\": \"profile-UUID of the created profile\",\n    \"identifier\"\
+            : \" my-external-identifier\"\n}]\n```\n\nWhen the profile operation contains\
+            \ timeline events, the response will also contain a response per timeline\
+            \ event supplied. The state can be one of the following values: `CREATED`,\
+            \ `SET`, `MODIFIED`, `REJECTED`, `NOTFOUND` or `DELETED`.\n\n```json\n\
+            [{\n    \"state\": \"CREATED\",\n    \"profileId\": \"profile-UUID of\
+            \ the created profile\",\n    \"identifier\": \" my-external-identifier\"\
+            ,\n    \"timeline\": [{\n        \"id\": \"order_1\",\n        \"identifier\"\
+            : \"my-external-order-identifier\",\n        \"state\": \"REJECTED\",\n\
+            \        \"validationErrors\": [\"#/total_revenue/0: expected type: Number,\
+            \ found: String\"]\n    }]\n}]      \n```"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkResultBean'
+              examples:
+                Example bulk response:
+                  description: Example bulk response
+                  value: |-
+                    [
+                      {
+                        "profileId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
+                        "state": "MODIFIED",
+                        "timeline": []
+                      },
+                      {
+                        "profileId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
+                        "state": "DELETED"
+                      },
+                      {
+                        "profileId": "e4c45d3b-f59b-4391-ad46-7413961e8cbd",
+                        "state": "CREATED",
+                        "timeline": [
+                          {
+                            "id": "63cec368-c40e-4c2c-ae08-7d4513edd125",
+                            "state": "SET"
+                          }
+                        ]
+                      }
+                    ]
+        "400":
+          description: One or more required parameters are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestBean'
+        "401":
+          description: Authentication failed (unauthorized).
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - write:profiles
+  /profiles/{profileId}:
+    get:
+      tags:
+      - Profiles
+      summary: Get one profile
+      description: "Retrieves the properties of the specified profile, including the\
+        \ IDs of the matching dynamic segments."
+      operationId: getProfileAsync
+      parameters:
+      - name: profileId
+        in: path
+        description: The ID of the BlueConic profile.
+        required: true
+        schema:
+          type: string
+        example: 640d01c7-1c30-4085-adf9-afad6560ec99
+      - name: expand
+        in: query
+        description: |
+          Expand the information in the result set. Use "profile.permissions.exceptions" to include permission level and exception data.
+          Use "profile.timeline" to include timeline event information.
+          Use multiple "expand" querystring parameters to return combinations.
+        schema:
+          type: array
+          items:
+            type: string
+            default: ""
+        example: profile.timeline
+      - name: properties
+        in: query
+        description: Only returns the given profile properties in the response.
+        schema:
+          type: string
+          default: ""
+        example: "email,fullname,visits"
+      - name: eventTypeId
+        in: query
+        description: Filter returned timeline events for a specific type. Only one
+          timeline event type ID is allowed.
+        schema:
+          type: string
+          format: uuid
+          default: ""
+        example: order
+      - name: eventCount
+        in: query
+        description: The maximum number of timeline events to return.
+        schema:
+          type: integer
+          format: int32
+          default: 20
+        example: 10
+      - name: fromDate
+        in: query
+        description: Filter to only include timeline events that are dated later than
+          this date. The format of fromDate is "2023-01-01T00:00Z" or with a time
+          zone offset "2023-01-01T00:00+05:00"
+        schema:
+          type: string
+          default: ""
+        example: 2023-01-22T11:21:33Z
+      - name: toDate
+        in: query
+        description: Filter to only include timeline events that are dated before
+          this date. The format of toDate is "2023-01-01T00:00Z" or with a time zone
+          offset "2023-01-01T00:00+05:00"
+        schema:
+          type: string
+          default: ""
+        example: 2023-03-05T12:00:00Z
+      - name: collapse
+        in: query
+        description: Collapse the information in the result set. Use profile.segments
+          to exclude segment information.
+        schema:
+          type: array
+          items:
+            type: string
+            default: ""
+        example: profile.segments
+      responses:
+        "200":
+          description: Returns the specified profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profile'
+              examples:
+                Example profile response:
+                  description: Example profile response
+                  value: |-
+                    {
+                      "id": "640d01c7-1c30-4085-adf9-afad6560ec99",
+                      "creationDate": "2022-10-23T14:47:05.207Z",
+                      "consentedObjectives": ["objective_1", "objective_2"],
+                      "refusedObjectives": [],
+                      "permissions": {
+                        "level": "PERSONAL"
+                      },
+                      "properties": [
+                        {
+                          "id": "clickcount",
+                          "values": [
+                            "0"
+                          ]
+                        },
+                        {
+                          "id": "creationdate",
+                          "values": [
+                            "1571842025207"
+                          ]
+                        },
+                        {
+                          "id": "engagement",
+                          "values": [
+                            "medium"
+                          ]
+                        },
+                        {
+                          "id": "lastmodifieddate",
+                          "values": [
+                            "1571842025207"
+                          ]
+                        },
+                        {
+                          "id": "sample_id",
+                          "values": [
+                            "26"
+                          ]
+                        },
+                        {
+                          "id": "lastvisitdate",
+                          "values": [
+                            "1571842023124"
+                          ]
+                        },
+                        {
+                          "id": "lastvisit",
+                          "values": [
+                            "1571842023124"
+                          ]
+                        },
+                        {
+                          "id": "browsers",
+                          "values": [
+                            "ie"
+                          ]
+                        },
+                        {
+                          "id": "visits",
+                          "values": [
+                            "2"
+                          ]
+                        },
+                        {
+                          "id": "browser",
+                          "values": [
+                            "ie"
+                          ]
+                        },
+                        {
+                          "id": "domaingroup",
+                          "values": [
+                            "DEFAULT"
+                          ]
+                        },
+                        {
+                          "id": "email",
+                          "values": [
+                            "user_017@gmail.com"
+                          ]
+                        }
+                      ],
+                      "replaces": [],
+                      "events": [{
+                        "data": [{
+                          "id": "product",
+                          "values": [
+                            [{
+                              "id": "quantity",
+                              "values": [100]
+                            }, {
+                              "id": "id",
+                              "values": ["987644321"]
+                            }]
+                          ]
+                        }],
+                        "date": "2023-01-01T00:00:00.123Z",
+                        "eventTypeId": "order",
+                        "id": "order_2",
+                        "source": "notebook_9139fb0a-6e65-4e65-9dff-9dd971ac2b21"
+                      }],
+                      "segments": [
+                        {
+                          "id": "bfef6ef0-745a-4c5c-b64b-472771096de8"
+                        },
+                        {
+                          "id": "aaefc4b6-61ef-4252-b78b-5edef1fd8991"
+                        },
+                        {
+                          "id": "2a04c001-bb27-4c6f-9767-3f333a1144af"
+                        },
+                        {
+                          "id": "6c02486d-b92a-4696-b6cc-8826049a0208"
+                        },
+                        {
+                          "id": "ae2c27fb-62ff-4be6-996c-a265e53920c8"
+                        }
+                      ]
+                    }
         "401":
           description: Authentication failed (unauthorized).
         "404":
-          description: The domain doesn't exist.
+          description: The specified profile doesn't exist.
+        "408":
+          description: Request timed out.
         "503":
           description: The server is too busy to handle the request.
-  /domains:
+      security:
+      - oauth2:
+        - read:profiles
+  /segments/{segment}/profiles:
     get:
       tags:
-      - Domains
-      summary: Get all domains
-      description: Retrieves the domains.
-      operationId: getDomains
+      - Segments
+      summary: Get profiles in segment
+      description: Retrieves the profiles of the segment.
+      operationId: getSegmentExportNormal
       parameters:
-      - name: filterValue
-        in: query
+      - name: segment
+        in: path
+        required: true
         schema:
           type: string
-      - name: sortOrder
+      - name: cursor
         in: query
+        description: "Defines the starting point of the page for pagination. When\
+          \ cursors are used, each page, except the last page, returns a `nextCursor`\
+          \ value which can be used to retrieve the next page."
         schema:
           type: string
+        example: '*'
+      - name: count
+        in: query
+        description: Specifies the number of results to return. Smaller than or equal
+          to 1.000.000.
+        schema:
+          type: integer
+          format: int32
+        example: 20
+      - name: properties
+        in: query
+        description: "Specifies for which profile properties values will be returned\
+          \ for each profile. If not specified, the values of all profile properties\
+          \ will be returned, which may result in a large result set. One or more\
+          \ profile property ids, separated by a comma."
+        schema:
+          type: string
+        example: "browserversion,email"
+      - name: expand
+        in: query
+        description: Expand the information in the result set. Use `profiles.profile.permissions`
+          to include permission level. Use `profiles.profile.replace` to include profile
+          merge information. Use `profiles.profile.segments` to include the segments
+          a profile is part of. Use `profiles.profile.timeline` to include timeline
+          event information. Use multiple `expand` querystring parameters to return
+          combinations.
+        schema:
+          type: array
+          items:
+            type: string
+        example: profiles.profile.segments
+      - name: eventTypeId
+        in: query
+        description: Filter for the returned timeline events for specific types. One
+          or more IDs of a timeline event type.
+        schema:
+          type: string
+        example: order
+      - name: eventCount
+        in: query
+        description: The maximum number of timeline events to return.
+        schema:
+          type: integer
+          format: int32
+        example: 20
+      - name: fromDate
+        in: query
+        description: Filter to only include timeline events that are dated later than
+          this date. ISO date like `2023-01-01T00:00Z` or with time zone offset `2023-01-01T00:00+05:00`.
+        schema:
+          type: string
+        example: 2023-01-01T00:00Z
+      - name: toDate
+        in: query
+        description: Filter to only include timeline events that are dated before
+          this date. ISO date like `2023-01-01T00:00Z` or with time zone offset `2023-01-01T00:00+05:00`.
+        schema:
+          type: string
+        example: 2023-01-01T00:00Z
+      responses:
+        "200":
+          description: "Returns the profiles of the given segment in a streaming fashion\
+            \ (`Transfer-Encoding: chunked`)."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentProfiles'
+              examples:
+                Example segment profiles response:
+                  description: Example segment profiles response
+                  value: |-
+                    {
+                    "itemsPerPage":20,
+                    "totalPages":5,
+                    "totalResults":100,
+                    "cursor":"*",
+                    "nextCursor":"AoJylraPsPICPwU4ZDZiMzhmYS0yMmYwLTRmZTAtYmE0My1kOWVlNTFjNWE5MDA",
+
+                      "links" : [ {
+                        "href" : "https://localhost/rest/v2/segments/aa9c3c86-edec-4ac5-8521-a1be602eb7c6/profiles?cursor=%2A&count=20",
+                        "rel" : "first",
+                        "type" : "application/json"
+                      }, {
+                        "href" : "https://localhost/rest/v2/segments/aa9c3c86-edec-4ac5-8521-a1be602eb7c6/profiles?cursor=AoJylraPsPICPwU4ZDZiMzhmYS0yMmYwLTRmZTAtYmE0My1kOWVlNTFjNWE5MDA&count=20",
+                        "rel" : "last",
+                        "type" : "application/json"
+                      } ]
+                    ,
+                    "profiles": [
+                    {
+                      "id" : "41ebc321-b02b-4e8a-a368-82995c81fb18",
+                      "creationDate" : "2023-03-27T10:36:11.990Z",
+                      "privacyLegislation" : "GDPR",
+                      "consentedObjectives" : [ "objective1" ],
+                      "refusedObjectives" : [ "objective2" ],
+                      "properties" : [ {
+                        "id" : "visitclicks_5db4a390-4e11-43ae-be2d-a1b6e248d129",
+                        "values" : [ "1" ]
+                      }, {
+                        "id" : "privacy_legislation",
+                        "values" : [ "GDPR" ]
+                      }, {
+                        "id" : "visitedchannel",
+                        "values" : [ "5db4a390-4e11-43ae-be2d-a1b6e248d129" ]
+                      }, {
+                        "id" : "creationdate",
+                        "values" : [ "1679913371990" ]
+                      }, {
+                        "id" : "color",
+                        "values" : [ "Mustard" ]
+                      }, {
+                        "id" : "currentbrowsername",
+                        "values" : [ "Default Browser" ]
+                      }, {
+                        "id" : "sample_id",
+                        "values" : [ "41" ]
+                      }, {
+                        "id" : "lastvisitdate",
+                        "values" : [ "1679913372011" ]
+                      }, {
+                        "id" : "currentbrowserversion",
+                        "values" : [ "Default Browser Unknown" ]
+                      }, {
+                        "id" : "lastvisit",
+                        "values" : [ "1679913371988" ]
+                      }, {
+                        "id" : "origin_source",
+                        "values" : [ "www.blueconic.com" ]
+                      }, {
+                        "id" : "session_start",
+                        "values" : [ "1679913371934" ]
+                      }, {
+                        "id" : "devicetype",
+                        "values" : [ "MOBILE" ]
+                      }, {
+                        "id" : "lastvisitdate_5db4a390-4e11-43ae-be2d-a1b6e248d129",
+                        "values" : [ "1679913372011" ]
+                      }, {
+                        "id" : "frequency",
+                        "values" : [ "100" ]
+                      }, {
+                        "id" : "devicetypes",
+                        "values" : [ "MOBILE" ]
+                      }, {
+                        "id" : "visits",
+                        "values" : [ "1" ]
+                      }, {
+                        "id" : "domaingroup",
+                        "values" : [ "DEFAULT" ]
+                      }, {
+                        "id" : "totalvisittime",
+                        "values" : [ "0" ]
+                      }, {
+                        "id" : "clickcount",
+                        "values" : [ "1" ]
+                      }, {
+                        "id" : "clickcount_5db4a390-4e11-43ae-be2d-a1b6e248d129",
+                        "values" : [ "1" ]
+                      }, {
+                        "id" : "visitedsites",
+                        "values" : [ "www.blueconic.test" ]
+                      }, {
+                        "id" : "averagetime",
+                        "values" : [ "0" ]
+                      }, {
+                        "id" : "lastmodifieddate",
+                        "values" : [ "1679922388115" ]
+                      }, {
+                        "id" : "hostentrypage",
+                        "values" : [ "{\"www.blueconic.com\":{\"entrypage\":\"http://www.blueconic.com/\"}}" ]
+                      }, {
+                        "id" : "browsername",
+                        "values" : [ "Default Browser" ]
+                      }, {
+                        "id" : "recency",
+                        "values" : [ "99" ]
+                      }, {
+                        "id" : "origin_type",
+                        "values" : [ "mobile_web" ]
+                      }, {
+                        "id" : "momentum",
+                        "values" : [ "50" ]
+                      }, {
+                        "id" : "intensity",
+                        "values" : [ "100" ]
+                      }, {
+                        "id" : "firstvisit",
+                        "values" : [ "1679913371926" ]
+                      }, {
+                        "id" : "hostaveragetime",
+                        "values" : [ "{\"www.blueconic.test\":{\"startdate\":1679913372011,\"enddate\":1679913372011,\"averageTime\":0,\"visits\":0}}" ]
+                      }, {
+                        "id" : "visiteddomain",
+                        "values" : [ "75d78fab-bc93-4398-adbf-b8d04fc1889b" ]
+                      }, {
+                        "id" : "entrypage",
+                        "values" : [ "http://www.blueconic.com/" ]
+                      }, {
+                        "id" : "origin_detail",
+                        "values" : [ "http://www.blueconic.com/" ]
+                      }, {
+                        "id" : "visits_5db4a390-4e11-43ae-be2d-a1b6e248d129",
+                        "values" : [ "1" ]
+                      }, {
+                        "id" : "recent_intensity",
+                        "values" : [ "100" ]
+                      }, {
+                        "id" : "browserversion",
+                        "values" : [ "Default Browser Unknown" ]
+                      }, {
+                        "id" : "visitclicks",
+                        "values" : [ "1" ]
+                      } ],
+                      "segments" : [ {
+                        "id" : "bdd64355-2d45-411b-a5ea-0bcf87318f35",
+                        "name" : "Export test segment"
+                      } ]
+                    }
+                    ]}
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "404":
+          description: Segment not found.
+        "401":
+          description: Authentication failed (unauthorized).
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:segments
+  /segments:
+    get:
+      tags:
+      - Segments
+      summary: Get all segments
+      description: Retrieves all segments.
+      operationId: getSegments
+      parameters:
       - name: startIndex
         in: query
         description: Specifies the index of the first item to include in the result.
@@ -99,324 +2356,900 @@ paths:
         example: 0
       - name: count
         in: query
-        description: "any number\tSpecifies the number of results to return."
-        schema:
-          type: integer
-          format: int32
-        example: 20
-      - name: subSortBy
-        in: query
-        schema:
-          type: string
-      - name: subSortOrder
-        in: query
-        schema:
-          type: string
-      - name: subStartIndex
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: subCount
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: subFilterValue
-        in: query
-        schema:
-          type: string
-      - name: expand
-        in: query
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Returns the domains.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/domains'
-        "401":
-          description: Authentication failed (unauthorized).
-        "503":
-          description: The server is too busy to handle the request.
-  /profiles/{profile}:
-    get:
-      tags:
-      - Profiles
-      summary: Get one profile
-      description: "Retrieves the properties of the specified profile, including the\
-        \ IDs of the matching dynamic segments."
-      operationId: getProfileAsync
-      parameters:
-      - name: profile
-        in: path
-        description: The ID of the BlueConic profile.
-        required: true
-        schema:
-          type: string
-        example: any BlueConic Profile UUID.
-      - name: expand
-        in: query
-        description: Expand the information in the result set. Use "profile.permissions.exceptions"
-          to include permission level and exception data. Use "profile.timeline" to
-          include timeline event information. Use multiple "expand" querystring parameters
-          to return combinations.
-        schema:
-          type: array
-          items:
-            type: string
-        example: "One of: profile.permissions.exceptions profile.timeline"
-      - name: properties
-        in: query
-        description: Only returns the given profile properties in the response.
-        schema:
-          type: string
-        example: Comma separated list of profile property IDs
-      - name: lifecycleIds
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      - name: replaceIds
-        in: query
-        schema:
-          type: boolean
-      - name: allowCache
-        in: query
-        schema:
-          type: boolean
-      - name: eventTypeId
-        in: query
-        description: Filter returned timeline events for a specific type. Only one
-          timeline event type ID is allowed.
-        schema:
-          type: array
-          items:
-            type: string
-        example: ID of the timeline event type
-      - name: eventCount
-        in: query
-        description: The maximum number of timeline events to return.
-        schema:
-          type: integer
-          format: int32
-        example: any number
-      - name: fromDate
-        in: query
-        description: Filter to only include timeline events that are dated later than
-          this date. The format of fromDate is "2018-01-01T00:00Z" or with a timezone
-          offset "2018-01-01T00:00+05:00"
-        schema:
-          type: string
-        example: any date
-      - name: toDate
-        in: query
-        description: Filter to only include timeline events that are dated before
-          this date. The format of toDate is "2018-01-01T00:00Z" or with a timezone
-          offset "2018-01-01T00:00+05:00"
-        schema:
-          type: string
-        example: any date
-      - name: collapse
-        in: query
-        description: Collapse the information in the result set. Use profile.segments
-          to exclude segment information.
-        schema:
-          type: array
-          items:
-            type: string
-        example: profile.segments
-      - name: pseudonymizePII
-        in: query
-        schema:
-          type: boolean
-      - name: alt
-        in: query
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Returns the specified profile.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/profile'
-        "401":
-          description: Authentication failed (unauthorized).
-        "404":
-          description: The specified profile doesn't exist.
-        "408":
-          description: Request timed out.
-        "503":
-          description: The server is too busy to handle the request.
-  /segments:
-    get:
-      tags:
-      - Segments
-      summary: Get all segments
-      description: Retrieves the id and name of segments.
-      operationId: getSegments
-      parameters:
-      - name: filterValue
-        in: query
-        schema:
-          type: string
-      - name: sortBy
-        in: query
-        schema:
-          type: string
-      - name: sortOrder
-        in: query
-        schema:
-          type: string
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first item to include in the result.
-        schema:
-          type: integer
-          format: int32
-        example: any number.
-      - name: count
-        in: query
         description: Specifies the number of results to return.
         schema:
           type: integer
           format: int32
-        example: any number.
-      - name: expand
-        in: query
-        schema:
-          type: string
+        example: 10
       responses:
-        "401":
-          description: Authentication failed (unauthorized).
         "200":
           description: Returns the segments.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/segments'
+              examples:
+                Example segment response:
+                  description: Example segment response
+                  value: |-
+                    {
+                      "itemsPerPage" : 10,
+                      "segments" : [ {
+                        "favorite" : false,
+                        "id" : "aa9c3c86-edec-4ac5-8521-a1be602eb7c6",
+                        "inverseOf" : "",
+                        "inversedBy" : "",
+                        "name" : "All Visitors",
+                        "readOnly" : true,
+                        "tags" : ["a tag"]
+                      }, {
+                        "favorite" : false,
+                        "id" : "dcd46509-0c5f-40a5-8b91-e9b9315466ef",
+                        "inverseOf" : "",
+                        "inversedBy" : "",
+                        "name" : "Preferred visit hour: Afternoon",
+                        "readOnly" : false,
+                        "tags" : [ ]
+                      }, {
+                        "favorite" : false,
+                        "id" : "6c2785b1-66fd-4504-9b26-20c8b24b1c46",
+                        "inverseOf" : "",
+                        "inversedBy" : "",
+                        "name" : "Preferred visit hour: Evening",
+                        "readOnly" : false,
+                        "tags" : [ ]
+                      }, {
+                        "favorite" : true,
+                        "id" : "194b246b-26c5-4e9a-bc3a-f3896c8dc96e",
+                        "inverseOf" : "",
+                        "inversedBy" : "",
+                        "name" : "Preferred visit hour: Morning",
+                        "readOnly" : false,
+                        "tags" : [ ]
+                      }, {
+                        "favorite" : false,
+                        "id" : "1e557d7c-e655-415a-a0bd-256009af183a",
+                        "inverseOf" : "",
+                        "inversedBy" : "",
+                        "name" : "Preferred visit hour: Night",
+                        "readOnly" : false,
+                        "tags" : [ ]
+                      } ],
+                      "startIndex" : 0,
+                      "totalPages" : 1,
+                      "totalResults" : 5
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
         "503":
           description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:segments
+  /recommendations:
+    post:
+      tags:
+      - Recommendations
+      summary: Generate recommendations
+      description: Generate BlueConic recommendations for a specific profile based
+        on the provided parameters.
+      operationId: getRecommendationsPostJsonpAsync
+      parameters:
+      - name: profileId
+        in: query
+        description: "The ID of the BlueConic profile. Note that the profile ID is\
+          \ required when you use a [recommendation algorithm](https://support.blueconic.com/hc/en-us/articles/360022093313-BlueConic-recommendation-algorithms)\
+          \ that depends on the profile, such as 'Collaborative filtering' or 'Seen\
+          \ articles / Seen products'."
+        schema:
+          type: string
+          default: ""
+        example: 640d01c7-1c30-4085-adf9-afad6560ec99
+      - name: storeId
+        in: query
+        description: The ID of the content store to get the items from.
+        required: true
+        schema:
+          type: string
+          default: ""
+        example: 0693330e-679a-48db-b94f-a8921b76149e
+      - name: itemId
+        in: query
+        description: ID of the current item being shown. Some algorithms are based
+          on this information. It also excludes this item from being returned in the
+          result.
+        schema:
+          type: string
+          default: ""
+      - name: frequencyCap
+        in: query
+        description: The number of times an item can be recommended to a profile before
+          being hidden from future recommendations.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 5
+      - name: imageWidth
+        in: query
+        description: Width of the images to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 100
+      - name: imageHeight
+        in: query
+        description: Height of the images to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 100
+      - name: manualViewCounting
+        in: query
+        description: Prevent updating recommendation statistics for the recommended
+          items. Can be used to generate offline recommendation items without influencing
+          the profile.
+        schema:
+          type: boolean
+          default: false
+        example: true
+      requestBody:
+        description: |
+          The body of a recommendations request consists of a JSON array that holds one or more sets of recommendation definition objects. Each recommendation definition object contains a combination of algorithms and filters and a number of items that should be returned. This allows you to return items based on different mixes of algorithms. You can also define a default to fall back to when not enough matching recommendations can be found.
+
+          The following boosting algorithms are supported:
+
+          |Name|Description|Example|
+          |:----|:----|:----|
+          |Breaking news|Items most viewed by all visitors in the time frame defined in the collector.|`"boosts": [{"value": 1, "algorithm": "RECENT_VIEW"}]`
+          |Viral news|Items most used as a landing page by all visitors in the time frame defined in the collector.|`"boosts": [{"value": 1, "algorithm": "RECENT_ENTRYPAGE"}]`
+          |Recency|Items most recently added items based on the publication date property.|`"boosts": [{"value": 1, "algorithm": "RECENCY"}]`
+          |Recent high CTRs|Items most clicked-through from BlueConic recommendations by all visitors in the time frame defined in the collector.|`"boosts": [{"value": 1, "algorithm": "RECENT_CTR"}]`
+          |Recently bought items|Items recently bought by the provided profileId.|`"boosts": [{"value": 1, "algorithm": "RECENTLY_BOUGHT"}]`
+          |Recently carted items|Items recently put in the shopping cart by the provided profileId.|`"boosts": [{"value": 1, "algorithm": "RECENTLY_SHOPPINGCART"}]`
+          |Same category|Items of the same category as the item with the provided itemId.|`"boosts": [{"value": 1, "algorithm": "SAME_CATEGORY" }]`
+          |Look-alike-articles|Items that have similar content to the item with the provided itemId.|`"boosts": [{"value": 1, "algorithm": " LOOK_ALIKE" }]`
+          |Seen articles|Items the provided profileId recently viewed.|`"boosts": [{"value": 1, "algorithm": " RECENTLY_VIEWED" }]`
+          |Same interest|Items that look similar to the items already viewed by the provided profileId.|`"boosts": [{"value": 1, "algorithm": "INTEREST", "rampUp": "FAST"}]`
+          |Collaborative filtering|Items popular with other profiles who viewed the same items as the provided profileId.|`"boosts": [{"value": 1, "algorithm": "COLLABORATIVE_FILTERING", "rampUp": "FAST"}]`|
+
+          Recommendation definition objects may contain filters that restrict the items that may be returned:
+
+          | Example                                                  | Description                                                                                                                                                                          |
+          |:---------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+          | `"filters": ["VIEWED"]`                                  | Exclude the items already viewed by the provided profileId.                                                                                                                          |
+          | `"filters": ["SHOPPINGCART"]`                            | Exclude the items in the shopping of the provided profileId.                                                                                                                         |
+          | `"filters": ["BOUGHT"]`                                  | Exclude the items already bought by the provided profileId.                                                                                                                          |
+          | `"filters": ["VIEWED_ONLY"]`                             | Include only items that were viewed by the provided profileId.                                                                                                                       |
+          | `"filters": ["SHOPPINGCART_ONLY"]`                       | Include only items that were in the shoppingcart of the provided profileId.                                                                                                          |
+          | `"filters": ["BOUGHT_ONLY"]`                             | Include only items that were bought by the provided profileId.                                                                                                                       |
+          | `"filters": ["SAME_CATEGORY"]`                           | Include only items that have the same category as the provided itemId.                                                                                                               |
+          | `"filters": ["IN_STOCK"]`                                | Include only items that are in stock.                                                                                                                                                |
+          | `"filters": ["publicationDate>2023-06-01T00:00+02:00"]`  | Include only items with a publication date after June 1<sup>st</sup> 2023. The format of publicationDate is `2023-01-01T00:00Z` or with a time zone offset `2023-01-01T00:00+05:00`  |
+          | `"filters": ["publicationDate<=2023-06-01T00:00+02:00"]` | Include only items with a publication date before June 1<sup>st</sup> 2023. The format of publicationDate is `2023-01-01T00:00Z` or with a time zone offset `2023-01-01T00:00+05:00` |
+          | `"filters": ["category:politics"]`                       | Include only items that have a specific value for a specific property, e.g. â€œpoliticsâ€ for property â€œcategoryâ€.                                                                      |
+          | `"filters": ["!category:politics"]`                      | Exclude items that do not have a specific value, e.g. â€œpoliticsâ€ for property â€œcategoryâ€.                                                                                            |
+          | `"filters": ["category:politics","category:sports"]`     | Include only items that have all specific values, e.g. â€œpoliticsâ€ and â€œsportsâ€ for property â€œcategoryâ€.                                                                              |
+          | `"filters": ["category:politics,sports"]`                | Include only items that have any of the specified values, e.g. â€œpoliticsâ€ or â€œsportsâ€ for property â€œcategoryâ€.                                                                       |
+          | `"filters": ["!category:politics","!category:sports"]`   | Include only items that do not have any of the specified values, e.g. â€œpoliticsâ€ or â€œsportsâ€ for property â€œcategoryâ€.                                                                |
+          | `"filters": ["!category:politics,sports"]`               | Include only items that do not have all of the specified values, e.g. â€œpoliticsâ€ and â€œsportsâ€ for property â€œcategoryâ€.                                                               |
+          | `"filters": ["hasproperty:image"]`                       | Include only items that have an image.                                                                                                                                               |
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+            examples:
+              Example body:
+                description: Example body
+                value: |-
+                  [{
+                          "id": "first",
+                          "boosts": [{
+                                  "value": "1",
+                                  "algorithm": "RECENCY"
+                              },
+                              {
+                                  "value": "2",
+                                  "algorithm": "COLLABORATIVE_FILTERING",
+                                  "rampUp": "FAST"
+                              },
+                              {
+                                  "value": "1",
+                                  "algorithm": "RECENT_VIEW"
+                              },
+                              {
+                                  "value": "1",
+                                  "algorithm": "RECENT_CTR"
+                              }
+                          ],
+                          "filters": [
+                              "category:politics",
+                              "viewed"
+                          ],
+                          "count": 3
+                      },
+                      {
+                          "id": "second",
+                          "boosts": [{
+                                  "value": "2",
+                                  "algorithm": " COLLABORATIVE_FILTERING ",
+                                  "rampup": "SLOW"
+                              },
+                              {
+                                  "value": "1",
+                                  "algorithm": " RECENT_CTR"
+                              }
+                          ],
+                          "filters": [
+                              "category:politics",
+                              "!category:economie",
+                              "VIEWED"
+                          ],
+                          "count": 3
+                      },
+                      {
+                          "id": "default",
+                          "filters": [
+                              "publicationDate>2023-04-17T14:30+0200",
+                              "!category:economie",
+                              "VIEWED"
+                          ],
+                          "boosts": [{
+                              "value": "1",
+                              "algorithm": "RECENT_CTR"
+                          }]
+                      }
+                  ]
+        required: true
+      responses:
+        "200":
+          description: "The generated recommendations, based on the given request\
+            \ parameters."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationResponse'
+              examples:
+                Example recommendation response:
+                  description: Example recommendation response
+                  value: |-
+                    {
+                        "recommendationBlock": [{
+                                "id": "first",
+                                "recommendations": [{
+                                        "score": 0.12063565363854145,
+                                        "trackingUrl": "http://taylor-news.com/1",
+                                        "id": "www.taylor-news.com/news/1111",
+                                        "url": "https://www.taylor-news.com/news/1111",
+                                        "name": "Name 1",
+                                        "description": "Description 1.",
+                                        "category": ["sport", "baseball"],
+                                        "image": "https://img.taylor-news.com/img1.jpg",
+                                        "customProperties": {
+                                            "pubdate": ["tuesday 12 june 2023, 09:45"],
+                                            "story": []
+                                        }
+                                    },
+                                    {
+                                        "score": 0.001113261296046081,
+                                        "trackingUrl": "http://taylor-news.com/2",
+                                        "id": "www.taylor-news.com/news/2222",
+                                        "url": "https://www.taylor-news.com/news/2222",
+                                        "name": "Name 2",
+                                        "description": "Description 2.",
+                                        "category": ["news", "politics"],
+                                        "image": "https://img.taylor-news.com/img2.jpg",
+                                        "customProperties": {
+                                            "pubdate": ["wednesday 13 june 2023, 09:45"],
+                                            "story": []
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "second",
+                                "recommendations": [{
+                                        "score": 1.0,
+                                        "trackingUrl": "http://taylor-news.com/3",
+                                        "id": "www.taylor-news.com/news/3333",
+                                        "url": "https://www.taylor-news.com/news/2317578",
+                                        "name": "Name 3",
+                                        "description": "Description 3.",
+                                        "category": ["sport", "basketball"],
+                                        "image": "https://img.taylor-news.com/img3.jpg",
+                                        "customProperties": {
+                                            "pubdate": ["tuesday 12 june 2023, 09:45"],
+                                            "story": []
+                                        }
+                                    },
+                                    {
+                                        "score": 1.0,
+                                        "trackingUrl": "http://taylor-news.com/4",
+                                        "id": "www.taylor-news.com/news/4444",
+                                        "url": "https://www.taylor-news.com/news/2317578",
+                                        "name": "Name 4",
+                                        "description": "Description 4.",
+                                        "category": [],
+                                        "image": "https://img.taylor-news.com/img4.jpg",
+                                        "customProperties": {
+                                            "pubdate": ["tuesday 12 june 2023, 09:45"],
+                                            "story": []
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "recommendationId": "97258279-baf7-45de-aab3-457dc42904be",
+                        "trackingPixel": "http://track.com"
+                    }
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "503":
+          description: The server is too busy to handle the request.
+  /urlmappings:
+    post:
+      tags:
+      - URL mappings
+      summary: Create URL mapping
+      description: Create a new URL mapping (separate from an external tracker).
+      operationId: createURL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/urlmapping'
+            examples:
+              Urlmapping example body:
+                description: Urlmapping example body
+                value: |-
+                  {
+                    "id": "2D",
+                    "properties": [
+                      {
+                        "id": "pp_download",
+                        "values": [
+                          "Blueconic Release News R30"
+                        ]
+                      },
+                      {
+                        "id": "interactionId",
+                        "values": [
+                          "9197fdf7-e1d4-4b4b-8b59-5c49a72a412b"
+                        ]
+                      },
+                      {
+                        "id": "containerId",
+                        "values": [
+                          "b8bf7a5b-e937-451f-a93c-aa83a20deea5"
+                        ]
+                      },
+                      {
+                        "id": "channelId",
+                        "values": [
+                          "36a43edb-0a92-42df-8f19-f788cb146bda"
+                        ]
+                      },
+                      {
+                        "id": "pp_interest_index",
+                        "values": [
+                          "blueconic"
+                        ]
+                      }
+                    ],
+                    "type": "TRACKINGPIXEL",
+                    "url": "http://www.blueconic.com/support/release-notes/profile-property-creation.htm"
+                  }
+        required: true
+      responses:
+        "200":
+          description: Returns the created urlmapping.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/urlmapping'
+              examples:
+                Example POST response:
+                  description: Example POST response
+                  value: |-
+                    {
+                      "id": "2D",
+                      "properties": [
+                        {
+                          "id": "pp_download",
+                          "values": [
+                            "Blueconic Release News R30"
+                          ]
+                        },
+                        {
+                          "id": "interactionId",
+                          "values": [
+                            "9197fdf7-e1d4-4b4b-8b59-5c49a72a412b"
+                          ]
+                        },
+                        {
+                          "id": "containerId",
+                          "values": [
+                            "b8bf7a5b-e937-451f-a93c-aa83a20deea5"
+                          ]
+                        },
+                        {
+                          "id": "channelId",
+                          "values": [
+                            "36a43edb-0a92-42df-8f19-f788cb146bda"
+                          ]
+                        },
+                        {
+                          "id": "pp_interest_index",
+                          "values": [
+                            "blueconic"
+                          ]
+                        }
+                      ],
+                      "type": "TRACKINGPIXEL",
+                      "url": "http://www.blueconic.com/support/release-notes/profile-property-creation.htm"
+                    }
+        "400":
+          description: One or more required parameters are missing or invalid.
+        "401":
+          description: Authentication failed (unauthorized).
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - write:url-mappings
+  /urlmappings/{id}:
+    get:
+      tags:
+      - URL mappings
+      summary: Get URL mapping
+      operationId: getShortenedURL
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the URL mapping.
+        required: true
+        schema:
+          type: string
+        example: 4Q
+      responses:
+        "200":
+          description: Returns the URL mapping.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/urlmapping'
+              examples:
+                Example GET response:
+                  description: Example GET response
+                  value: |-
+                    {
+                      "id": "4d",
+                      "properties": [
+                        {
+                          "id": "pp_download",
+                          "values": [
+                            "Blueconic Release News R30"
+                          ]
+                        },
+                        {
+                          "id": "interactionId",
+                          "values": [
+                            "9197fdf7-e1d4-4b4b-8b59-5c49a72a412b"
+                          ]
+                        },
+                        {
+                          "id": "containerId",
+                          "values": [
+                            "b8bf7a5b-e937-451f-a93c-aa83a20deea5"
+                          ]
+                        },
+                        {
+                          "id": "channelId",
+                          "values": [
+                            "36a43edb-0a92-42df-8f19-f788cb146bda"
+                          ]
+                        },
+                        {
+                          "id": "pp_interest_index",
+                          "values": [
+                            "blueconic"
+                          ]
+                        }
+                      ],
+                      "type": "TRACKINGPIXEL",
+                      "url": "http://www.blueconic.com/support/release-notes/profile-property-creation.htm"
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+        "404":
+          description: The specified URL mapping doesn't exist.
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - read:url-mappings
+    put:
+      tags:
+      - URL mappings
+      summary: Update URL mapping
+      operationId: updateShortenedURL
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the URL mapping.
+        required: true
+        schema:
+          type: string
+        example: 4Q
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/urlmapping'
+            examples:
+              URL mapping example body:
+                description: URL mapping example body
+                value: |-
+                  {
+                    "id": "4d",
+                    "properties": [
+                      {
+                        "id": "pp_download",
+                        "values": [
+                          "Blueconic Release News R30"
+                        ]
+                      },
+                      {
+                        "id": "interactionId",
+                        "values": [
+                          "9197fdf7-e1d4-4b4b-8b59-5c49a72a412b"
+                        ]
+                      },
+                      {
+                        "id": "containerId",
+                        "values": [
+                          "b8bf7a5b-e937-451f-a93c-aa83a20deea5"
+                        ]
+                      }
+                    ],
+                    "type": "TRACKINGPIXEL",
+                    "url": "http://www.blueconic.com/support/release-notes/profile-property-creation.htm"
+                  }
+        required: true
+      responses:
+        "200":
+          description: Returns the updated urlmapping.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/urlmapping'
+              examples:
+                Example PUT response:
+                  description: Example PUT response
+                  value: |-
+                    {
+                      "id": "4d",
+                      "properties": [
+                        {
+                          "id": "pp_download",
+                          "values": [
+                            "Blueconic Release News R30"
+                          ]
+                        },
+                        {
+                          "id": "interactionId",
+                          "values": [
+                            "9197fdf7-e1d4-4b4b-8b59-5c49a72a412b"
+                          ]
+                        },
+                        {
+                          "id": "containerId",
+                          "values": [
+                            "b8bf7a5b-e937-451f-a93c-aa83a20deea5"
+                          ]
+                        }
+                      ],
+                      "type": "SHORTENEDURL",
+                      "url": "https://support.blueconic.com/hc/en-us/categories/200063851-Release-Notes"
+                    }
+        "401":
+          description: Authentication failed (unauthorized).
+        "404":
+          description: The specified URL mapping doesn't exist.
+        "503":
+          description: The server is too busy to handle the request.
+      security:
+      - oauth2:
+        - write:url-mappings
 components:
   schemas:
+    AuditEntryBean:
+      type: object
+      properties:
+        application:
+          type: string
+        date:
+          type: string
+          format: date-time
+        ipAddress:
+          type: string
+        objectType:
+          type: string
+          enum:
+          - DIALOGUE
+          - LISTENER
+          - CONNECTION
+          - VARIANT
+          - SEGMENT
+          - PROFILE_PROPERTY
+          - TRACKER
+          - DASHBOARD
+          - LIFECYCLE
+          - PLUGIN
+          - USER
+          - ROLE
+          - CHANNEL
+          - BLUECONIC_HOSTNAME
+          - LANGUAGE
+          - CONTENTSTORE
+          - STATISTICS
+          - FAVORITE
+          - TEMPLATE
+          - NOTEBOOK
+          - PRIORITY
+          - GROUP_TYPE
+          - CLEANUP_RULE
+          - MERGE_RULE
+          - COMPOSITION_RULE
+          - OBJECTIVE
+          - TIMELINE_EVENT_TYPE
+          - PROFILE
+          - IP_RANGE
+          - GROUP
+          - SUPPORTED_LEGISLATION_ZONE
+          - DOMAIN_GROUP
+          - DOMAIN
+          - PRIVACY_SETTING
+          - SINGLE_SIGN_ON_SETTING
+          - BLUECONIC_SUPPORT_ACCESS_SETTING
+          - OAUTH_APPLICATION
+          - OAUTH_TOKEN
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEntryObjectBean'
+        operation:
+          type: string
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - READ
+          - LOGIN
+          - LOGOUT
+          - LOGIN_FAILED
+          - PROFILE_MERGE_TRIGGERED_BY_USER
+          - PASSWORD_RESET_REQUESTED
+          - PASSWORD_CHANGE
+          - MANUAL_RUN
+          - SCHEDULED_RUN
+          - EDITOR_RUN
+        username:
+          type: string
+    AuditEntryObjectBean:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    AuditEventsBean:
+      type: object
+      properties:
+        auditEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEntryBean'
+    InteractionEventBean:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: The ID of the interaction. For example the ID of a dialogue
+            variant.
+          example: b8f384aa-46fe-4904-8664-9ca840e3d476
+        profileId:
+          type: string
+          description: The ID of a BlueConic profile.
+          example: 3bc7cc93-21bc-42d5-bede-dcb1a501fc16
+        type:
+          type: string
+          description: The event type.
+          enum:
+          - PAGEVIEW
+          - VIEW
+          - CLICK
+          - CONVERSION
+          example: VIEW
+        url:
+          type: string
+          description: The URL of the current page.
+          example: https://www.example.com/
+      required:
+      - interactionId
+      - type
+      - url
+    InteractionType:
+      type: object
+      properties:
+        id:
+          type: string
+        positionType:
+          type: string
+        type:
+          type: string
+    entry:
+      type: object
+      properties:
+        defaultLocale:
+          type: string
+        id:
+          type: string
+        interactionType:
+          $ref: '#/components/schemas/InteractionType'
+        name:
+          type: string
+        position:
+          type: string
+    interactions:
+      type: object
+      properties:
+        interactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/entry'
+    PageViewEventBean:
+      type: object
+      properties:
+        profileId:
+          type: string
+          description: "The ID of the profile that triggered the event. For this profile,\
+            \ the properties \"firstvisit\", \"visiteddomain\" and \"visitedchannel\"\
+            \ are updated."
+          example: 3bc7cc93-21bc-42d5-bede-dcb1a501fc16
+        referrer:
+          type: string
+          description: The URL of the previous (referring) page.
+          example: https://www.example.com/
+        url:
+          type: string
+          description: The URL of the current page.
+          example: https://www.example.com/
+      required:
+      - url
+    TokenErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code.
+        error_description:
+          type: string
+          description: A human-readable description of the error with additional information.
+    TokenSuccessResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The access token that gives access to the public API.
+        expires_in:
+          type: integer
+          format: int32
+          description: The time in seconds after which the access token will expire.
+        refresh_token:
+          type: string
+          description: The refresh token with which a new access and refresh token
+            can be obtained.
+        token_type:
+          type: string
+          description: The token type of the access and refresh token.
+    profileEvent:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date the event occurred.
+        property:
+          type: array
+          items:
+            $ref: '#/components/schemas/property'
+        type:
+          type: string
+          description: The type of event.
+          enum:
+          - PermissionLevelChanged
+          - ConsentChanged
+    profileEvents:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/profileEvent'
+        itemsPerPage:
+          type: integer
+          format: int32
+          description: Number of results per page.
+        startIndex:
+          type: integer
+          format: int32
+          description: The start index.
+        totalPages:
+          type: integer
+          format: int32
+          description: The total number of pages.
+        totalResults:
+          type: integer
+          format: int32
+          description: The total number of results.
+    property:
+      type: object
+      description: List of profile properties to be set.
+      properties:
+        id:
+          type: string
+          description: The ID of the property.
+        values:
+          type: array
+          description: Values for this property.
+          items:
+            type: string
+            description: Values for this property.
+    Labels:
+      type: object
+      properties:
+        label:
+          type: array
+          items:
+            $ref: '#/components/schemas/label'
+      readOnly: true
     UserBean:
       type: object
       properties:
-        fullname:
+        fullName:
           type: string
-        username:
+        userName:
           type: string
-    aliases:
+      readOnly: true
+    currency:
       type: object
+      default: None
+      description: The currency.
+      example: EUR
       properties:
-        alias:
-          type: array
-          items:
-            type: string
-      required:
-      - alias
-    channel:
-      type: object
-      properties:
-        aliases:
-          $ref: '#/components/schemas/aliases'
-        canDelete:
-          type: boolean
-        creationDate:
+        isoCode:
           type: string
-          format: date-time
-        creator:
-          $ref: '#/components/schemas/UserBean'
-        description:
-          type: string
-        domainId:
-          type: string
-        domainName:
-          type: string
-        favorite:
-          type: boolean
-        hostname:
-          type: string
-        id:
-          type: string
-        lastModifiedDate:
-          type: string
-          format: date-time
-        lastModifiedUser:
-          $ref: '#/components/schemas/UserBean'
-        logo:
-          $ref: '#/components/schemas/links'
+          description: "The currency ISO code, e.g. \"USD\". Only applicable when\
+            \ the filterType is \"CURRENCY.\""
+          example: "EUR, USD, etc."
         name:
           type: string
-        positions:
-          $ref: '#/components/schemas/positions'
-        readOnly:
-          type: boolean
-        tags:
-          type: array
-          items:
-            type: string
-        type:
-          type: string
-        visitorCount:
+          readOnly: true
+        precision:
           type: integer
           format: int32
-    channels:
+          readOnly: true
+        symbol:
+          type: string
+          readOnly: true
+    label:
       type: object
       properties:
-        myChannels:
-          type: array
-          items:
-            $ref: '#/components/schemas/channel'
-    domain:
-      type: object
-      properties:
-        canDelete:
-          type: boolean
-        channels:
-          $ref: '#/components/schemas/channels'
-        creationDate:
+        content:
           type: string
-          format: date-time
-        creator:
-          $ref: '#/components/schemas/UserBean'
-        description:
-          type: string
-        favorite:
-          type: boolean
-        group:
-          $ref: '#/components/schemas/group'
-        groupId:
-          type: string
-          writeOnly: true
-        id:
-          type: string
-        lastModifiedDate:
-          type: string
-          format: date-time
-        lastModifiedUser:
-          $ref: '#/components/schemas/UserBean'
-        logo:
-          $ref: '#/components/schemas/links'
-        name:
-          type: string
-        readOnly:
-          type: boolean
-        tags:
-          type: array
-          items:
-            type: string
-        visitorCount:
-          type: integer
-          format: int32
-    group:
-      type: object
-      properties:
-        id:
+        locale:
           type: string
     link:
       type: object
@@ -427,109 +3260,273 @@ components:
           type: string
         type:
           type: string
-    links:
+    profileProperty:
       type: object
       properties:
-        link:
-          type: array
-          items:
-            $ref: '#/components/schemas/link'
-    position:
-      type: object
-      properties:
+        availableForSegmentation:
+          type: boolean
+          default: false
+          description: Whether the profile property is available as a filter to create
+            segments.
         canDelete:
           type: boolean
+          description: If the item can be deleted or not.
+          readOnly: true
+        canRead:
+          type: boolean
+          default: false
+          description: Whether the visitor's browser is allowed to retrieve the value
+            for this profile property.
+        canWrite:
+          type: boolean
+          default: false
+          description: Whether the visitor's browser is allowed to write a (new) value
+            into this profile property.
+        compositionStrategy:
+          type: string
+          readOnly: true
+        createNewProfile:
+          type: boolean
+          default: false
+          description: Whether a visitor will switch to a new profile when a new value
+            for the profile property is set. This will prevent potential profile hijacking.
+            Only applicable when "indexed" is "true."
         creationDate:
           type: string
           format: date-time
+          readOnly: true
         creator:
           $ref: '#/components/schemas/UserBean'
+        currency:
+          $ref: '#/components/schemas/currency'
+        dataSensitivity:
+          type: string
+          default: NON_PII
+          description: The data sensitivity for the profile property.
+          enum:
+          - NON_PII
+          - PII
         description:
           type: string
+          description: The description.
         favorite:
           type: boolean
+          readOnly: true
+        filterType:
+          type: string
+          default: None
+          description: The filtertype of the profile property. Note that changing
+            the type might lead to loss of information.
+          enum:
+          - RANGE
+          - CURRENCY
+          - DECIMAL
+          - SELECT
+          - EMAIL
+          - DATETIME
+        filterTypeSuggestion:
+          type: string
+          readOnly: true
         id:
           type: string
+          description: The object ID.
+        indexed:
+          type: boolean
+          default: false
+          description: Whether the profile property is indexed (unique).
+        isIdProperty:
+          type: boolean
+          readOnly: true
         lastModifiedDate:
           type: string
           format: date-time
+          readOnly: true
         lastModifiedUser:
           $ref: '#/components/schemas/UserBean'
+        lastProfileMutationDate:
+          type: string
+          format: date-time
+          readOnly: true
+        linkingGroupTypeId:
+          type: string
+          readOnly: true
+        mergeStrategy:
+          type: string
+          default: None
+          description: The merge strategy of the profile property.
+          enum:
+          - BOTH
+          - SUM
+          - HIGHEST
+          - LOWEST
+          - LATEST
+          - OLDEST
+          - KEEP_CURRENT
         name:
           type: string
-        positionIdentifier:
+          description: The object name.
+        permissionLevel:
           type: string
-        previewURL:
-          type: string
+          default: ANONYMOUS
+          description: The permission level of the profile property.
+          enum:
+          - DO_NOT_TRACK
+          - ANONYMOUS
+          - PERSONAL
+        precision:
+          type: integer
+          format: int32
+          default: 0
+          description: "The precision of a profile property, e.g. 3. Only applicable\
+            \ when the â€œfilterTypeâ€ is \"DECIMAL.\""
+          example: 3
+        profileCount:
+          type: integer
+          format: int64
+          readOnly: true
+        range:
+          $ref: '#/components/schemas/range'
         readOnly:
           type: boolean
+          readOnly: true
+        showInUI:
+          type: boolean
+          default: true
+          description: Whether the profile property is shown in the segments UI. Only
+            applicable when "isAvailableForSegmentation" is "true."
         tags:
           type: array
+          description: The tags (e.g. labels).
+          example: Address
           items:
             type: string
-    positions:
+            description: The tags (e.g. labels).
+            example: Address
+        totalProfileCount:
+          type: integer
+          format: int64
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/unit'
+        useValidation:
+          type: boolean
+        values:
+          type: array
+          description: "When selecting this profile property as filter for segmentation,\
+            \ these values will be selectable next to the values that are in the profiles.\
+            \ Only applicable when \"availableForSegmentation\" is \"true\"."
+          items:
+            type: string
+            description: "When selecting this profile property as filter for segmentation,\
+              \ these values will be selectable next to the values that are in the\
+              \ profiles. Only applicable when \"availableForSegmentation\" is \"\
+              true\"."
+          uniqueItems: true
+    range:
       type: object
       properties:
-        position:
+        max:
+          type: integer
+          format: int64
+        min:
+          type: integer
+          format: int64
+      readOnly: true
+    unit:
+      type: object
+      description: The unit of the profile property.
+      properties:
+        id:
+          type: string
+          description: The unit ID.
+        name:
+          $ref: '#/components/schemas/Labels'
+    links:
+      type: object
+      properties:
+        links:
           type: array
           items:
-            $ref: '#/components/schemas/position'
-    domains:
+            $ref: '#/components/schemas/link'
+    profileProperties:
       type: object
       properties:
-        domains:
-          type: array
-          items:
-            $ref: '#/components/schemas/simpleDomain'
-    ExceptionDetails:
-      type: object
-      properties:
-        plugins:
-          $ref: '#/components/schemas/Plugins'
+        itemsPerPage:
+          type: integer
+          format: int32
+          description: Number of results per page.
+        links:
+          $ref: '#/components/schemas/links'
         profileProperties:
-          $ref: '#/components/schemas/ProfileProperties'
-    PermissionExceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/profileProperty'
+        startIndex:
+          type: integer
+          format: int32
+          description: The start index.
+        totalPages:
+          type: integer
+          format: int32
+          description: The total number of pages.
+        totalResults:
+          type: integer
+          format: int32
+          description: The total number of results.
+    AbstractBaseBean:
       type: object
-      properties:
-        optIn:
-          $ref: '#/components/schemas/ExceptionDetails'
-        optOut:
-          $ref: '#/components/schemas/ExceptionDetails'
-    Plugin:
-      type: object
+      description: List of profile IDs that matches search criteria.
       properties:
         id:
           type: string
-    Plugins:
+          description: The unique identifier for the object.
+    profiles:
       type: object
       properties:
-        plugin:
+        itemsPerPage:
+          type: integer
+          format: int32
+          description: Number of results per page.
+        profiles:
           type: array
+          description: List of profile IDs that matches search criteria.
           items:
-            $ref: '#/components/schemas/Plugin'
-    ProfileProperties:
-      type: object
-      properties:
-        profileProperty:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProfileProperty'
-    ProfileProperty:
-      type: object
-      properties:
-        id:
-          type: string
+            $ref: '#/components/schemas/AbstractBaseBean'
+        startIndex:
+          type: integer
+          format: int32
+          description: The start index.
+        totalPages:
+          type: integer
+          format: int32
+          description: The total number of pages.
+        totalResults:
+          type: integer
+          format: int32
+          description: The total number of results.
     Property:
       type: object
       properties:
         id:
           type: string
+          description: Timeline event property ID to apply to this rule for.
         strategy:
           type: string
+          description: "The strategy to apply to primitive timeline event properties.\
+            \ For nested timeline event properties, SET/UPSERT/UPDATE/DELETE are supported."
+          enum:
+          - ADD
+          - SET
+          - SET_IF_EMPTY
+          writeOnly: true
         values:
           type: array
+          description: "The values for this timeline event property. Either a list\
+            \ of strings, are a list of objects (see example)."
           items:
             type: object
+            description: "The values for this timeline event property. Either a list\
+              \ of strings, are a list of objects (see example)."
     event:
       type: object
       properties:
@@ -540,206 +3537,668 @@ components:
         date:
           type: string
           format: date-time
+          description: "Timestamp for the event. The format of date is \"2018-01-01T00:00Z\"\
+            \ or with a timezone offset \"2018-01-01T00:00+05:00\". If empty, \"now\"\
+            \ will be used."
         eventTypeId:
           type: string
+          description: The type identifier of the event. See https://yourserver.blueconic.net/rest/timelineEventTypes?alt=json
+            for the list of defined event types.
         id:
           type: string
+          description: "An identifier to identify the event. Preferred to be unique,\
+            \ although it isn't required. If an event with the same ID is present\
+            \ on the profile's timeline, it will be overwritten. Note that the combination\
+            \ of ID, event type ID, and date uniquely identifies an event."
         identifier:
           type: string
-        profileId:
-          type: string
-        rawJson:
-          type: string
-        source:
-          type: string
+          description: An (external) identifier which can be passed along with a timeline
+            event operation and is returned in the response.
         strategy:
           type: string
-        triggerOnEventAdded:
-          type: boolean
+          description: How the event will be applied to the timeline.
+          enum:
+          - SET
+          - UPSERT
+          - UPDATE
+          - DELETE
           writeOnly: true
-    events:
-      type: object
-      properties:
-        event:
-          type: array
-          items:
-            $ref: '#/components/schemas/event'
     lifecycleStage:
       type: object
+      description: Lifecycle stages that the profile is part of.
       properties:
         lifecycle:
           $ref: '#/components/schemas/simpleDomain'
         stage:
           $ref: '#/components/schemas/simpleDomain'
-    lifecycleStages:
-      type: object
-      properties:
-        lifecycleStage:
-          type: array
-          items:
-            $ref: '#/components/schemas/lifecycleStage'
-    objective:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-    objectives:
-      type: object
-      properties:
-        objective:
-          type: array
-          items:
-            $ref: '#/components/schemas/objective'
     permissions:
       type: object
       properties:
-        exceptions:
-          $ref: '#/components/schemas/PermissionExceptions'
         level:
           type: string
+          description: The permission level of the profile
     profile:
       type: object
+      description: The profiles that are in this segment.
       properties:
-        consentedObjectives:
-          $ref: '#/components/schemas/objectives'
+        id:
+          type: string
+          description: The unique identifier for the object.
         creationDate:
           type: string
           format: date-time
-        events:
-          $ref: '#/components/schemas/events'
-        id:
-          type: string
-        lifecycleStages:
-          $ref: '#/components/schemas/lifecycleStages'
-        permissions:
-          $ref: '#/components/schemas/permissions'
+          description: The creation date of the object.
         privacyLegislation:
           type: string
-        properties:
-          $ref: '#/components/schemas/properties'
+          description: The default privacy legislation for creating profiles (not
+            for matching).
+          enum:
+          - NONE
+          - GDPR
+          - PIPEDA
+          - CCPA
+          - SB220
+          - NYPA
+          - PERU_DPL
+          - ARGENTINA_DPL
+          - SB1392
+          - SB190
+          - BRAZIL_LGPD
+          - ISRAEL_PPL
+          - JAPAN_APPI
+          - NEW_ZEALAND_PRIVACY_ACT
+          - SWITZERLAND_DPA
+          - UK_GDPR
+          - CHINA_PIPL
+          - AUSTRALIA_PRIVACY_ACT
+        consentedObjectives:
+          type: array
+          description: List of objective IDs that the profile has given consent to.
+          items:
+            type: string
+            description: List of objective IDs that the profile has given consent
+              to.
         refusedObjectives:
-          $ref: '#/components/schemas/objectives'
-        replacedBy:
-          $ref: '#/components/schemas/replaceBy'
-        replaces:
-          $ref: '#/components/schemas/replaces'
-        segments:
-          $ref: '#/components/schemas/segments'
-    properties:
-      type: object
-      properties:
-        property:
+          type: array
+          description: List of objective IDs that the profile has refused consent
+            to.
+          items:
+            type: string
+            description: List of objective IDs that the profile has refused consent
+              to.
+        permissions:
+          $ref: '#/components/schemas/permissions'
+        properties:
           type: array
           items:
             $ref: '#/components/schemas/property'
-    property:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/event'
+        lifecycleStages:
+          type: array
+          description: Lifecycle stages that the profile is part of.
+          items:
+            $ref: '#/components/schemas/lifecycleStage'
+        replacedBy:
+          type: string
+          description: The profile ID that replaced this profile.
+        replaces:
+          type: array
+          description: The IDs of the profiles that are replaced by this profile.
+          items:
+            type: string
+            description: The IDs of the profiles that are replaced by this profile.
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/profileSegmentBean'
+    profileSegmentBean:
       type: object
       properties:
         id:
           type: string
-        values:
-          $ref: '#/components/schemas/values'
-    replaceBy:
+          description: The ID of the segment.
+        name:
+          type: string
+          description: The name of the segment.
+    simpleDomain:
       type: object
       properties:
-        profile:
-          $ref: '#/components/schemas/profile'
-    replaces:
+        id:
+          type: string
+          description: Unique identifier.
+        name:
+          type: string
+          description: Name of this object.
+    BulkInputEntryV2:
       type: object
       properties:
-        profile:
+        domainGroup:
+          type: string
+          description: Specifies the domain group in which a profile is created. Used
+            for matching and creating profiles.
+        identifier:
+          type: string
+          description: An (external) identifier which can be passed along with an
+            operation and is returned in the response.
+          example: "[[{\"id\": \"email\", value: \"test@test.com\"}]]"
+        matching:
           type: array
+          description: "The profile properties to match (only use \"Unique Identifier\"\
+            \ properties). This is an array of arrays; the items in the outer array\
+            \ have an \"OR\" relation, the items in the inner array have an \"AND\"\
+            \ relation."
           items:
-            $ref: '#/components/schemas/profile'
-    segment:
+            type: array
+            description: "The profile properties to match (only use \"Unique Identifier\"\
+              \ properties). This is an array of arrays; the items in the outer array\
+              \ have an \"OR\" relation, the items in the inner array have an \"AND\"\
+              \ relation."
+            items:
+              $ref: '#/components/schemas/Criterium'
+        permissionLevel:
+          type: string
+          description: Specifies the domain group in which a profile is created. Used
+            for matching and creating profiles.
+          enum:
+          - DO_NOT_TRACK
+          - ANONYMOUS
+          - PERSONAL
+        privacyLegislation:
+          type: string
+          description: The default privacy legislation for creating profiles (not
+            for matching).
+          enum:
+          - NONE
+          - GDPR
+          - PIPEDA
+          - CCPA
+          - SB220
+          - NYPA
+          - PERU_DPL
+          - ARGENTINA_DPL
+          - SB1392
+          - SB190
+          - BRAZIL_LGPD
+          - ISRAEL_PPL
+          - JAPAN_APPI
+          - NEW_ZEALAND_PRIVACY_ACT
+          - SWITZERLAND_DPA
+          - UK_GDPR
+          - CHINA_PIPL
+          - AUSTRALIA_PRIVACY_ACT
+        profileId:
+          type: string
+          description: "BlueConic profile ID The profile ID to search for. When used,\
+            \ it overrides possible matching criteria."
+        properties:
+          type: array
+          description: "The rules that will be executed on this profile.</br>The following\
+            \ properties have a special meaning:</br> `privacy_legislation`: the value\
+            \ passed in this property should be one of the [privacy legislation zone\
+            \ values](https://support.blueconic.com/hc/en-us/articles/202528082-BlueConic-REST-API#privacy_legislation),\
+            \ and is used to determine if a profile should be matched against the\
+            \ passed `objectiveIds` in the querystring. </br>`consented_objectives`:\
+            \ the value(s) passed in this property are used to match against the passed\
+            \ `objectiveIds` in the querystring. At least one must match in order\
+            \ for the profile to be created/updated, otherwise `CONSENT_MISMATCH`\
+            \ is returned. </br>`refused_objectives`: the value(s) passed in this\
+            \ property are used to set the explicitly refused objectives."
+          items:
+            $ref: '#/components/schemas/ProfileProperty'
+        restriction:
+          $ref: '#/components/schemas/restriction'
+        strategy:
+          type: string
+          description: "The strategy to apply to the given entry. Can be used to create,\
+            \ update or delete profiles."
+          enum:
+          - UPSERT
+          - UPDATE
+          - DELETE
+        timeline:
+          type: array
+          description: The events that will be added to the event timeline for this
+            profile.
+          items:
+            $ref: '#/components/schemas/event'
+    Criterium:
+      type: object
+      description: "The profile properties to match (only use \"Unique Identifier\"\
+        \ properties). This is an array of arrays; the items in the outer array have\
+        \ an \"OR\" relation, the items in the inner array have an \"AND\" relation."
+      properties:
+        id:
+          type: string
+          description: The profile property ID to match on.
+        value:
+          type: string
+          description: The profile property value to match on.
+    ProfileProperty:
+      type: object
+      description: "The rules that will be executed on this profile.</br>The following\
+        \ properties have a special meaning:</br> `privacy_legislation`: the value\
+        \ passed in this property should be one of the [privacy legislation zone values](https://support.blueconic.com/hc/en-us/articles/202528082-BlueConic-REST-API#privacy_legislation),\
+        \ and is used to determine if a profile should be matched against the passed\
+        \ `objectiveIds` in the querystring. </br>`consented_objectives`: the value(s)\
+        \ passed in this property are used to match against the passed `objectiveIds`\
+        \ in the querystring. At least one must match in order for the profile to\
+        \ be created/updated, otherwise `CONSENT_MISMATCH` is returned. </br>`refused_objectives`:\
+        \ the value(s) passed in this property are used to set the explicitly refused\
+        \ objectives."
+      properties:
+        id:
+          type: string
+          description: The profile property ID to apply to this rule for.
+        restriction:
+          type: string
+          default: ALL_PROFILES
+          description: The restriction to apply to this rule.
+          enum:
+          - ALL_PROFILES
+          - EXISTING_PROFILES_ONLY
+          - NEW_PROFILES_ONLY
+        strategy:
+          type: string
+          description: The strategy to apply to this rule.
+          enum:
+          - ADD
+          - SET
+          - SET_IF_EMPTY
+          - INCREMENT
+          - REMOVE
+        values:
+          type: array
+          description: The values to apply to this rule.
+          items:
+            type: string
+            description: The values to apply to this rule.
+    restriction:
+      type: object
+      description: The possible restriction rules when matching profiles. Only "isMemberOfSegment"
+        is available at the moment.
+      properties:
+        isMemberOfSegment:
+          type: string
+          description: The segment ID this profile should be a part of.
+    BulkResultBean:
       type: object
       properties:
-        baseSegments:
+        identifier:
+          type: string
+          description: "The identifier (optionally) as passed in the input, can be\
+            \ used as reference."
+        profileId:
+          type: string
+          description: "The profile ID of the profile that was created, updated or\
+            \ deleted."
+        state:
+          type: string
+          description: The possible states.
+          enum:
+          - CREATED
+          - SKIPPED
+          - MODIFIED
+          - UNCHANGED
+          - NOTFOUND
+          - RESTRICTION_MISMATCH
+          - CONSENT_MISMATCH
+          - DELETED
+        timeline:
+          type: array
+          description: The feedback on the given timeline events.
+          items:
+            $ref: '#/components/schemas/TimelineResultBean'
+        validationErrors:
+          type: object
+          additionalProperties:
+            type: array
+            description: The errors found for timeline events (if any).
+            example:
+            - "#/total_revenue/0: expected type: Number, found: String"
+            items:
+              type: string
+              description: The errors found for timeline events (if any).
+              example: "[\"#/total_revenue/0: expected type: Number, found: String\"\
+                ]"
+          description: The errors found for timeline events (if any).
+          example:
+          - "#/total_revenue/0: expected type: Number, found: String"
+    TimelineResultBean:
+      type: object
+      description: The feedback on the given timeline events.
+      properties:
+        id:
+          type: string
+          description: The ID for this event.
+        identifier:
+          type: string
+          description: "The identifier (optionally) as passed in the input, can be\
+            \ used as reference."
+        state:
+          type: string
+          description: The possible states for timeline events.
+          enum:
+          - CREATED
+          - SET
+          - MODIFIED
+          - REJECTED
+          - NOTFOUND
+          - DELETED
+        validationErrors:
           type: array
           items:
             type: string
+    BadRequestBean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorBean'
+        message:
+          type: string
+    ErrorBean:
+      type: object
+      properties:
+        message:
+          type: string
+    SegmentProfiles:
+      type: object
+      properties:
+        cursor:
+          type: string
+          description: The cursor of the current page. `*` when not passed.
+        itemsPerPage:
+          type: integer
+          format: int32
+          description: Number of results per page.
+        links:
+          type: array
+          description: The links to the first and next/last page.
+          items:
+            $ref: '#/components/schemas/link'
+        nextCursor:
+          type: string
+          description: The cursor of the next page (if any).
+        profiles:
+          type: array
+          description: The profiles that are in this segment.
+          items:
+            $ref: '#/components/schemas/profile'
+        totalPages:
+          type: integer
+          format: int32
+          description: The total number of pages.
+        totalResults:
+          type: integer
+          format: int32
+          description: The total number of results.
+    segment:
+      type: object
+      description: The segments.
+      properties:
         canDelete:
           type: boolean
-        canExport:
-          type: boolean
+          description: If the item can be deleted or not.
+          readOnly: true
         creationDate:
           type: string
           format: date-time
+          readOnly: true
         creator:
           $ref: '#/components/schemas/UserBean'
         description:
           type: string
-        domains:
-          type: array
-          items:
-            $ref: '#/components/schemas/simpleDomain'
+          description: The description.
         favorite:
           type: boolean
-        filterConfigs:
-          type: array
-          items:
-            type: string
+          readOnly: true
         id:
           type: string
+          description: The object ID.
         inverseOf:
           type: string
-        inverseOfName:
-          type: string
         inversedBy:
-          type: string
-        inversedByName:
           type: string
         lastModifiedDate:
           type: string
           format: date-time
+          readOnly: true
         lastModifiedUser:
           $ref: '#/components/schemas/UserBean'
         name:
           type: string
+          description: The object name.
         readOnly:
           type: boolean
+          readOnly: true
         tags:
           type: array
+          description: The tags (e.g. labels).
+          example: Address
           items:
             type: string
-      required:
-      - baseSegments
+            description: The tags (e.g. labels).
+            example: Address
     segments:
       type: object
       properties:
         itemsPerPage:
           type: integer
           format: int32
-        segment:
+          description: Number of results per page.
+        segments:
           type: array
+          description: The segments.
           items:
             $ref: '#/components/schemas/segment'
         startIndex:
           type: integer
           format: int32
+          description: The start index.
         totalPages:
           type: integer
           format: int32
+          description: The total number of pages.
         totalResults:
           type: integer
           format: int32
-    simpleDomain:
+          description: The total number of results.
+    Boost:
+      type: object
+      description: The algorithms that will be executed to determine the recommendations
+        with their boost value and parameters.
+      example:
+      - value: "1.5"
+        algorithm: RECENCY
+      properties:
+        algorithm:
+          type: string
+          description: Available boosting algorithms
+          enum:
+          - COLLABORATIVE_FILTERING
+          - INTEREST
+          - LOOK_ALIKE
+          - RECENCY
+          - RECENT_CTR
+          - RECENT_ENTRYPAGE
+          - RECENT_VIEW
+          - RECENTLY_BOUGHT
+          - RECENTLY_SHOPPINGCART
+          - RECENTLY_VIEWED
+          - SAME_CATEGORY
+        rampUp:
+          type: string
+          description: Ramp up value for algorithms that use it
+          enum:
+          - INSTANT
+          - VERY_SLOW
+          - SLOW
+          - NORMAL
+          - FAST
+        value:
+          type: number
+          format: double
+          description: "Boost value can be a whole or half number: 1, 1.5, 2, 2.5,\
+            \ â€¦, 9.5, 10."
+      required:
+      - algorithm
+      - value
+    RecommendationRequest:
+      type: object
+      properties:
+        boosts:
+          type: array
+          description: The algorithms that will be executed to determine the recommendations
+            with their boost value and parameters.
+          example:
+          - value: "1.5"
+            algorithm: RECENCY
+          items:
+            $ref: '#/components/schemas/Boost'
+        count:
+          type: integer
+          format: int32
+          description: The maximum number of items that should be returned for this
+            definition.
+          example: 5
+        filters:
+          type: array
+          description: "Item filters, see description."
+          example:
+          - category:news
+          - viewed
+          items:
+            type: string
+            description: "Item filters, see description."
+            example: "[\"category:news\",\"viewed\"]"
+        id:
+          type: string
+          description: "The order of execution of the definition objects: 'first'\
+            \ will be executed first, 'second' will be executed next. If the total\
+            \ count has not been reached, the remainder items will be from the 'default'\
+            \ definition."
+          example: first
+      required:
+      - boosts
+      - id
+    RecommendationItem:
+      type: object
+      description: The recommendations of this block.
+      properties:
+        category:
+          type: array
+          items:
+            type: string
+        customProperties:
+          type: object
+          additionalProperties:
+            type: array
+            description: The properties of this item.
+            items:
+              type: string
+              description: The properties of this item.
+          description: The properties of this item.
+        description:
+          type: string
+        id:
+          type: string
+          description: The ID of this item.
+        image:
+          type: string
+          description: The image of this item.
+        name:
+          type: string
+        publicationDate:
+          type: string
+          description: The publication date of this item.
+        score:
+          type: number
+          format: double
+          description: The recommendation score.
+        trackingUrl:
+          type: string
+          description: The recommendation tracking url.
+        url:
+          type: string
+          description: The url of this item.
+    RecommendationResponse:
+      type: object
+      properties:
+        recommendationBlock:
+          type: array
+          description: The recommendation blocks as defined in the request body.
+          items:
+            $ref: '#/components/schemas/RecommendationSubResponse'
+        recommendationId:
+          type: string
+          description: The unique ID for this recommendation request.
+        trackingPixel:
+          type: string
+          description: The tracking pixel to track this recommendation request.
+    RecommendationSubResponse:
+      type: object
+      description: The recommendation blocks as defined in the request body.
+      properties:
+        id:
+          type: string
+          description: "The ID for this recommendation block, as defined in the request\
+            \ body."
+        recommendations:
+          type: array
+          description: The recommendations of this block.
+          items:
+            $ref: '#/components/schemas/RecommendationItem'
+    urlmapping:
       type: object
       properties:
         id:
           type: string
-        name:
-          type: string
-    values:
-      type: object
-      properties:
-        value:
+          description: The ID of shortened URL.
+        properties:
           type: array
+          description: List of profile properties to be set.
           items:
-            type: string
-      required:
-      - value
+            $ref: '#/components/schemas/property'
+        type:
+          type: string
+          description: The tracker must be one of the available types.
+          enum:
+          - TRACKINGPIXEL
+          - SHORTENEDURL
+        url:
+          type: string
+          description: The full URL of the target page (only applicable for type SHORTENEDURL).
+  securitySchemes:
+    basicAuth:
+      type: http
+      description: Basic Authentication with the client id (username) and client secret
+        (password) from a registered OAuth 2.0 client. The client id and client secret
+        can be found in BlueConic by opening the registered client under *Settings*
+        > *Access management* > *Applications*. Basic Authentication is only applied
+        to the OAuth 2.0 API to authenticate the client.
+      scheme: basic
+    oauth2:
+      type: oauth2
+      description: "Authenticates a registered OAuth 2.0 client. The Authorization\
+        \ code flow and Client credentials flow are supported. Make sure to select\
+        \ the correct flow based on which flow the registered client supports. The\
+        \ client id and client secret can be found in BlueConic by opening the registered\
+        \ client under *Settings* > *Access management* > *Applications*.<br/>**NOTE:**\
+        \ When using the Authorization code flow, the redirect URL of the registered\
+        \ client in BlueConic must be set to `/oauth-receiver.html` and 'Send Proof\
+        \ Key for Code Exchange' must be enabled."
+      flows:
+        clientCredentials:
+          tokenUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/token
+        authorizationCode:
+          authorizationUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/authorize
+          tokenUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/token
+          refreshUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/token
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
