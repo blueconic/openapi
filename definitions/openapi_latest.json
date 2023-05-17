@@ -15,8 +15,14 @@
     "version" : "89.0-SNAPSHOT"
   },
   "servers" : [ {
-    "url" : "https://fasttrack.sb.blueconic.net/rest/v2",
-    "description" : "The BlueConic server"
+    "url" : "https://{blueconicHostname}/rest/v2",
+    "description" : "The BlueConic server",
+    "variables" : {
+      "blueconicHostname" : {
+        "description" : "BlueConic server hostname, e.g. 'tenant.blueconic.net'",
+        "default" : "tenantname"
+      }
+    }
   } ],
   "tags" : [ {
     "name" : "Audit Events",
@@ -2848,12 +2854,12 @@
         "description" : "Authenticates a registered OAuth 2.0 client. The Authorization code flow and Client credentials flow are supported. Make sure to select the correct flow based on which flow the registered client supports. The client id and client secret can be found in BlueConic by opening the registered client under *Settings* > *Access management* > *Applications*.<br/>**NOTE:** When using the Authorization code flow, the redirect URL of the registered client in BlueConic must be set to `/oauth-receiver.html` and 'Send Proof Key for Code Exchange' must be enabled.",
         "flows" : {
           "clientCredentials" : {
-            "tokenUrl" : "https://fasttrack.sb.blueconic.net/rest/v2/oauth/token"
+            "tokenUrl" : "https://{blueconicHostname}/rest/v2/oauth/token"
           },
           "authorizationCode" : {
-            "authorizationUrl" : "https://fasttrack.sb.blueconic.net/rest/v2/oauth/authorize",
-            "tokenUrl" : "https://fasttrack.sb.blueconic.net/rest/v2/oauth/token",
-            "refreshUrl" : "https://fasttrack.sb.blueconic.net/rest/v2/oauth/token"
+            "authorizationUrl" : "https://{blueconicHostname}/rest/v2/oauth/authorize",
+            "tokenUrl" : "https://{blueconicHostname}/rest/v2/oauth/token",
+            "refreshUrl" : "https://{blueconicHostname}/rest/v2/oauth/token"
           }
         }
       }
