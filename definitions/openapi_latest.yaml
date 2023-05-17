@@ -78,8 +78,12 @@ info:
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
   version: 89.0-SNAPSHOT
 servers:
-- url: https://fasttrack.sb.blueconic.net/rest/v2
+- url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
+  variables:
+    blueconicHostname:
+      description: "BlueConic server hostname, e.g. 'tenant.blueconic.net'"
+      default: tenantname
 tags:
 - name: Audit Events
   description: "The Audit Event API allows users to connect BlueConic to a SIEM system.\
@@ -4196,9 +4200,9 @@ components:
         \ Key for Code Exchange' must be enabled."
       flows:
         clientCredentials:
-          tokenUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/token
+          tokenUrl: "https://{blueconicHostname}/rest/v2/oauth/token"
         authorizationCode:
-          authorizationUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/authorize
-          tokenUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/token
-          refreshUrl: https://fasttrack.sb.blueconic.net/rest/v2/oauth/token
+          authorizationUrl: "https://{blueconicHostname}/rest/v2/oauth/authorize"
+          tokenUrl: "https://{blueconicHostname}/rest/v2/oauth/token"
+          refreshUrl: "https://{blueconicHostname}/rest/v2/oauth/token"
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
