@@ -179,6 +179,8 @@ export default css`
   .m-markdown ul,
   .m-markdown ol {
     padding-inline-start: 30px;
+    margin-top: -3px;
+    margin-bottom: 0px;
   }
 
   .m-markdown-small ul,
