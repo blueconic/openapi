@@ -6,6 +6,7 @@ This repository contains the OpenAPI specification for the BlueConic REST API v2
  
  # Using the OpenAPI specification of a given BlueConic tenant
  * Open https://rest.apidoc.blueconic.com/?hostname=mytenantname.blueconic.net
+ * Or open https://mytenantname.blueconic.net/openapi
  
  # Running the OpenAPI specification on a local machine
  * Clone the repository and `cd` to the repository location
