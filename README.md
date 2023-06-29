@@ -1,10 +1,8 @@
-NOTE: This repository is in alpha stage and not ready to be used externally.
-
 # BlueConic OpenAPI Alpha Test
 The OpenAPI definitions for the BlueConic v2 REST API.
 
 # Using latest published OpenAPI specification
-* Open  https://rest.apidoc.blueconic.com
+* Open https://rest.apidoc.blueconic.com
 
 # Using actual OpenAPI specification of a given BlueConic tenant
 * Open https://rest.apidoc.blueconic.com/?hostname=mytenantname.blueconic.net
