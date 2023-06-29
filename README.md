@@ -1,4 +1,4 @@
-# BlueConic OpenAPI Alpha Test
+# BlueConic OpenAPI
 The OpenAPI definitions for the BlueConic v2 REST API.
 
 # Using latest published OpenAPI specification
