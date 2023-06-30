@@ -4416,7 +4416,7 @@ components:
         \ client id and client secret can be found in BlueConic by opening the registered\
         \ client under *Settings* > *Access management* > *Applications*.<br/>**NOTE:**\
         \ When using the Authorization code flow, the redirect URL of the registered\
-        \ client in BlueConic must be set to `http://tenant01-slot03-bc03.blueconic.net:8080/oauth-receiver.html`\
+        \ client in BlueConic must be set to `https://rest.apidoc.blueconic.com/oauth-receiver.html`\
         \ and 'Send Proof Key for Code Exchange' must be enabled.<br/><br/>To use\
         \ a Bearer token for authentication, follow these steps: <br/>1. Acquire the\
         \ token through authentication.<br/>2. Include the token in the request's\
