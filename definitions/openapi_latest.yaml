@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: 89.0
+  version: "89.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -4425,9 +4425,9 @@ components:
         \ a new token."
       flows:
         clientCredentials:
-          tokenUrl: "https://{blueconicHostname}/rest/v2/oauth/token"
+          tokenUrl: /rest/v2/oauth/token
         authorizationCode:
-          authorizationUrl: "https://{blueconicHostname}/rest/v2/oauth/authorize"
-          tokenUrl: "https://{blueconicHostname}/rest/v2/oauth/token"
-          refreshUrl: "https://{blueconicHostname}/rest/v2/oauth/token"
+          authorizationUrl: /rest/v2/oauth/authorize
+          tokenUrl: /rest/v2/oauth/token
+          refreshUrl: /rest/v2/oauth/token
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
