@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "90.0"
+  version: "89.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -189,7 +189,7 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                           |\n| :---                   | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+    \                   |\n| :---                   | :---             |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
     |date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt\
     \ format.| 2023-04-15T11:24:01.183Z                                          \
     \                                                                            \
@@ -198,8 +198,8 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                             |\n|username|(BlueConic) Identifier (email address)\
-    \ of the user who did the action.<br /><br />Value is empty for failed login attempts.|\
+    \                     |\n|username|(BlueConic) Identifier (email address) of the\
+    \ user who did the action.<br /><br />Value is empty for failed login attempts.|\
     \ test@blueconic.com                                                         \
     \                                                                            \
     \                                                                            \
@@ -207,7 +207,7 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                    |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
+    \            |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUPvGROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
     \ |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of\
     \ LOGIN_FAILED and a user tried to login with an invalid format email address,\
     \ it could be that the user filled the password in the email address field. In\
@@ -226,15 +226,15 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                     |\n|objectName|<p>Human readable name of\
-    \ the object.</p><p>For Profiles, the name is determined by the first value that\
-    \ is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic ID (UUID)</li></ol><p>For\
-    \ Users, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In\
-    \ the case of LOGIN_FAILED and a user tried to login with an invalid format email\
-    \ address, it could be that the user filled the password in the email address\
-    \ field. In that case, the objectName is empty.</li></ul><p>For groups, the name\
-    \ is the group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING,\
-    \ the objectName is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For\
+    \                             |\n|objectName|<p>Human readable name of the object.</p><p>For\
+    \ Profiles, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic\
+    \ ID (UUID)</li></ol><p>For Users, the name is determined by the first value that\
+    \ is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In the case\
+    \ of LOGIN_FAILED and a user tried to login with an invalid format email address,\
+    \ it could be that the user filled the password in the email address field. In\
+    \ that case, the objectName is empty.</li></ul><p>For groups, the name is the\
+    \ group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName\
+    \ is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For\
     \ BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"\
     objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li\
     \ ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\"\
@@ -247,7 +247,7 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                              |\n|operation| Action performed on the object.\
+    \                      |\n|operation| Action performed on the object.        \
     \                                                                            \
     \                                                                            \
     \                                                                            \
@@ -263,12 +263,12 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                     | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>\
+    \             | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>\
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \             \n|ipAddress| The source IP address from which the event was triggered.\
+    \     \n|ipAddress| The source IP address from which the event was triggered.\
     \                                                                            \
     \                                                                            \
     \                                                                            \
@@ -290,10 +290,8 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                                                            \
-    \      |\n|application| The application that performed the audit event operation.\
-    \                                                                            \
-    \                                                                            \
+    \                                                                          |\n\
+    |application| The application that performed the audit event operation.      \
     \                                                                            \
     \                                                                            \
     \                                                                            \
@@ -306,15 +304,17 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                                                        | blueconic\
+    \                                                                            \
+    \                                                                            \
+    \                                                                  | blueconic\
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                                                            \
-    \          |\n\n"
+    \                                                                          |\n\
+    \n"
 - name: Interaction events
   description: "Page view, view, click, conversion events for profiles on a website.\
     \ [Read more](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions#watch-the-video-analyzing-dialogues-the-metrics-0-0)."
@@ -2097,28 +2097,24 @@ paths:
           type: array
           items:
             type: string
+            default: ""
         example: profile.timeline
       - name: properties
         in: query
         description: Only returns the given profile properties in the response.
         schema:
           type: string
+          default: ""
         example: "email,fullname,visits"
       - name: eventTypeId
         in: query
-        description: Filter returned timeline events for a specific type.
+        description: Filter returned timeline events for a specific type. Only one
+          timeline event type ID is allowed.
         schema:
           type: string
           format: uuid
+          default: ""
         example: order
-      - name: eventProperty
-        in: query
-        description: Filter returned timeline events for a specific type and specific
-          event type properties.
-        schema:
-          type: string
-          format: uuid
-        example: order.orderline
       - name: eventCount
         in: query
         description: The maximum number of timeline events to return.
@@ -2134,6 +2130,7 @@ paths:
           zone offset "2023-01-01T00:00+05:00"
         schema:
           type: string
+          default: ""
         example: 2023-01-22T11:21:33Z
       - name: toDate
         in: query
@@ -2142,6 +2139,7 @@ paths:
           offset "2023-01-01T00:00+05:00"
         schema:
           type: string
+          default: ""
         example: 2023-03-05T12:00:00Z
       - name: collapse
         in: query
@@ -2649,6 +2647,7 @@ paths:
           \ articles / Seen products'."
         schema:
           type: string
+          default: ""
         example: 640d01c7-1c30-4085-adf9-afad6560ec99
       - name: storeId
         in: query
@@ -2656,6 +2655,7 @@ paths:
         required: true
         schema:
           type: string
+          default: ""
         example: 0693330e-679a-48db-b94f-a8921b76149e
       - name: itemId
         in: query
@@ -2664,6 +2664,7 @@ paths:
           result.
         schema:
           type: string
+          default: ""
       - name: frequencyCap
         in: query
         description: The number of times an item can be recommended to a profile before
@@ -2671,6 +2672,7 @@ paths:
         schema:
           type: integer
           format: int32
+          default: 0
         example: 5
       - name: imageWidth
         in: query
@@ -2678,6 +2680,7 @@ paths:
         schema:
           type: integer
           format: int32
+          default: 0
         example: 100
       - name: imageHeight
         in: query
@@ -2685,6 +2688,7 @@ paths:
         schema:
           type: integer
           format: int32
+          default: 0
         example: 100
       - name: manualViewCounting
         in: query
