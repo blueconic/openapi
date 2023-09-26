@@ -38,6 +38,7 @@ export default css`
   overflow-y: overlay;
   scrollbar-width: thin;
   scrollbar-color: var(--nav-hover-bg-color) transparent;
+  height: calc(100% - 150px);
 }
 
 .nav-bar-tag {

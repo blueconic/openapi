@@ -1345,20 +1345,20 @@
     "@webassemblyjs/ast" "1.11.1"
     "@xtuc/long" "4.2.2"
 
-"@webpack-cli/configtest@^2.0.1":
-  "integrity" "sha512-njsdJXJSiS2iNbQVS0eT8A/KPnmyH4pv1APj2K0d1wrZcBLw+yppxOy4CGqa0OxDJkzfL/XELDhD8rocnIwB5A=="
-  "resolved" "https://registry.npmjs.org/@webpack-cli/configtest/-/configtest-2.0.1.tgz"
-  "version" "2.0.1"
+"@webpack-cli/configtest@^2.1.1":
+  "integrity" "sha512-wy0mglZpDSiSS0XHrVR+BAdId2+yxPSoJW8fsna3ZpYSlufjvxnP4YbKTCBZnNIcGN4r6ZPXV55X4mYExOfLmw=="
+  "resolved" "https://registry.npmjs.org/@webpack-cli/configtest/-/configtest-2.1.1.tgz"
+  "version" "2.1.1"
 
-"@webpack-cli/info@^2.0.1":
-  "integrity" "sha512-fE1UEWTwsAxRhrJNikE7v4EotYflkEhBL7EbajfkPlf6E37/2QshOy/D48Mw8G5XMFlQtS6YV42vtbG9zBpIQA=="
-  "resolved" "https://registry.npmjs.org/@webpack-cli/info/-/info-2.0.1.tgz"
-  "version" "2.0.1"
+"@webpack-cli/info@^2.0.2":
+  "integrity" "sha512-zLHQdI/Qs1UyT5UBdWNqsARasIA+AaF8t+4u2aS2nEpBQh2mWIVb8qAklq0eUENnC5mOItrIB4LiS9xMtph18A=="
+  "resolved" "https://registry.npmjs.org/@webpack-cli/info/-/info-2.0.2.tgz"
+  "version" "2.0.2"
 
-"@webpack-cli/serve@^2.0.1":
-  "integrity" "sha512-0G7tNyS+yW8TdgHwZKlDWYXFA6OJQnoLCQvYKkQP0Q2X205PSQ6RNUj0M+1OB/9gRQaUZ/ccYfaxd0nhaWKfjw=="
-  "resolved" "https://registry.npmjs.org/@webpack-cli/serve/-/serve-2.0.1.tgz"
-  "version" "2.0.1"
+"@webpack-cli/serve@^2.0.5":
+  "integrity" "sha512-lqaoKnRYBdo1UgDX8uF24AfGMifWK19TxPmM5FHc2vAGxrJ/qtyUyFBWoY1tISZdelsQ5fBcOusifo5o5wSJxQ=="
+  "resolved" "https://registry.npmjs.org/@webpack-cli/serve/-/serve-2.0.5.tgz"
+  "version" "2.0.5"
 
 "@xtuc/ieee754@^1.2.0":
   "integrity" "sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA=="
@@ -1823,9 +1823,9 @@
     "tslib" "^2.0.3"
 
 "caniuse-lite@^1.0.30001370":
-  "integrity" "sha512-JVQnfoO7FK7WvU4ZkBRbPjaot4+YqxogSDosHv0Hv5mWpUESmN+UubMU6L/hGz8QlQ2aY5U0vR6MOs6j/CXpNA=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001378.tgz"
-  "version" "1.0.30001378"
+  "integrity" "sha512-hfS5tE8bnNiNvEOEkm8HElUHroYwlqMMENEzELymy77+tJ6m+gA2krtHl5hxJaj71OlpC2cHZbdSMX1/YEqEkA=="
+  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001539.tgz"
+  "version" "1.0.30001539"
 
 "chalk@^2.0.0":
   "integrity" "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="
@@ -1945,6 +1945,11 @@
   "resolved" "https://registry.npmjs.org/colorette/-/colorette-2.0.16.tgz"
   "version" "2.0.16"
 
+"commander@^10.0.1":
+  "integrity" "sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug=="
+  "resolved" "https://registry.npmjs.org/commander/-/commander-10.0.1.tgz"
+  "version" "10.0.1"
+
 "commander@^2.20.0":
   "integrity" "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
   "resolved" "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
@@ -1964,11 +1969,6 @@
   "integrity" "sha512-LLKxDvHeL91/8MIyTAD5BFMNtoIwztGPMiM/7Bl8rIPmHCZXRxmSWr91h57dpOpnQ6jIUqEWdXE/uBYMfiVZDA=="
   "resolved" "https://registry.npmjs.org/commander/-/commander-8.2.0.tgz"
   "version" "8.2.0"
-
-"commander@^9.4.1":
-  "integrity" "sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw=="
-  "resolved" "https://registry.npmjs.org/commander/-/commander-9.4.1.tgz"
-  "version" "9.4.1"
 
 "commondir@^1.0.1":
   "integrity" "sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg=="
@@ -3001,6 +3001,11 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
@@ -5430,17 +5435,17 @@
     "sirv" "^1.0.7"
     "ws" "^7.3.1"
 
-"webpack-cli@^5.0.1", "webpack-cli@5.x.x":
-  "integrity" "sha512-S3KVAyfwUqr0Mo/ur3NzIp6jnerNpo7GUO6so51mxLi1spqsA17YcMXy0WOIJtBSnj748lthxC6XLbNKh/ZC+A=="
-  "resolved" "https://registry.npmjs.org/webpack-cli/-/webpack-cli-5.0.1.tgz"
-  "version" "5.0.1"
+"webpack-cli@^5.1.4", "webpack-cli@5.x.x":
+  "integrity" "sha512-pIDJHIEI9LR0yxHXQ+Qh95k2EvXpWzZ5l+d+jIo+RdSm9MiHfzazIxwwni/p7+x4eJZuvG1AJwgC4TNQ7NRgsg=="
+  "resolved" "https://registry.npmjs.org/webpack-cli/-/webpack-cli-5.1.4.tgz"
+  "version" "5.1.4"
   dependencies:
     "@discoveryjs/json-ext" "^0.5.0"
-    "@webpack-cli/configtest" "^2.0.1"
-    "@webpack-cli/info" "^2.0.1"
-    "@webpack-cli/serve" "^2.0.1"
+    "@webpack-cli/configtest" "^2.1.1"
+    "@webpack-cli/info" "^2.0.2"
+    "@webpack-cli/serve" "^2.0.5"
     "colorette" "^2.0.14"
-    "commander" "^9.4.1"
+    "commander" "^10.0.1"
     "cross-spawn" "^7.0.3"
     "envinfo" "^7.7.3"
     "fastest-levenshtein" "^1.0.12"
