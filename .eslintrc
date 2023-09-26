@@ -24,7 +24,7 @@
     "globalThis": false // means it is not writeable
   },
   "rules": {
-    "linebreak-style": ["error", "windows"],
+    "linebreak-style": 0,
     "max-len": [1, 300, 2, {"ignoreComments": true}],
     "no-debugger": 0,
     "no-plusplus": 0,
