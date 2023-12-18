@@ -12,7 +12,7 @@
       "name" : "BlueConic",
       "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
-    "version" : "91.0"
+    "version" : "90.0"
   },
   "servers" : [ {
     "url" : "https://{blueconicHostname}/rest/v2",
@@ -2013,7 +2013,7 @@
             "type" : "string",
             "default" : "None",
             "description" : "The merge strategy of the profile property.",
-            "enum" : [ "BOTH", "SUM", "HIGHEST", "LOWEST", "LATEST", "OLDEST", "KEEP_CURRENT", "SYSTEM_DEFINED" ]
+            "enum" : [ "BOTH", "SUM", "HIGHEST", "LOWEST", "LATEST", "OLDEST", "KEEP_CURRENT" ]
           },
           "name" : {
             "type" : "string",

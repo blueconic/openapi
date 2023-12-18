@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "91.0"
+  version: "90.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -3577,7 +3577,6 @@ components:
           - LATEST
           - OLDEST
           - KEEP_CURRENT
-          - SYSTEM_DEFINED
         name:
           type: string
           description: The object name.
