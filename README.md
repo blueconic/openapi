@@ -12,4 +12,4 @@ This repository contains the OpenAPI specification for the BlueConic REST API v2
  * Clone the repository and `cd` to the repository location
  * Run `npx http-server`
  * Open http://localhost:8080?hostname=localhost
- * CORS configuration of BlueConic needs to be adjusted to the the localhost origin 
+ * CORS configuration of BlueConic needs to be adjusted to the the localhost origin (`http://localhost:8080` by default)
