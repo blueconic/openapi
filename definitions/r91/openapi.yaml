@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "92.0"
+  version: "91.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -120,72 +120,76 @@ tags:
   description: "The Audit Event API allows users to connect BlueConic to a SIEM system.\
     \ We recommend using this API to periodically receive security-related activities\
     \ based on a rolling window. The API has a 30-day retention period.\n\nThe API\
-    \ logs the following audit events:\n\n| Object                     | Events  \
+    \ logs the following audit events:\n\n| Object                               \
+    \     | Events                                                               \
+    \                          |\n| :---------------------------------------- |:-----------------------------------------------------------------------------------------------|\n\
+    | BlueConic hostname                        | Create, Update, Delete         \
+    \                                                                |\n| BlueConic\
+    \ Support Access                  | Update (for each change)                 \
+    \                                                      |\n| Channel          \
+    \                         | Create, Update, Delete                           \
+    \                                              |\n| Clean up rule            \
+    \                 | Create, Update, Delete                                   \
+    \                                      |\n| Connection                       \
+    \         | Create, Update, Delete, Manual run, Scheduled run                \
+    \                              |\n| Dashboard                                \
+    \ | Create, Update, Delete                                                   \
+    \                      |\n| Dialogue                                  | Create,\
+    \ Update, Delete                                                             \
+    \            |\n| Domain Group                              | Create, Update,\
+    \ Delete                                                                     \
+    \    |\n| Group                                     | Read, Update, Delete   \
+    \                                                                        |\n|\
+    \ Group type                                | Create, Update, Delete         \
+    \                                                                |\n| Ip range\
+    \                                  | Create, Update, Delete                  \
+    \                                                       |\n| Language        \
+    \                          | Create, Update, Delete                          \
+    \                                               |\n| Lifecycle               \
+    \                  | Create, Update, Delete                                  \
+    \                                       |\n| Merge rule                      \
+    \          | Create, Update, Delete                                          \
+    \                               |\n| Notebook                                \
+    \  | Create, Update, Delete, Manual run, Scheduled run, Editor run           \
+    \                       |\n| OAuth application                         | Create,\
+    \ Update, Delete                                                             \
+    \            |\n| OAuth token                               | Create, Update,\
+    \ Delete                                                                     \
+    \    |\n| Objective                                 | Create, Update, Delete \
+    \                                                                        |\n|\
+    \ Plugin                                    | Create, Update, Delete         \
+    \                                                                |\n| Privacy\
+    \ setting                           | Update (for each change)               \
+    \                                                        |\n| Profile        \
+    \                           | Read, Update, Delete                           \
+    \                                                |\n| Profile property       \
+    \                   | Create, Update, Delete                                 \
+    \                                        |\n| Role                           \
+    \           | Create, Update, Delete                                         \
+    \                                |\n| Segment                                \
+    \   | Create, Update, Delete                                                 \
+    \                        |\n| Single Sign On Setting                    | Update\
+    \ (for each change)                                                          \
+    \             |\n| Supported Legislation Zone                | Create, Delete,\
+    \ Update                                                                     \
+    \    |\n| Tracker                                   | Create, Update, Delete \
+    \                                                                        |\n|\
+    \ User                                      | Login, Login failed, Logout, Create,\
+    \ Update, Delete, Password reset requested, Password change |\n\n\nOnly Profile\
+    \ and Group viewed, updated, or deleted by a user from the Profile and Groups\
+    \ tab are logged.\n\nThe following events are not considered as human actions,\
+    \ and therefore not covered in the Platform\nAudit Event API:\n\n- Connections\
+    \ that import or export profiles.\n- Profile and group creation (Profiles can\
+    \ only be created by a visitor or an import connection).\n\n**Event data**\n\n\
+    The following event data is available:\n\n| Field                  | Description\
+    \      | Example values                                                      \
     \                                                                            \
-    \           |\n|:---------------------------|:-----------------------------------------------------------------------------------------------|\n\
-    | BlueConic hostname         | Create, Update, Delete                        \
-    \                                                 |\n| BlueConic Support Access\
-    \   | Update (for each change)                                               \
-    \                        |\n| Channel                    | Create, Update, Delete\
-    \                                                                         |\n\
-    | Clean up rule              | Create, Update, Delete                        \
-    \                                                 |\n| Connection            \
-    \     | Create, Update, Delete, Manual run, Scheduled run                    \
-    \                          |\n| Dashboard                  | Create, Update, Delete\
-    \                                                                         |\n\
-    | Dialogue                   | Create, Update, Delete                        \
-    \                                                 |\n| Domain Group          \
-    \     | Create, Update, Delete                                               \
-    \                          |\n| Group                      | Read, Update, Delete\
-    \                                                                           |\n\
-    | Group type                 | Create, Update, Delete                        \
-    \                                                 |\n| Ip range              \
-    \     | Create, Update, Delete                                               \
-    \                          |\n| Language                   | Create, Update, Delete\
-    \                                                                         |\n\
-    | Lifecycle                  | Create, Update, Delete                        \
-    \                                                 |\n| Merge rule            \
-    \     | Create, Update, Delete                                               \
-    \                          |\n| Notebook                   | Create, Update, Delete,\
-    \ Manual run, Scheduled run, Editor run                                  |\n|\
-    \ OAuth application          | Create, Update, Delete                        \
-    \                                                 |\n| OAuth token           \
-    \     | Create, Update, Delete                                               \
-    \                          |\n| Objective                  | Create, Update, Delete\
-    \                                                                         |\n\
-    | Plugin                     | Create, Update, Delete                        \
-    \                                                 |\n| Privacy setting       \
-    \     | Update (for each change)                                             \
-    \                          |\n| Profile                    | Read, Update, Delete\
-    \                                                                           |\n\
-    | Profile property           | Create, Update, Delete                        \
-    \                                                 |\n| Role                  \
-    \     | Create, Update, Delete                                               \
-    \                          |\n| Segment                    | Create, Update, Delete\
-    \                                                                         |\n\
-    | Single Sign On Setting     | Update (for each change)                      \
-    \                                                 |\n| Supported Legislation Zone\
-    \ | Create, Delete, Update                                                   \
-    \                      |\n| Timeline Event Rollup      | Create, Update, Delete\
-    \                                                                         |\n\
-    | Tracker                    | Create, Update, Delete                        \
-    \                                                 |\n| User                  \
-    \     | Login, Login failed, Logout, Create, Update, Delete, Password reset requested,\
-    \ Password change |\n\n\nOnly Profile and Group viewed, updated, or deleted by\
-    \ a user from the Profile and Groups tab are logged.\n\nThe following events are\
-    \ not considered as human actions, and therefore not covered in the Platform\n\
-    Audit Event API:\n\n- Connections that import or export profiles.\n- Profile and\
-    \ group creation (Profiles can only be created by a visitor or an import connection).\n\
-    \n**Event data**\n\nThe following event data is available:\n\n| Field        \
-    \          | Description      | Example values                               \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                                                            \
-    \                                                  |\n| :---                 \
-    \  | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+    \                           |\n| :---                   | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
     |date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt\
     \ format.| 2023-04-15T11:24:01.183Z                                          \
     \                                                                            \
@@ -311,35 +315,27 @@ tags:
     \                                                                            \
     \                                                                            \
     \          |\n\n"
-- name: Channels
-  description: "The Channel API allows you to retrieve information about [channels\
-    \ in BlueConic](https://support.blueconic.com/hc/en-us/articles/200472632-Overview-What-are-channels-in-BlueConic)."
 - name: Interaction events
-  description: "Used to track an interaction (view, click, or conversion) with a BlueConic\
-    \ Dialogue. See [Tracking metrics for views, clicks, and conversions](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions)."
+  description: "Page view, view, click, conversion events for profiles on a website.\
+    \ [Read more](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions#watch-the-video-analyzing-dialogues-the-metrics-0-0)."
 - name: Interactions
   description: "Get the interactions (i.e. listeners and/or dialogues) that must be\
     \ executed for a given profile that visits a certain page. Read more about [Dialogues](https://support.blueconic.com/hc/en-us/articles/202425271-Dialogues-Overview)\
     \ or [Listeners](https://support.blueconic.com/hc/en-us/articles/202531942-Listeners-Overview)."
 - name: Pageview events
-  description: "Pageview events are used to track page views by profiles. This is\
-    \ used by BlueConic Listeners. See [Listeners and Trackers](https://support.blueconic.com/hc/en-us/sections/200913331-Listeners-and-Trackers)."
+  description: The following method allows you to register a pageview event for reporting.
 - name: OAuth 2.0
   description: "The OAuth 2.0 API allows external applications to be authenticated\
     \ and authorized to access the public BlueConic API. The OAuth 2.0 specification\
     \ is implemented according to [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)."
-- name: Groups
-  description: "The following methods allow you to create, modify, retrieve properties\
-    \ from, and delete BlueConic groups. See [Creating and managing groups](https://support.blueconic.com/hc/en-us/articles/360019531594-Creating-and-managing-groups)."
 - name: Profile events
-  description: "Consent management events for a profile; consent changed or permission\
-    \ level changed. [Read more about using Objectives for privacy and consent](https://support.blueconic.com/hc/en-us/articles/360002107054-Overview-Using-BlueConic-Objectives-for-privacy-and-consent)."
+  description: The following methods allow you to retrieve the events of a profile.
 - name: Profile properties
-  description: "The following methods allow you to retrieve and update [Profile Properties](https://support.blueconic.com/hc/en-us/articles/202608231-Capturing-customer-data-in-Profile-Properties)."
+  description: The following methods allow you to retrieve and update profile properties.
 - name: Profiles
   description: "The following methods allow you to create, modify, retrieve properties\
-    \ from, and delete [BlueConic Profiles](https://support.blueconic.com/hc/en-us/articles/115001671965-Overview-BlueConic-Profiles),\
-    \ as well as retrieve BlueConic segment information."
+    \ from, and delete BlueConic visitor profiles, as well as retrieve BlueConic segment\
+    \ information."
 - name: Segments
   description: The segment API. The following methods allow you to retrieve information
     from segments and the profiles within a given segment.
@@ -383,7 +379,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuditEventsBean"
+                $ref: '#/components/schemas/AuditEventsBean'
               examples:
                 Example response:
                   description: Example response
@@ -498,158 +494,6 @@ paths:
       security:
       - oauth2:
         - read:audit-events
-  /channels:
-    get:
-      tags:
-      - Channels
-      summary: Get all channels
-      description: Retrieves all channels.
-      operationId: getAll
-      parameters:
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first result to return.
-        schema:
-          type: integer
-          format: int32
-        example: 0
-      - name: count
-        in: query
-        description: Specifies the number of results to return.
-        schema:
-          type: integer
-          format: int32
-        example: 10
-      responses:
-        "200":
-          description: Returns the channels.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ChannelsV2Schema"
-              examples:
-                Example channels response:
-                  description: Example channels response
-                  value: |-
-                    {
-                      "channels" : [
-                        {
-                          "aliases" : [ "blueconic.com" ],
-                          "domain": {
-                            "id" : "6398b714-45fd-4c28-ab08-80d8fea50757",
-                            "name" : "blueconic.com"
-                          },
-                          "hostname" : "www.blueconic.com",
-                          "id" : "6b44d80c-73c8-485b-ad76-b53a103751af",
-                          "name" : "www.blueconic.com",
-                          "tags" : [ "Marketing", "Data", "Privacy" ],
-                          "type" : "WEBSITE",
-                          "visitorCount": 10
-                        },
-                        {
-                          "aliases" : [ ],
-                          "domain": {
-                            "id" : "6398b714-45fd-4c28-ab08-80d8fea50757",
-                            "name" : "blueconic.com"
-                          },
-                          "hostname" : "ios://com.blueconic.app",
-                          "id" : "9d7a7b63-7372-4d43-a67f-027a01918d64",
-                          "name" : "BlueConic App",
-                          "tags" : [ "Mobile", "Technology" ],
-                          "type" : "MOBILE",
-                          "visitorCount": 2
-                        },
-                        {
-                          "aliases" : [ ],
-                          "domain": {
-                            "id" : "6398b714-45fd-4c28-ab08-80d8fea50757",
-                            "name" : "blueconic.com"
-                          },
-                          "hostname" : "",
-                          "id" : "e029bde2-3776-4985-a82c-090bf7e7673c",
-                          "name" : "Newsletter",
-                          "tags" : [ "Subscription" ],
-                          "type" : "EMAIL",
-                          "visitorCount": 1
-                        }
-                      ],
-                      "itemsPerPage" : 20,
-                      "startIndex" : 0,
-                      "totalPages" : 1,
-                      "totalResults" : 3
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:channels
-  /channels/{channelId}:
-    get:
-      tags:
-      - Channels
-      summary: Get one channel
-      description: Retrieves a single channel.
-      operationId: getChannel
-      parameters:
-      - name: channelId
-        in: path
-        description: The ID of the channel.
-        required: true
-        schema:
-          type: string
-        example: 3b55d90d-91b8-263a-bd87-c43a104862ef
-      responses:
-        "200":
-          description: Returns the channel.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/channel"
-              examples:
-                Example channel response:
-                  description: Example channel response
-                  value: |-
-                    {
-                      "aliases" : [ "blueconic.com" ],
-                      "canDelete" : true,
-                      "creationDate" : "2024-01-24T12:30:50.000Z",
-                      "creator" : {
-                        "fullName" : "user@blueconic.com",
-                        "userName" : "user@blueconic.com"
-                      },
-                      "description" : "BlueConic website",
-                      "domain": {
-                        "id" : "6398b714-45fd-4c28-ab08-80d8fea50757",
-                        "name" : "www.blueconic.com"
-                      },
-                      "favorite" : false,
-                      "hostname" : "www.blueconic.com",
-                      "id" : "6b44d80c-73c8-485b-ad76-b53a103751af",
-                      "lastModifiedDate" : "2024-02-01T12:30:50.000Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "user@blueconic.com",
-                        "userName" : "user@blueconic.com"
-                      },
-                      "logo" : "https://bc.blueconic.net/rest/v2/channels/6b44d80c-73c8-485b-ad76-b53a103751af/logo?etag=3082b317eba5029e0aea03b42e3f3ca1",
-                      "name" : "www.blueconic.com",
-                      "readOnly" : false,
-                      "tags" : [ "Marketing", "Data", "Privacy" ],
-                      "type" : "WEBSITE",
-                      "visitorCount" : 10
-                    }
-        "400":
-          description: One or more required parameters are missing or invalid.
-        "404":
-          description: Channel not found.
-        "401":
-          description: Authentication failed (unauthorized).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:channels
   /interactionEvents:
     post:
       tags:
@@ -665,7 +509,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InteractionEventBean"
+              $ref: '#/components/schemas/InteractionEventBean'
         required: true
       responses:
         "200":
@@ -704,7 +548,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/interactions"
+                $ref: '#/components/schemas/interactions'
               examples:
                 Example response:
                   description: Example response
@@ -761,7 +605,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PageViewEventBean"
+              $ref: '#/components/schemas/PageViewEventBean'
         required: true
       responses:
         "200":
@@ -887,7 +731,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenErrorResponse"
+                $ref: '#/components/schemas/TokenErrorResponse'
               examples:
                 Example response:
                   description: Example response
@@ -901,7 +745,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenErrorResponse"
+                $ref: '#/components/schemas/TokenErrorResponse'
               examples:
                 Example response:
                   description: Example response
@@ -967,7 +811,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenSuccessResponse"
+                $ref: '#/components/schemas/TokenSuccessResponse'
               examples:
                 Example response:
                   description: Example response
@@ -983,7 +827,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenErrorResponse"
+                $ref: '#/components/schemas/TokenErrorResponse'
               examples:
                 Example response:
                   description: Example response
@@ -997,7 +841,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenErrorResponse"
+                $ref: '#/components/schemas/TokenErrorResponse'
               examples:
                 Example response:
                   description: Example response
@@ -1008,414 +852,6 @@ paths:
                     }
         "503":
           description: The server is too busy to handle the request.
-  /groups/{grouptype}/{group}:
-    get:
-      tags:
-      - Groups
-      summary: Get one group
-      description: Retrieves the properties of the specified group.
-      operationId: get
-      parameters:
-      - name: grouptype
-        in: path
-        description: The ID of the BlueConic group type.
-        required: true
-        schema:
-          type: string
-        example: company
-      - name: group
-        in: path
-        description: The ID of the BlueConic group.
-        required: true
-        schema:
-          type: string
-          pattern: (.*)+
-        example: 640d01c7-1c30-4085-adf9-afad6560ec99
-      - name: properties
-        in: query
-        description: Only returns the given group properties in the response.
-        schema:
-          type: string
-        example: "email,fullname,visits"
-      responses:
-        "200":
-          description: Returns the specified group.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/group"
-              examples:
-                Example group response:
-                  description: Example group response
-                  value: |-
-                    {
-                      "id" : "41ebc321-b02b-4e8a-a368-82995c81fb18",
-                      "groupTypeId": "company",
-                      "creationDate" : "2023-03-27T10:36:11.990Z",
-                      "lastModifiedDate": "2024-01-10T12:52:44.816Z",
-                      "properties" : [ {
-                        "id" : "domaingroup",
-                        "values" : [ "DEFAULT" ]
-                      }, {
-                        "id" : "fullname",
-                        "values" : [ "blueconic" ]
-                      }, {
-                        "id" : "variant",
-                        "values" : [ "a" ]
-                      }, {
-                        "id" : "email",
-                        "values" : [ "example@blueconic.com" ]
-                      }]
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "404":
-          description: The specified group doesn't exist.
-        "408":
-          description: Request timed out.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:groups
-  /groups/{grouptype}:
-    get:
-      tags:
-      - Groups
-      summary: Get groups for group type
-      description: Retrieves the groups for the given group type
-      operationId: getAll_1
-      parameters:
-      - name: grouptype
-        in: path
-        description: The ID of the group type.
-        required: true
-        schema:
-          type: string
-      - name: refinement
-        in: query
-        description: "**Refinement**\n\nSpecifies (URL-encoded) the refinement used\
-          \ to filter groups. If not specified, all groups will be returned.\n\nTo\
-          \ filter groups using refinements you can use the query parameter refinement.\
-          \ The refinement parameter is a URL-encoded JSON object that contains the\
-          \ refinement in the form of one or more filters.\n\n\n**Logical operators**\n\
-          \nThe logical operators used when combining multiple filters.\n\n| Name\
-          \                    | Description |\n| :---------------------- | :----------\
-          \ |\n| AND                     | All filters should match |\n| OR      \
-          \                | Any of the filters should match |\n\n**Operators**\n\n\
-          The operators used to filter the property or objectives within a group.\n\
-          \n| Name                    | Description |\n| :---------------------- |\
-          \ :---------- |\n| IS_EMPTY                | If the given property value\
-          \ is empty | \n| NOT_IS_EMPTY            | If the given property value is\
-          \ not empty |\n| CONTAINS_ANY            | If the given property value contains\
-          \ any of the given values |\n| CONTAINS_ALL            | If the given property\
-          \ value contains all of the given values |\n| NOT_CONTAINS_ANY        |\
-          \ If the given property value does not contain any of the given values |\n\
-          | NOT_CONTAINS_ALL        | If the given property value does not contain\
-          \ all of the given values |\n| IN_RANGE                | If the given property\
-          \ value is in the given range |\n| NOT_IN_RANGE            | If the given\
-          \ property value is not in the given range |\n| IN_LAST_DAYS           \
-          \ | If the given property value is in the last given number of days |\n\
-          | NOT_IN_LAST_DAYS        | If the given property value is not in the last\
-          \ given number of days |\n| IN_NEXT_DAYS            | If the given property\
-          \ value is in the next given number of days |\n| NOT_IN_NEXT_DAYS      \
-          \  | If the given property value is not in the next given number of days\
-          \ |"
-        schema:
-          $ref: "#/components/schemas/RefinementBean"
-        examples:
-          URL encoded example:
-            description: URL encoded example
-            value: '%7B%22property%22%3A%20%22email%22%2C%20%22operator%22%3A%20%22IS_EMPTY%22%7D%0A'
-          Example composite refinement (not yet URL-encoded):
-            description: Example composite refinement (not yet URL-encoded)
-            value: |-
-              {
-                "filters": [{
-                  "property": "email",
-                  "operator": "IS_EMPTY"
-                }, {
-                  "property": "variant",
-                  "operator": "CONTAINS_ANY",
-                  "values": ["VariantA", "VariantB"]
-                }
-                ],
-                "operator": "AND"
-              }
-          Example property filter refinement (not yet URL-encoded):
-            description: Example property filter refinement (not yet URL-encoded)
-            value: |
-              {
-                "property": "visits",
-                "operator": "IN_RANGE",
-                "fromValue": 1,
-                "toValue": 10
-              }
-      - name: cursor
-        in: query
-        description: "Defines the starting point of the page for pagination. When\
-          \ cursors are used, each page, except the last page, returns a `nextCursor`\
-          \ value which can be used to retrieve the next page."
-        schema:
-          type: string
-        example: '*'
-      - name: count
-        in: query
-        description: Specifies the number of results to return. Smaller than or equal
-          to 1.000.000.
-        schema:
-          type: integer
-          format: int32
-        example: 20
-      - name: properties
-        in: query
-        description: "Specifies which group properties values will be returned for\
-          \ each group. If not specified, the values of all group properties will\
-          \ be returned, which may result in a large result set. One or more group\
-          \ property ids, separated by a comma."
-        schema:
-          type: string
-        example: "browserversion,email"
-      responses:
-        "200":
-          description: "Returns the groups of the given group type in a streaming\
-            \ fashion (`Transfer-Encoding: chunked`)."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GroupsAPIGroups"
-              examples:
-                Example groups response:
-                  description: Example groups response
-                  value: |-
-                    {
-                    "itemsPerPage":20,
-                    "totalPages":5,
-                    "totalResults":100,
-                    "cursor":"*",
-                    "nextCursor":"AoJylraPsPICPwU4ZDZiMzhmYS0yMmYwLTRmZTAtYmE0My1kOWVlNTFjNWE5MDA",
-                      "links" : [ {
-                        "href" : "https://localhost/rest/v2/groups/company?cursor=%2A&count=20",
-                        "rel" : "first",
-                        "type" : "application/json"
-                      }, {
-                        "href" : "https://localhost/rest/v2/groups/company?cursor=AoJylraPsPICPwU4ZDZiMzhmYS0yMmYwLTRmZTAtYmE0My1kOWVlNTFjNWE5MDA&count=20",
-                        "rel" : "last",
-                        "type" : "application/json"
-                      } ]
-                    ,
-                    "groups": [
-                    {
-                      "id" : "41ebc321-b02b-4e8a-a368-82995c81fb18",
-                      "groupTypeId": "company",
-                      "creationDate" : "2023-03-27T10:36:11.990Z",
-                      "lastModifiedDate": "2024-01-10T12:52:44.816Z",
-                      "properties" : [ {
-                        "id" : "domaingroup",
-                        "values" : [ "DEFAULT" ]
-                      }, {
-                        "id" : "fullname",
-                        "values" : [ "blueconic" ]
-                      }, {
-                        "id" : "variant",
-                        "values" : [ "a" ]
-                      }, {
-                        "id" : "email",
-                        "values" : [ "example@blueconic.com" ]
-                      }]
-                    }
-                    ]}
-        "400":
-          description: One or more required parameters are missing or invalid.
-        "404":
-          description: Group type not found.
-        "401":
-          description: Authentication failed (unauthorized).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:groups
-  /groups:
-    put:
-      tags:
-      - Groups
-      summary: "Create, update, or delete one or more groups"
-      description: "Create, update, or delete one or more groups in a single request.\
-        \ This is the recommended way of creating, updating and deleting groups."
-      operationId: updateGroupAsync
-      requestBody:
-        description: |-
-          **Group strategy**
-
-          The following values are valid strategies for group operations. These can be used to create, update or delete groups.
-
-          | Name         | Description                                                                                |
-          | :----------- |:-------------------------------------------------------------------------------------------|
-          | UPSERT   | Will update (and insert if not found) the group based on the rules passed along.           |
-          | UPDATE   | Will update (but doesn’t insert if not found) the group based on the rules passed along. |
-          | DELETE   | Will delete the group with the given ID.                                                 |
-
-          **Limits**
-
-          * Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).
-          * When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/BulkGroupInputEntry"
-            examples:
-              Basic create group example:
-                description: Example that shows how to create one group.
-                value: |-
-                  [{
-                      "properties": [{
-                              "id": "company_test_zipcode",
-                              "values": ["02111", "02112"],
-                              "strategy": "SET"
-                          },
-                          {
-                              "id": "company_test_email",
-                              "values": ["jane@example.com"],
-                              "strategy": "SET"
-                          }
-                      ],
-                      "groupId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
-                      "groupType": "company_test",
-                      "strategy": "UPSERT"
-                  }]
-              Advanced example:
-                description: |
-                  This request contains three operations:
-
-                  * The first operation looks up a specific BlueConic group by its id, then sets the property with id crm_id to 003Kz4Bsaa14 and adds a new entry to email property. If the group cannot be found, nothing will happen.
-                  * The second operation deletes a specific BlueConic group by its id.
-                  * The third operation tries to find a BlueConic group by its id in the specified domain. If the group is found, three properties will be set:
-                      * Zipcodes `02111` and `02112` will be added.
-                      * `email` will be set to `jane@example.com.`
-                      * `crm_id` will be set to `002wC4BadR1w`.
-                      * If no group can be found, a new group is created in the specified domaingroup. The three properties will be set on the group.
-                value: |-
-                  [{
-                      "groupId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
-                      "groupType": "company_test",
-                      "properties": [{
-                          "id": "company_test_crm_id",
-                          "values": ["003Kz4Bsaa11"],
-                          "strategy": "SET"
-                      }, {
-                          "id": "company_test_email",
-                          "values": ["user_0000@gmail.com"],
-                          "strategy": "ADD"
-                      }]
-                  },
-                      {
-                          "groupId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
-                          "groupType": "company_test",
-                          "strategy": "DELETE"
-                      },
-                      {
-                          "groupId": "f8daa9db-5ea0-40c8-b9dc-96e519151f8c",
-                          "groupType": "company_test",
-                          "properties": [{
-                              "id": "company_test_zipcode",
-                              "values": ["02111", "02112"],
-                              "strategy": "ADD"
-                          },
-                          {
-                              "id": "company_test_email",
-                              "values": ["jane99@example.com"],
-                              "strategy": "ADD"
-                          },
-                          {
-                              "id": "company_test_crm_id",
-                              "values": ["002wC5BadR1w"],
-                              "strategy": "SET"
-                          }
-                          ],
-                          "strategy": "UPSERT",
-                          "domainGroup": "85ee8f33-15a3-4e95-aff5-abfa5bc457ab"
-                      }
-                  ]
-        required: true
-      responses:
-        "200":
-          description: "Bulk response \n\n**JSON Response**\n\nEvery bulk operation\
-            \ is returned in the response as well.\nThe state can be one of the following\
-            \ values: `CREATED`, `SKIPPED`, `MODIFIED`, `DELETED`, `UNCHANGED`, `NOTFOUND`,\
-            \ or `UNKNOWN_GROUP_TYPE`.\n\n```json\n[{\n    \"state\": \"CREATED\"\
-            ,\n    \"groupId\": \"group-ID of the created group\",\n    \"groupTypeId\"\
-            : \"group-type-ID of the created group\",\n    \"identifier\": \" my-external-identifier\"\
-            \n}]\n```"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/BulkGroupResultBean"
-              examples:
-                Example bulk response:
-                  description: Example bulk response
-                  value: |-
-                    [
-                      {
-                        "groupId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
-                        "groupTypeId": "company_test",
-                        "state": "MODIFIED"
-                      },
-                      {
-                        "groupId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
-                        "groupTypeId": "company_test",
-                        "state": "DELETED"
-                      }
-                    ]
-        "400":
-          description: One or more required parameters are missing or invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequestBean"
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: "Forbidden, invalid (PII) permissions to perform the request.\
-            \ Please check your OAuth Application configuration."
-        "413":
-          description: More than the allowed 1000 entries are sent in the request.
-            The entries that are processed are returned in the response.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/BulkResultBean"
-              examples:
-                Example bulk response:
-                  description: Example bulk response
-                  value: |-
-                    [
-                      {
-                        "groupId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
-                        "groupTypeId": "company_test",
-                        "state": "MODIFIED"
-                      },
-                      {
-                        "groupId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
-                        "groupTypeId": "company_test",
-                        "state": "DELETED"
-                      }
-                    ]
-        "429":
-          description: "Too many requests are sent concurrently. BlueConic recommends\
-            \ designing your app to be resilient to this scenario. For example, implement\
-            \ a request queue with an exponential backoff algorithm."
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:groups
   /profileEvents/{profileId}:
     get:
       tags:
@@ -1423,7 +859,7 @@ paths:
       summary: Get profile events
       description: Retrieves the consent management events for a profile; consent
         changed or permission level changed.
-      operationId: get_1
+      operationId: get
       parameters:
       - name: profileId
         in: path
@@ -1457,7 +893,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profileEvents"
+                $ref: '#/components/schemas/profileEvents'
               examples:
                 Example profile events response:
                   description: Example profile events response
@@ -1691,7 +1127,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profileProperty"
+                $ref: '#/components/schemas/profileProperty'
               examples:
                 Response body:
                   description: Response body
@@ -1769,7 +1205,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/profileProperty"
+              $ref: '#/components/schemas/profileProperty'
             examples:
               Example request body:
                 description: Example request body
@@ -1802,7 +1238,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profileProperty"
+                $ref: '#/components/schemas/profileProperty'
               examples:
                 Response body with currency:
                   description: Response body with currency
@@ -1948,7 +1384,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profileProperty"
+                $ref: '#/components/schemas/profileProperty'
               examples:
                 Response body:
                   description: Response body
@@ -2063,7 +1499,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profileProperties"
+                $ref: '#/components/schemas/profileProperties'
               examples:
                 Response body:
                   description: Response body
@@ -2164,7 +1600,7 @@ paths:
       description: Search for BlueConic profiles based on a specific value for an
         indexed (unique) property. Multiple name/value pairs can be used to refine
         the search.
-      operationId: get_2
+      operationId: get_1
       parameters:
       - name: property
         in: query
@@ -2189,7 +1625,7 @@ paths:
         examples:
           List of profile property values:
             description: List of profile property values
-            value: '"john.smith@blueconic.com"'
+            value: john.smith@blueconic.com
       responses:
         "200":
           description: Searches for BlueConic profiles based on a specific value for
@@ -2198,7 +1634,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profiles"
+                $ref: '#/components/schemas/profiles'
               examples:
                 Example response:
                   description: Example response
@@ -2239,13 +1675,9 @@ paths:
       parameters:
       - name: objectiveIds
         in: query
-        description: "A list of Objective IDs. If you provide objectiveIDs, profiles\
-          \ will only be updated or created if they have given consent for the provided\
-          \ objectives or consent is not required for the legislation zone of the\
-          \ profile. If a profile would have been created or updated, but is skipped\
-          \ because of an objective mismatch, the response will contain a `CONSENT_MISMATCH`\
-          \ state for that profile. If you don’t provide objectiveIDs, the update\
-          \ will always proceed."
+        description: |-
+          A list of IDs that should map on objectives that are configured in the BlueConic UI. If passed, the profiles to be updated that are in the privacy legislation zone are matched against these objectives. If there is no match, the profile won’t be updated (or created, for that matter).
+           If a profile would have been created/updated, but is skipped because of an objective mismatch, the response will contain a `CONSENT_MISMATCH` state for that profile.
         schema:
           type: string
           format: uuid
@@ -2337,32 +1769,19 @@ paths:
           \ value to the value already stored in the profile property. This is not\
           \ supported for timeline event properties. |\n| REMOVE       | Remove the\
           \ value from the list of values already stored in the profile property.\
-          \ This is not yet supported for timeline event properties. |\n\n**Group\
-          \ property strategy**\n\nThe following values are valid property strategies.\
-          \ These rules apply on group properties.\n\n| Name         | Description\
-          \                                                                      \
-          \                            |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n\
-          | ADD          | Values will be added to the values that already existed\
-          \ in the group property. Duplicates will not be added. |\n| SET        \
-          \  | Values will overwrite the values that already existed in the group\
-          \ property.                                 |\n| SET_IF_EMPTY | Only set\
-          \ values if the group property is empty.                               \
-          \                               |\n| SUM          | Add the value to the\
-          \ value already stored in the group property.                          \
-          \                   |\n| REMOVE       | Remove the value from the list of\
-          \ values already stored in the group property.                         \
-          \      |\n\n**Limits**\n\n* Each request can contain up to 1000 entries.\
-          \ If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries\
-          \ will be processed and returned in the response).\n* When too many requests\
-          \ are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends\
-          \ designing your app to be resilient to this scenario. For example, implement\
-          \ a request queue with an exponential backoff algorithm."
+          \ This is not yet supported for timeline event properties. |\n\n**Limits**\n\
+          \n* Each request can contain up to 1000 entries. If this limit is exceeded,\
+          \ a HTTP 413 will be thrown (the first 1000 entries will be processed and\
+          \ returned in the response).\n* When too many requests are sent concurrently,\
+          \ a HTTP 429 can be thrown. BlueConic recommends designing your app to be\
+          \ resilient to this scenario. For example, implement a request queue with\
+          \ an exponential backoff algorithm."
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/BulkInputEntryV2"
+                $ref: '#/components/schemas/BulkInputEntryV2'
             examples:
               Basic create profile example:
                 description: Example that shows how to create one profile.
@@ -2387,36 +1806,6 @@ paths:
                       ],
                       "strategy": "UPSERT"
                   }]
-              Update objectives for a single profile:
-                description: "The following properties have a special meaning:\n\n\
-                  `privacy_legislation`: The value passed in this property should\
-                  \ be one of the [privacy legislation zone values](https://support.blueconic.com/hc/en-us/articles/202528082-BlueConic-REST-API#h_01GDB09HCR8WYFPF7MDHJ3D6DW),\
-                  \ and is used to determine if a profile should be matched against\
-                  \ the passed `objectiveIds` in the querystring.\n`consented_objectives`:\
-                  \ The value(s) passed in this property are used to match against\
-                  \ the passed `objectiveIds` in the querystring. At least one must\
-                  \ match in order for the profile to be created or updated; otherwise\
-                  \ `CONSENT_MISMATCH` is returned.\n`refused_objectives`: The value(s)\
-                  \ passed in this property are used to set the explicitly refused\
-                  \ objectives.\n\nThe strategy can be set to `ADD`, `SET`, `SET_IF_EMPTY`,\
-                  \ `INCREMENT`, or `REMOVE`. "
-                value: |-
-                  {
-                      "id": "530cb682-5f67-48ec-9662-57512b3dc899",
-                      "setProperties": {
-                          "privacy_legislation": [
-                          "GDPR"
-                          ],
-                          "consented_objectives": [
-                          "qunit_tests",
-                          "qunit_tests2"
-                          ],
-                          "refused_objectives": [
-                          "qunit_tests3",
-                          "qunit_tests4"
-                          ]
-                      }
-                  }
               Advanced example:
                 description: |
                   This request contains three operations:
@@ -2549,23 +1938,20 @@ paths:
                               "eventTypeId": "order",
                               "data": [{
                                       "id": "product",
-                                      "values": [
-                                          [
-                                              {
-                                                  "id": "id",
-                                                  "values": ["PRODUCT-5469878987"]
-                                              },
-                                              {
-                                                  "id": "quantity",
-                                                  "values": [2],
-                                                  "strategy": "SET_IF_EMPTY"
-                                              },
-                                              {
-                                                  "id": "coupon",
-                                                  "values": ["FREETV-CHRISTMAS-SPECIAL"],
-                                                  "strategy": "ADD"
-                                              }
-                                          ]
+                                      "values": [{
+                                              "id": "id",
+                                              "values": ["PRODUCT-5469878987"]
+                                          },
+                                          {
+                                              "id": "quantity",
+                                              "values": [2],
+                                              "strategy": "SET_IF_EMPTY"
+                                          },
+                                          {
+                                              "id": "coupon",
+                                              "values": ["FREETV-CHRISTMAS-SPECIAL"],
+                                              "strategy": "ADD"
+                                          }
                                       ],
                                       "strategy": "UPSERT"
                                   },
@@ -2581,13 +1967,6 @@ paths:
                       ],
                       "strategy": "UPSERT"
                   }]
-              Basic delete profile example:
-                description: Delete a single profile
-                value: |-
-                  {
-                      "profileId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
-                      "strategy": "DELETE"
-                  }
         required: true
       responses:
         "200":
@@ -2612,7 +1991,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/BulkResultBean"
+                  $ref: '#/components/schemas/BulkResultBean'
               examples:
                 Example bulk response:
                   description: Example bulk response
@@ -2643,7 +2022,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BadRequestBean"
+                $ref: '#/components/schemas/BadRequestBean'
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -2657,7 +2036,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/BulkResultBean"
+                  $ref: '#/components/schemas/BulkResultBean'
               examples:
                 Example bulk response:
                   description: Example bulk response
@@ -2729,20 +2108,16 @@ paths:
         in: query
         description: Filter returned timeline events for a specific type.
         schema:
-          type: array
-          items:
-            type: string
+          type: string
+          format: uuid
         example: order
       - name: eventProperty
         in: query
-        description: "When the eventProperty is specified, the response will only\
-          \ return the values for the given property. If not specified, the values\
-          \ of all event properties will be returned, which may result in a large\
-          \ result set."
+        description: Filter returned timeline events for a specific type and specific
+          event type properties.
         schema:
-          type: array
-          items:
-            type: string
+          type: string
+          format: uuid
         example: order.orderline
       - name: eventCount
         in: query
@@ -2784,7 +2159,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/profile"
+                $ref: '#/components/schemas/profile'
               examples:
                 Example profile response:
                   description: Example profile response
@@ -2951,86 +2326,13 @@ paths:
         example: 20
       - name: properties
         in: query
-        description: "Specifies which profile properties values will be returned for\
-          \ each profile. If not specified, the values of all profile properties will\
-          \ be returned, which may result in a large result set. One or more profile\
-          \ property ids, separated by a comma."
+        description: "Specifies for which profile properties values will be returned\
+          \ for each profile. If not specified, the values of all profile properties\
+          \ will be returned, which may result in a large result set. One or more\
+          \ profile property ids, separated by a comma."
         schema:
           type: string
         example: "browserversion,email"
-      - name: refinement
-        in: query
-        description: "**Refinement**\n\nSpecifies (URL-encoded) the refinement used\
-          \ to filter profiles. If not specified, all profiles of the given segment\
-          \ will be returned.\n\nTo filter groups using refinements you can use the\
-          \ query parameter refinement. The refinement parameter is a URL-encoded\
-          \ JSON object that contains the refinement in the form of one or more filters.\n\
-          \n**Logical operators**\n\nThe logical operators used when combining multiple\
-          \ filters.\n\n| Name                    | Description |\n| :----------------------\
-          \ | :---------- |\n| AND                     | All filters should match\
-          \ |\n| OR                      | Any of the filters should match |\n\n**Operators**\n\
-          \nThe operators used to filter the property or objectives within a group.\n\
-          \n| Name                    | Description |\n| :---------------------- |\
-          \ :---------- |\n| IS_EMPTY                | If the given property value\
-          \ is empty | \n| NOT_IS_EMPTY            | If the given property value is\
-          \ not empty |\n| CONTAINS_ANY            | If the given property value contains\
-          \ any of the given values |\n| CONTAINS_ALL            | If the given property\
-          \ value contains all of the given values |\n| NOT_CONTAINS_ANY        |\
-          \ If the given property value does not contain any of the given values |\n\
-          | NOT_CONTAINS_ALL        | If the given property value does not contain\
-          \ all of the given values |\n| IN_RANGE                | If the given property\
-          \ value is in the given range |\n| NOT_IN_RANGE            | If the given\
-          \ property value is not in the given range |\n| IN_LAST_DAYS           \
-          \ | If the given property value is in the last given number of days |\n\
-          | NOT_IN_LAST_DAYS        | If the given property value is not in the last\
-          \ given number of days |\n| IN_NEXT_DAYS            | If the given property\
-          \ value is in the next given number of days |\n| NOT_IN_NEXT_DAYS      \
-          \  | If the given property value is not in the next given number of days\
-          \ |\n\n**Objective**\n\nThe objectives used to filter the property or objectives\
-          \ within a group.\n\n| Name                    | Description |\n| :----------------------\
-          \ | :---------- |\n| CONSENTED               | Objective consented |\n|\
-          \ REFUSED                 | Objective refused |\n| UNKNOWN             \
-          \    | Unknown |\n| REFUSED_OR_UNKNOWN      | Refused or unknown | \n| CONSENTED_OR_UNNEEDED\
-          \   | Consented or unneeded |\n\nCan only be used with the operators CONTAINS_ANY\
-          \ and CONTAINS_ALL"
-        schema:
-          $ref: "#/components/schemas/RefinementBean"
-        examples:
-          URL encoded example:
-            description: URL encoded example
-            value: '%7B%22property%22%3A%20%22email%22%2C%20%22operator%22%3A%20%22IS_EMPTY%22%7D%0A'
-          Example composite refinement (not yet URL-encoded):
-            description: Example composite refinement (not yet URL-encoded)
-            value: |-
-              {
-                "filters": [{
-                  "property": "email",
-                  "operator": "IS_EMPTY"
-                }, {
-                  "property": "variant",
-                  "operator": "CONTAINS_ANY",
-                  "values": ["VariantA", "VariantB"]
-                }
-                ],
-                "operator": "AND"
-              }
-          Example property filter refinement (not yet URL-encoded):
-            description: Example property filter refinement (not yet URL-encoded)
-            value: |
-              {
-                "property": "visits",
-                "operator": "IN_RANGE",
-                "fromValue": 1,
-                "toValue": 10
-              }
-          Example objective filter refinement (not yet URL-encoded):
-            description: Example objective filter refinement (not yet URL-encoded)
-            value: |
-              {
-                "objective": "CONSENTED_OR_UNNEEDED",
-                "operator": "CONTAINS_ANY",
-                "values": ["objective1", "objective2"]
-              }
       - name: expand
         in: query
         description: Expand the information in the result set. Use `profiles.profile.permissions`
@@ -3049,21 +2351,8 @@ paths:
         description: Filter for the returned timeline events for specific types. One
           or more IDs of a timeline event type.
         schema:
-          type: array
-          items:
-            type: string
+          type: string
         example: order
-      - name: eventProperty
-        in: query
-        description: "When the eventProperty is specified, the response will only\
-          \ return the values for the given property. If not specified, the values\
-          \ of all event properties will be returned, which may result in a large\
-          \ result set."
-        schema:
-          type: array
-          items:
-            type: string
-        example: order.orderline
       - name: eventCount
         in: query
         description: The maximum number of timeline events to return.
@@ -3092,7 +2381,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SegmentProfiles"
+                $ref: '#/components/schemas/SegmentProfiles'
               examples:
                 Example segment profiles response:
                   description: Example segment profiles response
@@ -3284,7 +2573,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/segments"
+                $ref: '#/components/schemas/segments'
               examples:
                 Example segment response:
                   description: Example segment response
@@ -3453,7 +2742,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/RecommendationRequest"
+                $ref: '#/components/schemas/RecommendationRequest'
             examples:
               Example body:
                 description: Example body
@@ -3524,7 +2813,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RecommendationResponse"
+                $ref: '#/components/schemas/RecommendationResponse'
               examples:
                 Example recommendation response:
                   description: Example recommendation response
@@ -3613,7 +2902,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/urlmapping"
+              $ref: '#/components/schemas/urlmapping'
             examples:
               Urlmapping example body:
                 description: Urlmapping example body
@@ -3662,7 +2951,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/urlmapping"
+                $ref: '#/components/schemas/urlmapping'
               examples:
                 Example POST response:
                   description: Example POST response
@@ -3733,7 +3022,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/urlmapping"
+                $ref: '#/components/schemas/urlmapping'
               examples:
                 Example GET response:
                   description: Example GET response
@@ -3801,7 +3090,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/urlmapping"
+              $ref: '#/components/schemas/urlmapping'
             examples:
               URL mapping example body:
                 description: URL mapping example body
@@ -3838,7 +3127,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/urlmapping"
+                $ref: '#/components/schemas/urlmapping'
               examples:
                 Example PUT response:
                   description: Example PUT response
@@ -3934,12 +3223,10 @@ components:
           - BLUECONIC_SUPPORT_ACCESS_SETTING
           - OAUTH_APPLICATION
           - OAUTH_TOKEN
-          - TIMELINE_EVENT_ROLLUP
-          - INACTIVITY_TIMEOUT_SETTING
         objects:
           type: array
           items:
-            $ref: "#/components/schemas/AuditEntryObjectBean"
+            $ref: '#/components/schemas/AuditEntryObjectBean'
         operation:
           type: string
           enum:
@@ -3975,179 +3262,7 @@ components:
         auditEvents:
           type: array
           items:
-            $ref: "#/components/schemas/AuditEntryBean"
-    ChannelBeanV2SchemaForChannelsV2:
-      type: object
-      description: The channels.
-      properties:
-        aliases:
-          type: array
-          description: "The aliases of the channel. Alternative hostnames, only applicable\
-            \ to web channels. For example, an alias of the hostname `www.blueconic.com`\
-            \ could be `blueconic.com`."
-          items:
-            type: string
-            description: "The aliases of the channel. Alternative hostnames, only\
-              \ applicable to web channels. For example, an alias of the hostname\
-              \ `www.blueconic.com` could be `blueconic.com`."
-        domain:
-          $ref: "#/components/schemas/simpleDomain"
-        hostname:
-          type: string
-          description: "The hostname of the channel. For web channels, the hostname\
-            \ of the website, excluding the protocol (e.g. `https://`) and path (e.g.\
-            \ `/`). For mobile channels, the App ID. For email channels, the hostname\
-            \ is empty."
-        id:
-          type: string
-          description: The ID of the channel.
-        name:
-          type: string
-          description: The name of the channel.
-        tags:
-          type: array
-          description: The tags of the channel.
-          items:
-            type: string
-            description: The tags of the channel.
-        type:
-          type: string
-          description: The type of the channel.
-          enum:
-          - EMAIL
-          - MOBILE
-          - WEBSITE
-        visitorCount:
-          type: integer
-          format: int32
-          description: The visitor count of the channel.
-    ChannelsV2Schema:
-      type: object
-      properties:
-        channels:
-          type: array
-          description: The channels.
-          items:
-            $ref: "#/components/schemas/ChannelBeanV2SchemaForChannelsV2"
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        startIndex:
-          type: integer
-          format: int32
-          description: The start index.
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
-    simpleDomain:
-      type: object
-      description: The domain.
-      properties:
-        id:
-          type: string
-          description: Unique identifier.
-        name:
-          type: string
-          description: Name of this object.
-    UserBean:
-      type: object
-      description: BlueConic user.
-      properties:
-        fullName:
-          type: string
-          description: The full name of the user.
-        userName:
-          type: string
-          description: The username.
-      readOnly: true
-    channel:
-      type: object
-      properties:
-        aliases:
-          type: array
-          description: "The aliases of the channel. Alternative hostnames, only applicable\
-            \ to web channels. For example, an alias of the hostname `www.blueconic.com`\
-            \ could be `blueconic.com`."
-          items:
-            type: string
-            description: "The aliases of the channel. Alternative hostnames, only\
-              \ applicable to web channels. For example, an alias of the hostname\
-              \ `www.blueconic.com` could be `blueconic.com`."
-          uniqueItems: true
-        canDelete:
-          type: boolean
-          description: If the item can be deleted or not.
-          readOnly: true
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-          readOnly: true
-        creator:
-          $ref: "#/components/schemas/UserBean"
-        description:
-          type: string
-          description: The description.
-        domain:
-          $ref: "#/components/schemas/simpleDomain"
-        favorite:
-          type: boolean
-          description: If the item is favorited or not.
-          readOnly: true
-        hostname:
-          type: string
-          description: "The hostname of the channel. For web channels, the hostname\
-            \ of the website, excluding the protocol (e.g. `https://`) and path (e.g.\
-            \ `/`). For mobile channels, the App ID. For email channels, the hostname\
-            \ is empty."
-        id:
-          type: string
-          description: The object ID.
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-          readOnly: true
-        lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
-        logo:
-          type: string
-          description: The channel logo link.
-        name:
-          type: string
-          description: The object name.
-        readOnly:
-          type: boolean
-          description: If the item is read-only or not.
-          readOnly: true
-        tags:
-          type: array
-          description: The tags (e.g. labels).
-          example: Address
-          items:
-            type: string
-            description: The tags (e.g. labels).
-            example: Address
-        type:
-          type: string
-          description: The type of the channel.
-          enum:
-          - EMAIL
-          - MOBILE
-          - WEBSITE
-        visitorCount:
-          type: integer
-          format: int32
-          description: The visitor count of the channel.
+            $ref: '#/components/schemas/AuditEntryBean'
     InteractionEventBean:
       type: object
       properties:
@@ -4164,6 +3279,7 @@ components:
           type: string
           description: The event type.
           enum:
+          - PAGEVIEW
           - VIEW
           - CLICK
           - CONVERSION
@@ -4193,7 +3309,7 @@ components:
         id:
           type: string
         interactionType:
-          $ref: "#/components/schemas/InteractionType"
+          $ref: '#/components/schemas/InteractionType'
         name:
           type: string
         position:
@@ -4204,7 +3320,7 @@ components:
         interactions:
           type: array
           items:
-            $ref: "#/components/schemas/entry"
+            $ref: '#/components/schemas/entry'
     PageViewEventBean:
       type: object
       properties:
@@ -4250,298 +3366,6 @@ components:
         token_type:
           type: string
           description: The token type of the access and refresh token.
-    group:
-      type: object
-      description: The groups.
-      properties:
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-        groupTypeId:
-          type: string
-          description: The ID of the BlueConic group type.
-        id:
-          type: string
-          description: The unique identifier for the object.
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-        properties:
-          type: array
-          items:
-            $ref: "#/components/schemas/property"
-    property:
-      type: object
-      description: List of profile properties to be set.
-      properties:
-        id:
-          type: string
-          description: The ID of the property.
-        values:
-          type: array
-          description: Values for this property.
-          items:
-            type: string
-            description: Values for this property.
-    GroupsAPIGroups:
-      type: object
-      properties:
-        cursor:
-          type: string
-          description: The cursor of the current page. `*` when not passed.
-        groups:
-          type: array
-          description: The groups.
-          items:
-            $ref: "#/components/schemas/group"
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        links:
-          type: array
-          description: The links to the first and next/last page.
-          items:
-            $ref: "#/components/schemas/link"
-        nextCursor:
-          type: string
-          description: The cursor of the next page (if any).
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
-    link:
-      type: object
-      properties:
-        href:
-          type: string
-        rel:
-          type: string
-        type:
-          type: string
-    RefinementBean:
-      type: object
-      properties:
-        daysCount:
-          type: integer
-          format: int32
-          description: The days count
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/RefinementBean"
-        fromDate:
-          type: string
-          description: The from date
-        fromValue:
-          type: integer
-          format: int32
-          description: The from value
-        groupProperty:
-          type: string
-          description: The group property
-        hoursCount:
-          type: integer
-          format: int32
-          description: The hours count
-        objective:
-          type: string
-          description: The objective
-        operator:
-          type: string
-          description: The operator
-        property:
-          type: string
-          description: The property
-        toDate:
-          type: string
-          description: The to date
-        toValue:
-          type: integer
-          format: int32
-          description: The to value
-        values:
-          type: array
-          description: The values
-          items:
-            type: string
-            description: The values
-    BulkGroupInputEntry:
-      type: object
-      properties:
-        domainGroup:
-          type: string
-          default: DEFAULT
-          description: Specifies the domain group in which a group is created. Used
-            for matching and creating groups.
-        groupId:
-          type: string
-          description: The BlueConic group ID to search for.
-        groupTypeId:
-          type: string
-          description: The BlueConic group type ID.
-        identifier:
-          type: string
-          description: An (external) identifier which can be passed along with an
-            operation and is returned in the response.
-          example: "[[{\"id\": \"email\", value: \"test@test.com\"}]]"
-        properties:
-          type: object
-          description: The rules that will be executed on this group.
-          properties:
-            id:
-              type: string
-              description: The profile property ID to apply to this rule for.
-            strategy:
-              type: string
-              description: The strategy to apply to this rule.
-              enum:
-              - ADD
-              - SET
-              - SET_IF_EMPTY
-              - INCREMENT
-              - REMOVE
-            values:
-              type: array
-              description: The values to apply to this rule.
-              items:
-                type: string
-                description: The values to apply to this rule.
-        strategy:
-          type: string
-          default: UPDATE
-          description: "The strategy to apply to the given entry. Can be used to create,\
-            \ update or delete groups."
-          enum:
-          - UPSERT
-          - UPDATE
-          - DELETE
-    BulkGroupResultBean:
-      type: object
-      properties:
-        groupId:
-          type: string
-        groupTypeId:
-          type: string
-        identifier:
-          type: string
-          description: "The identifier (optionally) as passed in the input, can be\
-            \ used as reference."
-        state:
-          type: string
-          description: The possible states for group related changes.
-          enum:
-          - CREATED
-          - SKIPPED
-          - MODIFIED
-          - UNCHANGED
-          - NOTFOUND
-          - DELETED
-          - UNKNOWN_GROUP_TYPE
-        validationErrors:
-          type: object
-          additionalProperties:
-            type: array
-            description: The errors found for the given group changes (if any).
-            items:
-              type: string
-              description: The errors found for the given group changes (if any).
-          description: The errors found for the given group changes (if any).
-    BadRequestBean:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        errors:
-          type: array
-          items:
-            $ref: "#/components/schemas/ErrorBean"
-        message:
-          type: string
-    ErrorBean:
-      type: object
-      properties:
-        message:
-          type: string
-    BulkResultBean:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: "The identifier (optionally) as passed in the input, can be\
-            \ used as reference."
-        profileId:
-          type: string
-          description: "The profile ID of the profile that was created, updated or\
-            \ deleted."
-        state:
-          type: string
-          description: The possible states for profile related changes.
-          enum:
-          - CREATED
-          - SKIPPED
-          - MODIFIED
-          - UNCHANGED
-          - NOTFOUND
-          - RESTRICTION_MISMATCH
-          - CONSENT_MISMATCH
-          - DELETED
-        timeline:
-          type: array
-          description: The feedback on the given timeline events.
-          items:
-            $ref: "#/components/schemas/TimelineResultBean"
-        validationErrors:
-          type: object
-          additionalProperties:
-            type: array
-            description: The errors found for the given profile changes (if any).
-            items:
-              type: string
-              description: The errors found for the given profile changes (if any).
-          description: The errors found for the given profile changes (if any).
-    TimelineResultBean:
-      type: object
-      description: The feedback on the given timeline events.
-      properties:
-        id:
-          type: string
-          description: The ID for this event.
-        identifier:
-          type: string
-          description: "The identifier (optionally) as passed in the input, can be\
-            \ used as reference."
-        state:
-          type: string
-          description: The possible states for timeline events.
-          enum:
-          - CREATED
-          - SET
-          - MODIFIED
-          - REJECTED
-          - NOTFOUND
-          - DELETED
-        validationErrors:
-          type: array
-          description: The errors found for the given timeline event changes (if any).
-          example:
-          - "#/total_revenue/0: expected type: Number, found: String"
-          items:
-            type: string
-            description: The errors found for the given timeline event changes (if
-              any).
-            example: "[\"#/total_revenue/0: expected type: Number, found: String\"\
-              ]"
     profileEvent:
       type: object
       properties:
@@ -4553,7 +3377,7 @@ components:
         property:
           type: array
           items:
-            $ref: "#/components/schemas/property"
+            $ref: '#/components/schemas/property'
         type:
           type: string
           description: The type of event.
@@ -4566,7 +3390,7 @@ components:
         events:
           type: array
           items:
-            $ref: "#/components/schemas/profileEvent"
+            $ref: '#/components/schemas/profileEvent'
         itemsPerPage:
           type: integer
           format: int32
@@ -4583,13 +3407,34 @@ components:
           type: integer
           format: int32
           description: The total number of results.
+    property:
+      type: object
+      description: List of profile properties to be set.
+      properties:
+        id:
+          type: string
+          description: The ID of the property.
+        values:
+          type: array
+          description: Values for this property.
+          items:
+            type: string
+            description: Values for this property.
     Labels:
       type: object
       properties:
         label:
           type: array
           items:
-            $ref: "#/components/schemas/label"
+            $ref: '#/components/schemas/label'
+      readOnly: true
+    UserBean:
+      type: object
+      properties:
+        fullName:
+          type: string
+        userName:
+          type: string
       readOnly: true
     currency:
       type: object
@@ -4618,6 +3463,15 @@ components:
         content:
           type: string
         locale:
+          type: string
+    link:
+      type: object
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+        type:
           type: string
     profileProperty:
       type: object
@@ -4657,9 +3511,9 @@ components:
             \ format, example = \"2023-01-22T11:21:33.872Z\"."
           readOnly: true
         creator:
-          $ref: "#/components/schemas/UserBean"
+          $ref: '#/components/schemas/UserBean'
         currency:
-          $ref: "#/components/schemas/currency"
+          $ref: '#/components/schemas/currency'
         dataSensitivity:
           type: string
           default: NON_PII
@@ -4672,7 +3526,6 @@ components:
           description: The description.
         favorite:
           type: boolean
-          description: If the item is favorited or not.
           readOnly: true
         filterType:
           type: string
@@ -4702,12 +3555,9 @@ components:
         lastModifiedDate:
           type: string
           format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
           readOnly: true
         lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
+          $ref: '#/components/schemas/UserBean'
         lastProfileMutationDate:
           type: string
           format: date-time
@@ -4751,10 +3601,9 @@ components:
           format: int64
           readOnly: true
         range:
-          $ref: "#/components/schemas/range"
+          $ref: '#/components/schemas/range'
         readOnly:
           type: boolean
-          description: If the item is read-only or not.
           readOnly: true
         showInUI:
           type: boolean
@@ -4774,7 +3623,7 @@ components:
           format: int64
           readOnly: true
         unit:
-          $ref: "#/components/schemas/unit"
+          $ref: '#/components/schemas/unit'
         useValidation:
           type: boolean
         values:
@@ -4807,14 +3656,14 @@ components:
           type: string
           description: The unit ID.
         name:
-          $ref: "#/components/schemas/Labels"
+          $ref: '#/components/schemas/Labels'
     links:
       type: object
       properties:
         links:
           type: array
           items:
-            $ref: "#/components/schemas/link"
+            $ref: '#/components/schemas/link'
     profileProperties:
       type: object
       properties:
@@ -4823,11 +3672,11 @@ components:
           format: int32
           description: Number of results per page.
         links:
-          $ref: "#/components/schemas/links"
+          $ref: '#/components/schemas/links'
         profileProperties:
           type: array
           items:
-            $ref: "#/components/schemas/profileProperty"
+            $ref: '#/components/schemas/profileProperty'
         startIndex:
           type: integer
           format: int32
@@ -4858,7 +3707,7 @@ components:
           type: array
           description: List of profile IDs that matches search criteria.
           items:
-            $ref: "#/components/schemas/AbstractBaseBean"
+            $ref: '#/components/schemas/AbstractBaseBean'
         startIndex:
           type: integer
           format: int32
@@ -4902,7 +3751,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Property"
+            $ref: '#/components/schemas/Property'
         date:
           type: string
           format: date-time
@@ -4937,9 +3786,9 @@ components:
       description: Lifecycle stages that the profile is part of.
       properties:
         lifecycle:
-          $ref: "#/components/schemas/simpleObject"
+          $ref: '#/components/schemas/simpleDomain'
         stage:
-          $ref: "#/components/schemas/simpleObject"
+          $ref: '#/components/schemas/simpleDomain'
     permissions:
       type: object
       properties:
@@ -4997,20 +3846,20 @@ components:
             description: List of objective IDs that the profile has refused consent
               to.
         permissions:
-          $ref: "#/components/schemas/permissions"
+          $ref: '#/components/schemas/permissions'
         properties:
           type: array
           items:
-            $ref: "#/components/schemas/property"
+            $ref: '#/components/schemas/property'
         events:
           type: array
           items:
-            $ref: "#/components/schemas/event"
+            $ref: '#/components/schemas/event'
         lifecycleStages:
           type: array
           description: Lifecycle stages that the profile is part of.
           items:
-            $ref: "#/components/schemas/lifecycleStage"
+            $ref: '#/components/schemas/lifecycleStage'
         replacedBy:
           type: string
           description: The profile ID that replaced this profile.
@@ -5023,7 +3872,7 @@ components:
         segments:
           type: array
           items:
-            $ref: "#/components/schemas/profileSegmentBean"
+            $ref: '#/components/schemas/profileSegmentBean'
     profileSegmentBean:
       type: object
       properties:
@@ -5033,7 +3882,7 @@ components:
         name:
           type: string
           description: The name of the segment.
-    simpleObject:
+    simpleDomain:
       type: object
       properties:
         id:
@@ -5041,7 +3890,7 @@ components:
           description: Unique identifier.
         name:
           type: string
-          description: The object name.
+          description: Name of this object.
     BulkInputEntryV2:
       type: object
       properties:
@@ -5068,7 +3917,7 @@ components:
               \ have an \"OR\" relation, the items in the inner array have an \"AND\"\
               \ relation."
             items:
-              $ref: "#/components/schemas/Criterium"
+              $ref: '#/components/schemas/Criterium'
         permissionLevel:
           type: string
           default: PERSONAL
@@ -5119,9 +3968,9 @@ components:
             \ is returned. </br>`refused_objectives`: the value(s) passed in this\
             \ property are used to set the explicitly refused objectives."
           items:
-            $ref: "#/components/schemas/ProfileProperty"
+            $ref: '#/components/schemas/ProfileProperty'
         restriction:
-          $ref: "#/components/schemas/restriction"
+          $ref: '#/components/schemas/restriction'
         strategy:
           type: string
           default: UPDATE
@@ -5136,7 +3985,7 @@ components:
           description: The timeline event entries that will be applied to the timeline
             for this profile.
           items:
-            $ref: "#/components/schemas/event"
+            $ref: '#/components/schemas/event'
     Criterium:
       type: object
       description: "The profile properties to match (only use \"Unique Identifier\"\
@@ -5196,6 +4045,92 @@ components:
         isMemberOfSegment:
           type: string
           description: The segment ID this profile should be a part of.
+    BulkResultBean:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: "The identifier (optionally) as passed in the input, can be\
+            \ used as reference."
+        profileId:
+          type: string
+          description: "The profile ID of the profile that was created, updated or\
+            \ deleted."
+        state:
+          type: string
+          description: The possible states for profile related changes.
+          enum:
+          - CREATED
+          - SKIPPED
+          - MODIFIED
+          - UNCHANGED
+          - NOTFOUND
+          - RESTRICTION_MISMATCH
+          - CONSENT_MISMATCH
+          - DELETED
+        timeline:
+          type: array
+          description: The feedback on the given timeline events.
+          items:
+            $ref: '#/components/schemas/TimelineResultBean'
+        validationErrors:
+          type: object
+          additionalProperties:
+            type: array
+            description: The errors found for the given profile changes (if any).
+            items:
+              type: string
+              description: The errors found for the given profile changes (if any).
+          description: The errors found for the given profile changes (if any).
+    TimelineResultBean:
+      type: object
+      description: The feedback on the given timeline events.
+      properties:
+        id:
+          type: string
+          description: The ID for this event.
+        identifier:
+          type: string
+          description: "The identifier (optionally) as passed in the input, can be\
+            \ used as reference."
+        state:
+          type: string
+          description: The possible states for timeline events.
+          enum:
+          - CREATED
+          - SET
+          - MODIFIED
+          - REJECTED
+          - NOTFOUND
+          - DELETED
+        validationErrors:
+          type: array
+          description: The errors found for the given timeline event changes (if any).
+          example:
+          - "#/total_revenue/0: expected type: Number, found: String"
+          items:
+            type: string
+            description: The errors found for the given timeline event changes (if
+              any).
+            example: "[\"#/total_revenue/0: expected type: Number, found: String\"\
+              ]"
+    BadRequestBean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorBean'
+        message:
+          type: string
+    ErrorBean:
+      type: object
+      properties:
+        message:
+          type: string
     SegmentProfiles:
       type: object
       properties:
@@ -5210,7 +4145,7 @@ components:
           type: array
           description: The links to the first and next/last page.
           items:
-            $ref: "#/components/schemas/link"
+            $ref: '#/components/schemas/link'
         nextCursor:
           type: string
           description: The cursor of the next page (if any).
@@ -5218,7 +4153,7 @@ components:
           type: array
           description: The profiles that are in this segment.
           items:
-            $ref: "#/components/schemas/profile"
+            $ref: '#/components/schemas/profile'
         totalPages:
           type: integer
           format: int32
@@ -5242,13 +4177,12 @@ components:
             \ format, example = \"2023-01-22T11:21:33.872Z\"."
           readOnly: true
         creator:
-          $ref: "#/components/schemas/UserBean"
+          $ref: '#/components/schemas/UserBean'
         description:
           type: string
           description: The description.
         favorite:
           type: boolean
-          description: If the item is favorited or not.
           readOnly: true
         id:
           type: string
@@ -5260,18 +4194,14 @@ components:
         lastModifiedDate:
           type: string
           format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
           readOnly: true
         lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
+          $ref: '#/components/schemas/UserBean'
         name:
           type: string
           description: The object name.
         readOnly:
           type: boolean
-          description: If the item is read-only or not.
           readOnly: true
         tags:
           type: array
@@ -5292,7 +4222,7 @@ components:
           type: array
           description: The segments.
           items:
-            $ref: "#/components/schemas/segment"
+            $ref: '#/components/schemas/segment'
         startIndex:
           type: integer
           format: int32
@@ -5356,7 +4286,7 @@ components:
           - value: "1.5"
             algorithm: RECENCY
           items:
-            $ref: "#/components/schemas/Boost"
+            $ref: '#/components/schemas/Boost'
         count:
           type: integer
           format: int32
@@ -5430,7 +4360,7 @@ components:
           type: array
           description: The recommendation blocks as defined in the request body.
           items:
-            $ref: "#/components/schemas/RecommendationSubResponse"
+            $ref: '#/components/schemas/RecommendationSubResponse'
         recommendationId:
           type: string
           description: The unique ID for this recommendation request.
@@ -5449,7 +4379,7 @@ components:
           type: array
           description: The recommendations of this block.
           items:
-            $ref: "#/components/schemas/RecommendationItem"
+            $ref: '#/components/schemas/RecommendationItem'
     urlmapping:
       type: object
       properties:
@@ -5460,7 +4390,7 @@ components:
           type: array
           description: List of profile properties to be set.
           items:
-            $ref: "#/components/schemas/property"
+            $ref: '#/components/schemas/property'
         type:
           type: string
           description: The tracker must be one of the available types.

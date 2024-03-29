@@ -12,7 +12,7 @@
       "name" : "BlueConic",
       "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
-    "version" : "92.0"
+    "version" : "91.0"
   },
   "servers" : [ {
     "url" : "https://{blueconicHostname}/rest/v2",
@@ -26,34 +26,28 @@
   } ],
   "tags" : [ {
     "name" : "Audit Events",
-    "description" : "The Audit Event API allows users to connect BlueConic to a SIEM system. We recommend using this API to periodically receive security-related activities based on a rolling window. The API has a 30-day retention period.\n\nThe API logs the following audit events:\n\n| Object                     | Events                                                                                         |\n|:---------------------------|:-----------------------------------------------------------------------------------------------|\n| BlueConic hostname         | Create, Update, Delete                                                                         |\n| BlueConic Support Access   | Update (for each change)                                                                       |\n| Channel                    | Create, Update, Delete                                                                         |\n| Clean up rule              | Create, Update, Delete                                                                         |\n| Connection                 | Create, Update, Delete, Manual run, Scheduled run                                              |\n| Dashboard                  | Create, Update, Delete                                                                         |\n| Dialogue                   | Create, Update, Delete                                                                         |\n| Domain Group               | Create, Update, Delete                                                                         |\n| Group                      | Read, Update, Delete                                                                           |\n| Group type                 | Create, Update, Delete                                                                         |\n| Ip range                   | Create, Update, Delete                                                                         |\n| Language                   | Create, Update, Delete                                                                         |\n| Lifecycle                  | Create, Update, Delete                                                                         |\n| Merge rule                 | Create, Update, Delete                                                                         |\n| Notebook                   | Create, Update, Delete, Manual run, Scheduled run, Editor run                                  |\n| OAuth application          | Create, Update, Delete                                                                         |\n| OAuth token                | Create, Update, Delete                                                                         |\n| Objective                  | Create, Update, Delete                                                                         |\n| Plugin                     | Create, Update, Delete                                                                         |\n| Privacy setting            | Update (for each change)                                                                       |\n| Profile                    | Read, Update, Delete                                                                           |\n| Profile property           | Create, Update, Delete                                                                         |\n| Role                       | Create, Update, Delete                                                                         |\n| Segment                    | Create, Update, Delete                                                                         |\n| Single Sign On Setting     | Update (for each change)                                                                       |\n| Supported Legislation Zone | Create, Delete, Update                                                                         |\n| Timeline Event Rollup      | Create, Update, Delete                                                                         |\n| Tracker                    | Create, Update, Delete                                                                         |\n| User                       | Login, Login failed, Logout, Create, Update, Delete, Password reset requested, Password change |\n\n\nOnly Profile and Group viewed, updated, or deleted by a user from the Profile and Groups tab are logged.\n\nThe following events are not considered as human actions, and therefore not covered in the Platform\nAudit Event API:\n\n- Connections that import or export profiles.\n- Profile and group creation (Profiles can only be created by a visitor or an import connection).\n\n**Event data**\n\nThe following event data is available:\n\n| Field                  | Description      | Example values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :---                   | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n|date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt format.| 2023-04-15T11:24:01.183Z                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |\n|username|(BlueConic) Identifier (email address) of the user who did the action.<br /><br />Value is empty for failed login attempts.| test@blueconic.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul> |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case the objectId is empty</li></ul></li><li>Grouptype_GroupID in case of a group</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectId is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li> For BLUECONIC_SUPPORT_ACCESS_SETTING the objectID contains the new settings.<ul><li> `\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or </li><li>`\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }], (contains the new list)` or</li><li>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</li></ul></li><li>UUID or identifier in case of other object types.</li></ul>| <ul><li>1b1e50a5-c46a-4309-a95c-d4e19985fbbb</li><li>test@blueconic.com</li><li>test_objective</li><li>test_profile_property</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                 |\n|objectName|<p>Human readable name of the object.</p><p>For Profiles, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic ID (UUID)</li></ol><p>For Users, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case, the objectName is empty.</li></ul><p>For groups, the name is the group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }],` (contains the new list) or</p></li><li><p>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</p></li></ul>| <ul><li>SFTP connection</li><li>test@blueconic.om</li><li>Keyword Interest Ranking</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n|operation| Action performed on the object.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>                                                                                                                                                                                                                                                                                                                             \n|ipAddress| The source IP address from which the event was triggered.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 192.168.1.100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |\n|application| The application that performed the audit event operation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | blueconic                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |\n\n"
-  }, {
-    "name" : "Channels",
-    "description" : "The Channel API allows you to retrieve information about [channels in BlueConic](https://support.blueconic.com/hc/en-us/articles/200472632-Overview-What-are-channels-in-BlueConic)."
+    "description" : "The Audit Event API allows users to connect BlueConic to a SIEM system. We recommend using this API to periodically receive security-related activities based on a rolling window. The API has a 30-day retention period.\n\nThe API logs the following audit events:\n\n| Object                                    | Events                                                                                         |\n| :---------------------------------------- |:-----------------------------------------------------------------------------------------------|\n| BlueConic hostname                        | Create, Update, Delete                                                                         |\n| BlueConic Support Access                  | Update (for each change)                                                                       |\n| Channel                                   | Create, Update, Delete                                                                         |\n| Clean up rule                             | Create, Update, Delete                                                                         |\n| Connection                                | Create, Update, Delete, Manual run, Scheduled run                                              |\n| Dashboard                                 | Create, Update, Delete                                                                         |\n| Dialogue                                  | Create, Update, Delete                                                                         |\n| Domain Group                              | Create, Update, Delete                                                                         |\n| Group                                     | Read, Update, Delete                                                                           |\n| Group type                                | Create, Update, Delete                                                                         |\n| Ip range                                  | Create, Update, Delete                                                                         |\n| Language                                  | Create, Update, Delete                                                                         |\n| Lifecycle                                 | Create, Update, Delete                                                                         |\n| Merge rule                                | Create, Update, Delete                                                                         |\n| Notebook                                  | Create, Update, Delete, Manual run, Scheduled run, Editor run                                  |\n| OAuth application                         | Create, Update, Delete                                                                         |\n| OAuth token                               | Create, Update, Delete                                                                         |\n| Objective                                 | Create, Update, Delete                                                                         |\n| Plugin                                    | Create, Update, Delete                                                                         |\n| Privacy setting                           | Update (for each change)                                                                       |\n| Profile                                   | Read, Update, Delete                                                                           |\n| Profile property                          | Create, Update, Delete                                                                         |\n| Role                                      | Create, Update, Delete                                                                         |\n| Segment                                   | Create, Update, Delete                                                                         |\n| Single Sign On Setting                    | Update (for each change)                                                                       |\n| Supported Legislation Zone                | Create, Delete, Update                                                                         |\n| Tracker                                   | Create, Update, Delete                                                                         |\n| User                                      | Login, Login failed, Logout, Create, Update, Delete, Password reset requested, Password change |\n\n\nOnly Profile and Group viewed, updated, or deleted by a user from the Profile and Groups tab are logged.\n\nThe following events are not considered as human actions, and therefore not covered in the Platform\nAudit Event API:\n\n- Connections that import or export profiles.\n- Profile and group creation (Profiles can only be created by a visitor or an import connection).\n\n**Event data**\n\nThe following event data is available:\n\n| Field                  | Description      | Example values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :---                   | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n|date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt format.| 2023-04-15T11:24:01.183Z                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |\n|username|(BlueConic) Identifier (email address) of the user who did the action.<br /><br />Value is empty for failed login attempts.| test@blueconic.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul> |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case the objectId is empty</li></ul></li><li>Grouptype_GroupID in case of a group</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectId is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li> For BLUECONIC_SUPPORT_ACCESS_SETTING the objectID contains the new settings.<ul><li> `\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or </li><li>`\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }], (contains the new list)` or</li><li>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</li></ul></li><li>UUID or identifier in case of other object types.</li></ul>| <ul><li>1b1e50a5-c46a-4309-a95c-d4e19985fbbb</li><li>test@blueconic.com</li><li>test_objective</li><li>test_profile_property</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                 |\n|objectName|<p>Human readable name of the object.</p><p>For Profiles, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic ID (UUID)</li></ol><p>For Users, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case, the objectName is empty.</li></ul><p>For groups, the name is the group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }],` (contains the new list) or</p></li><li><p>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</p></li></ul>| <ul><li>SFTP connection</li><li>test@blueconic.om</li><li>Keyword Interest Ranking</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n|operation| Action performed on the object.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>                                                                                                                                                                                                                                                                                                                             \n|ipAddress| The source IP address from which the event was triggered.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 192.168.1.100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |\n|application| The application that performed the audit event operation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | blueconic                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |\n\n"
   }, {
     "name" : "Interaction events",
-    "description" : "Used to track an interaction (view, click, or conversion) with a BlueConic Dialogue. See [Tracking metrics for views, clicks, and conversions](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions)."
+    "description" : "Page view, view, click, conversion events for profiles on a website. [Read more](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions#watch-the-video-analyzing-dialogues-the-metrics-0-0)."
   }, {
     "name" : "Interactions",
     "description" : "Get the interactions (i.e. listeners and/or dialogues) that must be executed for a given profile that visits a certain page. Read more about [Dialogues](https://support.blueconic.com/hc/en-us/articles/202425271-Dialogues-Overview) or [Listeners](https://support.blueconic.com/hc/en-us/articles/202531942-Listeners-Overview)."
   }, {
     "name" : "Pageview events",
-    "description" : "Pageview events are used to track page views by profiles. This is used by BlueConic Listeners. See [Listeners and Trackers](https://support.blueconic.com/hc/en-us/sections/200913331-Listeners-and-Trackers)."
+    "description" : "The following method allows you to register a pageview event for reporting."
   }, {
     "name" : "OAuth 2.0",
     "description" : "The OAuth 2.0 API allows external applications to be authenticated and authorized to access the public BlueConic API. The OAuth 2.0 specification is implemented according to [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)."
   }, {
-    "name" : "Groups",
-    "description" : "The following methods allow you to create, modify, retrieve properties from, and delete BlueConic groups. See [Creating and managing groups](https://support.blueconic.com/hc/en-us/articles/360019531594-Creating-and-managing-groups)."
-  }, {
     "name" : "Profile events",
-    "description" : "Consent management events for a profile; consent changed or permission level changed. [Read more about using Objectives for privacy and consent](https://support.blueconic.com/hc/en-us/articles/360002107054-Overview-Using-BlueConic-Objectives-for-privacy-and-consent)."
+    "description" : "The following methods allow you to retrieve the events of a profile."
   }, {
     "name" : "Profile properties",
-    "description" : "The following methods allow you to retrieve and update [Profile Properties](https://support.blueconic.com/hc/en-us/articles/202608231-Capturing-customer-data-in-Profile-Properties)."
+    "description" : "The following methods allow you to retrieve and update profile properties."
   }, {
     "name" : "Profiles",
-    "description" : "The following methods allow you to create, modify, retrieve properties from, and delete [BlueConic Profiles](https://support.blueconic.com/hc/en-us/articles/115001671965-Overview-BlueConic-Profiles), as well as retrieve BlueConic segment information."
+    "description" : "The following methods allow you to create, modify, retrieve properties from, and delete BlueConic visitor profiles, as well as retrieve BlueConic segment information."
   }, {
     "name" : "Segments",
     "description" : "The segment API. The following methods allow you to retrieve information from segments and the profiles within a given segment."
@@ -115,111 +109,6 @@
         },
         "security" : [ {
           "oauth2" : [ "read:audit-events" ]
-        } ]
-      }
-    },
-    "/channels" : {
-      "get" : {
-        "tags" : [ "Channels" ],
-        "summary" : "Get all channels",
-        "description" : "Retrieves all channels.",
-        "operationId" : "getAll",
-        "parameters" : [ {
-          "name" : "startIndex",
-          "in" : "query",
-          "description" : "Specifies the index of the first result to return.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "example" : 0
-        }, {
-          "name" : "count",
-          "in" : "query",
-          "description" : "Specifies the number of results to return.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "example" : 10
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the channels.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ChannelsV2Schema"
-                },
-                "examples" : {
-                  "Example channels response" : {
-                    "description" : "Example channels response",
-                    "value" : "{\n  \"channels\" : [\n    {\n      \"aliases\" : [ \"blueconic.com\" ],\n      \"domain\": {\n        \"id\" : \"6398b714-45fd-4c28-ab08-80d8fea50757\",\n        \"name\" : \"blueconic.com\"\n      },\n      \"hostname\" : \"www.blueconic.com\",\n      \"id\" : \"6b44d80c-73c8-485b-ad76-b53a103751af\",\n      \"name\" : \"www.blueconic.com\",\n      \"tags\" : [ \"Marketing\", \"Data\", \"Privacy\" ],\n      \"type\" : \"WEBSITE\",\n      \"visitorCount\": 10\n    },\n    {\n      \"aliases\" : [ ],\n      \"domain\": {\n        \"id\" : \"6398b714-45fd-4c28-ab08-80d8fea50757\",\n        \"name\" : \"blueconic.com\"\n      },\n      \"hostname\" : \"ios://com.blueconic.app\",\n      \"id\" : \"9d7a7b63-7372-4d43-a67f-027a01918d64\",\n      \"name\" : \"BlueConic App\",\n      \"tags\" : [ \"Mobile\", \"Technology\" ],\n      \"type\" : \"MOBILE\",\n      \"visitorCount\": 2\n    },\n    {\n      \"aliases\" : [ ],\n      \"domain\": {\n        \"id\" : \"6398b714-45fd-4c28-ab08-80d8fea50757\",\n        \"name\" : \"blueconic.com\"\n      },\n      \"hostname\" : \"\",\n      \"id\" : \"e029bde2-3776-4985-a82c-090bf7e7673c\",\n      \"name\" : \"Newsletter\",\n      \"tags\" : [ \"Subscription\" ],\n      \"type\" : \"EMAIL\",\n      \"visitorCount\": 1\n    }\n  ],\n  \"itemsPerPage\" : 20,\n  \"startIndex\" : 0,\n  \"totalPages\" : 1,\n  \"totalResults\" : 3\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:channels" ]
-        } ]
-      }
-    },
-    "/channels/{channelId}" : {
-      "get" : {
-        "tags" : [ "Channels" ],
-        "summary" : "Get one channel",
-        "description" : "Retrieves a single channel.",
-        "operationId" : "getChannel",
-        "parameters" : [ {
-          "name" : "channelId",
-          "in" : "path",
-          "description" : "The ID of the channel.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "3b55d90d-91b8-263a-bd87-c43a104862ef"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the channel.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/channel"
-                },
-                "examples" : {
-                  "Example channel response" : {
-                    "description" : "Example channel response",
-                    "value" : "{\n  \"aliases\" : [ \"blueconic.com\" ],\n  \"canDelete\" : true,\n  \"creationDate\" : \"2024-01-24T12:30:50.000Z\",\n  \"creator\" : {\n    \"fullName\" : \"user@blueconic.com\",\n    \"userName\" : \"user@blueconic.com\"\n  },\n  \"description\" : \"BlueConic website\",\n  \"domain\": {\n    \"id\" : \"6398b714-45fd-4c28-ab08-80d8fea50757\",\n    \"name\" : \"www.blueconic.com\"\n  },\n  \"favorite\" : false,\n  \"hostname\" : \"www.blueconic.com\",\n  \"id\" : \"6b44d80c-73c8-485b-ad76-b53a103751af\",\n  \"lastModifiedDate\" : \"2024-02-01T12:30:50.000Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"user@blueconic.com\",\n    \"userName\" : \"user@blueconic.com\"\n  },\n  \"logo\" : \"https://bc.blueconic.net/rest/v2/channels/6b44d80c-73c8-485b-ad76-b53a103751af/logo?etag=3082b317eba5029e0aea03b42e3f3ca1\",\n  \"name\" : \"www.blueconic.com\",\n  \"readOnly\" : false,\n  \"tags\" : [ \"Marketing\", \"Data\", \"Privacy\" ],\n  \"type\" : \"WEBSITE\",\n  \"visitorCount\" : 10\n}"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "One or more required parameters are missing or invalid."
-          },
-          "404" : {
-            "description" : "Channel not found."
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:channels" ]
         } ]
       }
     },
@@ -593,274 +482,12 @@
         }
       }
     },
-    "/groups/{grouptype}/{group}" : {
-      "get" : {
-        "tags" : [ "Groups" ],
-        "summary" : "Get one group",
-        "description" : "Retrieves the properties of the specified group.",
-        "operationId" : "get",
-        "parameters" : [ {
-          "name" : "grouptype",
-          "in" : "path",
-          "description" : "The ID of the BlueConic group type.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "company"
-        }, {
-          "name" : "group",
-          "in" : "path",
-          "description" : "The ID of the BlueConic group.",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "pattern" : "(.*)+"
-          },
-          "example" : "640d01c7-1c30-4085-adf9-afad6560ec99"
-        }, {
-          "name" : "properties",
-          "in" : "query",
-          "description" : "Only returns the given group properties in the response.",
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "email,fullname,visits"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the specified group.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/group"
-                },
-                "examples" : {
-                  "Example group response" : {
-                    "description" : "Example group response",
-                    "value" : "{\n  \"id\" : \"41ebc321-b02b-4e8a-a368-82995c81fb18\",\n  \"groupTypeId\": \"company\",\n  \"creationDate\" : \"2023-03-27T10:36:11.990Z\",\n  \"lastModifiedDate\": \"2024-01-10T12:52:44.816Z\",\n  \"properties\" : [ {\n    \"id\" : \"domaingroup\",\n    \"values\" : [ \"DEFAULT\" ]\n  }, {\n    \"id\" : \"fullname\",\n    \"values\" : [ \"blueconic\" ]\n  }, {\n    \"id\" : \"variant\",\n    \"values\" : [ \"a\" ]\n  }, {\n    \"id\" : \"email\",\n    \"values\" : [ \"example@blueconic.com\" ]\n  }]\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "404" : {
-            "description" : "The specified group doesn't exist."
-          },
-          "408" : {
-            "description" : "Request timed out."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:groups" ]
-        } ]
-      }
-    },
-    "/groups/{grouptype}" : {
-      "get" : {
-        "tags" : [ "Groups" ],
-        "summary" : "Get groups for group type",
-        "description" : "Retrieves the groups for the given group type",
-        "operationId" : "getAll_1",
-        "parameters" : [ {
-          "name" : "grouptype",
-          "in" : "path",
-          "description" : "The ID of the group type.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "refinement",
-          "in" : "query",
-          "description" : "**Refinement**\n\nSpecifies (URL-encoded) the refinement used to filter groups. If not specified, all groups will be returned.\n\nTo filter groups using refinements you can use the query parameter refinement. The refinement parameter is a URL-encoded JSON object that contains the refinement in the form of one or more filters.\n\n\n**Logical operators**\n\nThe logical operators used when combining multiple filters.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| AND                     | All filters should match |\n| OR                      | Any of the filters should match |\n\n**Operators**\n\nThe operators used to filter the property or objectives within a group.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| IS_EMPTY                | If the given property value is empty | \n| NOT_IS_EMPTY            | If the given property value is not empty |\n| CONTAINS_ANY            | If the given property value contains any of the given values |\n| CONTAINS_ALL            | If the given property value contains all of the given values |\n| NOT_CONTAINS_ANY        | If the given property value does not contain any of the given values |\n| NOT_CONTAINS_ALL        | If the given property value does not contain all of the given values |\n| IN_RANGE                | If the given property value is in the given range |\n| NOT_IN_RANGE            | If the given property value is not in the given range |\n| IN_LAST_DAYS            | If the given property value is in the last given number of days |\n| NOT_IN_LAST_DAYS        | If the given property value is not in the last given number of days |\n| IN_NEXT_DAYS            | If the given property value is in the next given number of days |\n| NOT_IN_NEXT_DAYS        | If the given property value is not in the next given number of days |",
-          "schema" : {
-            "$ref" : "#/components/schemas/RefinementBean"
-          },
-          "examples" : {
-            "URL encoded example" : {
-              "description" : "URL encoded example",
-              "value" : "%7B%22property%22%3A%20%22email%22%2C%20%22operator%22%3A%20%22IS_EMPTY%22%7D%0A"
-            },
-            "Example composite refinement (not yet URL-encoded)" : {
-              "description" : "Example composite refinement (not yet URL-encoded)",
-              "value" : "{\n  \"filters\": [{\n    \"property\": \"email\",\n    \"operator\": \"IS_EMPTY\"\n  }, {\n    \"property\": \"variant\",\n    \"operator\": \"CONTAINS_ANY\",\n    \"values\": [\"VariantA\", \"VariantB\"]\n  }\n  ],\n  \"operator\": \"AND\"\n}"
-            },
-            "Example property filter refinement (not yet URL-encoded)" : {
-              "description" : "Example property filter refinement (not yet URL-encoded)",
-              "value" : "{\n  \"property\": \"visits\",\n  \"operator\": \"IN_RANGE\",\n  \"fromValue\": 1,\n  \"toValue\": 10\n}\n"
-            }
-          }
-        }, {
-          "name" : "cursor",
-          "in" : "query",
-          "description" : "Defines the starting point of the page for pagination. When cursors are used, each page, except the last page, returns a `nextCursor` value which can be used to retrieve the next page.",
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "*"
-        }, {
-          "name" : "count",
-          "in" : "query",
-          "description" : "Specifies the number of results to return. Smaller than or equal to 1.000.000.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "example" : 20
-        }, {
-          "name" : "properties",
-          "in" : "query",
-          "description" : "Specifies which group properties values will be returned for each group. If not specified, the values of all group properties will be returned, which may result in a large result set. One or more group property ids, separated by a comma.",
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "browserversion,email"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the groups of the given group type in a streaming fashion (`Transfer-Encoding: chunked`).",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GroupsAPIGroups"
-                },
-                "examples" : {
-                  "Example groups response" : {
-                    "description" : "Example groups response",
-                    "value" : "{\n\"itemsPerPage\":20,\n\"totalPages\":5,\n\"totalResults\":100,\n\"cursor\":\"*\",\n\"nextCursor\":\"AoJylraPsPICPwU4ZDZiMzhmYS0yMmYwLTRmZTAtYmE0My1kOWVlNTFjNWE5MDA\",\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/groups/company?cursor=%2A&count=20\",\n    \"rel\" : \"first\",\n    \"type\" : \"application/json\"\n  }, {\n    \"href\" : \"https://localhost/rest/v2/groups/company?cursor=AoJylraPsPICPwU4ZDZiMzhmYS0yMmYwLTRmZTAtYmE0My1kOWVlNTFjNWE5MDA&count=20\",\n    \"rel\" : \"last\",\n    \"type\" : \"application/json\"\n  } ]\n,\n\"groups\": [\n{\n  \"id\" : \"41ebc321-b02b-4e8a-a368-82995c81fb18\",\n  \"groupTypeId\": \"company\",\n  \"creationDate\" : \"2023-03-27T10:36:11.990Z\",\n  \"lastModifiedDate\": \"2024-01-10T12:52:44.816Z\",\n  \"properties\" : [ {\n    \"id\" : \"domaingroup\",\n    \"values\" : [ \"DEFAULT\" ]\n  }, {\n    \"id\" : \"fullname\",\n    \"values\" : [ \"blueconic\" ]\n  }, {\n    \"id\" : \"variant\",\n    \"values\" : [ \"a\" ]\n  }, {\n    \"id\" : \"email\",\n    \"values\" : [ \"example@blueconic.com\" ]\n  }]\n}\n]}"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "One or more required parameters are missing or invalid."
-          },
-          "404" : {
-            "description" : "Group type not found."
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:groups" ]
-        } ]
-      }
-    },
-    "/groups" : {
-      "put" : {
-        "tags" : [ "Groups" ],
-        "summary" : "Create, update, or delete one or more groups",
-        "description" : "Create, update, or delete one or more groups in a single request. This is the recommended way of creating, updating and deleting groups.",
-        "operationId" : "updateGroupAsync",
-        "requestBody" : {
-          "description" : "**Group strategy**\n\nThe following values are valid strategies for group operations. These can be used to create, update or delete groups.\n\n| Name         | Description                                                                                |\n| :----------- |:-------------------------------------------------------------------------------------------|\n| UPSERT   | Will update (and insert if not found) the group based on the rules passed along.           |\n| UPDATE   | Will update (but doesn’t insert if not found) the group based on the rules passed along. |\n| DELETE   | Will delete the group with the given ID.                                                 |\n\n**Limits**\n\n* Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).\n* When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/BulkGroupInputEntry"
-                }
-              },
-              "examples" : {
-                "Basic create group example" : {
-                  "description" : "Example that shows how to create one group.",
-                  "value" : "[{\n    \"properties\": [{\n            \"id\": \"company_test_zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"company_test_email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"groupId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"groupType\": \"company_test\",\n    \"strategy\": \"UPSERT\"\n}]"
-                },
-                "Advanced example" : {
-                  "description" : "This request contains three operations:\n\n* The first operation looks up a specific BlueConic group by its id, then sets the property with id crm_id to 003Kz4Bsaa14 and adds a new entry to email property. If the group cannot be found, nothing will happen.\n* The second operation deletes a specific BlueConic group by its id.\n* The third operation tries to find a BlueConic group by its id in the specified domain. If the group is found, three properties will be set:\n    * Zipcodes `02111` and `02112` will be added.\n    * `email` will be set to `jane@example.com.`\n    * `crm_id` will be set to `002wC4BadR1w`.\n    * If no group can be found, a new group is created in the specified domaingroup. The three properties will be set on the group.\n",
-                  "value" : "[{\n    \"groupId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"groupType\": \"company_test\",\n    \"properties\": [{\n        \"id\": \"company_test_crm_id\",\n        \"values\": [\"003Kz4Bsaa11\"],\n        \"strategy\": \"SET\"\n    }, {\n        \"id\": \"company_test_email\",\n        \"values\": [\"user_0000@gmail.com\"],\n        \"strategy\": \"ADD\"\n    }]\n},\n    {\n        \"groupId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n        \"groupType\": \"company_test\",\n        \"strategy\": \"DELETE\"\n    },\n    {\n        \"groupId\": \"f8daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n        \"groupType\": \"company_test\",\n        \"properties\": [{\n            \"id\": \"company_test_zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"ADD\"\n        },\n        {\n            \"id\": \"company_test_email\",\n            \"values\": [\"jane99@example.com\"],\n            \"strategy\": \"ADD\"\n        },\n        {\n            \"id\": \"company_test_crm_id\",\n            \"values\": [\"002wC5BadR1w\"],\n            \"strategy\": \"SET\"\n        }\n        ],\n        \"strategy\": \"UPSERT\",\n        \"domainGroup\": \"85ee8f33-15a3-4e95-aff5-abfa5bc457ab\"\n    }\n]"
-                }
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Bulk response \n\n**JSON Response**\n\nEvery bulk operation is returned in the response as well.\nThe state can be one of the following values: `CREATED`, `SKIPPED`, `MODIFIED`, `DELETED`, `UNCHANGED`, `NOTFOUND`, or `UNKNOWN_GROUP_TYPE`.\n\n```json\n[{\n    \"state\": \"CREATED\",\n    \"groupId\": \"group-ID of the created group\",\n    \"groupTypeId\": \"group-type-ID of the created group\",\n    \"identifier\": \" my-external-identifier\"\n}]\n```",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/BulkGroupResultBean"
-                  }
-                },
-                "examples" : {
-                  "Example bulk response" : {
-                    "description" : "Example bulk response",
-                    "value" : "[\n  {\n    \"groupId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"groupTypeId\": \"company_test\",\n    \"state\": \"MODIFIED\"\n  },\n  {\n    \"groupId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"groupTypeId\": \"company_test\",\n    \"state\": \"DELETED\"\n  }\n]"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "One or more required parameters are missing or invalid.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/BadRequestBean"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Forbidden, invalid (PII) permissions to perform the request. Please check your OAuth Application configuration."
-          },
-          "413" : {
-            "description" : "More than the allowed 1000 entries are sent in the request. The entries that are processed are returned in the response.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/BulkResultBean"
-                  }
-                },
-                "examples" : {
-                  "Example bulk response" : {
-                    "description" : "Example bulk response",
-                    "value" : "[\n  {\n    \"groupId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"groupTypeId\": \"company_test\",\n    \"state\": \"MODIFIED\"\n  },\n  {\n    \"groupId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"groupTypeId\": \"company_test\",\n    \"state\": \"DELETED\"\n  }\n]"
-                  }
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests are sent concurrently. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "write:groups" ]
-        } ]
-      }
-    },
     "/profileEvents/{profileId}" : {
       "get" : {
         "tags" : [ "Profile events" ],
         "summary" : "Get profile events",
         "description" : "Retrieves the consent management events for a profile; consent changed or permission level changed.",
-        "operationId" : "get_1",
+        "operationId" : "get",
         "parameters" : [ {
           "name" : "profileId",
           "in" : "path",
@@ -1193,7 +820,7 @@
         "tags" : [ "Profiles" ],
         "summary" : "Search profiles",
         "description" : "Search for BlueConic profiles based on a specific value for an indexed (unique) property. Multiple name/value pairs can be used to refine the search.",
-        "operationId" : "get_2",
+        "operationId" : "get_1",
         "parameters" : [ {
           "name" : "property",
           "in" : "query",
@@ -1225,7 +852,7 @@
           "examples" : {
             "List of profile property values" : {
               "description" : "List of profile property values",
-              "value" : "\"john.smith@blueconic.com\""
+              "value" : "john.smith@blueconic.com"
             }
           }
         } ],
@@ -1271,7 +898,7 @@
         "parameters" : [ {
           "name" : "objectiveIds",
           "in" : "query",
-          "description" : "A list of Objective IDs. If you provide objectiveIDs, profiles will only be updated or created if they have given consent for the provided objectives or consent is not required for the legislation zone of the profile. If a profile would have been created or updated, but is skipped because of an objective mismatch, the response will contain a `CONSENT_MISMATCH` state for that profile. If you don’t provide objectiveIDs, the update will always proceed.",
+          "description" : "A list of IDs that should map on objectives that are configured in the BlueConic UI. If passed, the profiles to be updated that are in the privacy legislation zone are matched against these objectives. If there is no match, the profile won’t be updated (or created, for that matter).\n If a profile would have been created/updated, but is skipped because of an objective mismatch, the response will contain a `CONSENT_MISMATCH` state for that profile.",
           "schema" : {
             "type" : "string",
             "format" : "uuid",
@@ -1285,7 +912,7 @@
           }
         } ],
         "requestBody" : {
-          "description" : "**Timeline event types**\n\nTimeline event types can be accessed through **Timeline event types** tab in BlueConic. In this tab you can create a new timeline event type, update, or delete existing ones.\n\nIt's possible to add, update, or remove properties and nested properties from a timeline event type. The property ID of timeline event property can only be changed until it's saved.\nTo update the property ID after saving, the property will have to be deleted and recreated with the desired ID.\n\n**Timeline events**\n\nEvents are data points tied to the [BlueConic Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic) of a profile, e.g. an order the customer placed. BlueConic comes out of the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types). \nEvents can be HIGH or LOW priority. There is a maximum number of 250 events per profile allowed.\nLOW priority events have a retention period between 1 and 365 days (the default is 30 days).\nHIGH priority events have a retention period of 1 day and up.\nThe default is indefinitely; however, they are constrained by the total number of events and take precedence over LOW priority events, which are capped at 50 if there are 200 or more HIGH priority events.\n\n**Privacy legislations and consent management**\n\nAny `objectiveIds` passed in the query string are matched against the profile that is being created.\nMatching is done against the special profile property `consented_objectives`, which reflects the objective IDs that the profile has explicitly consented to. So, for the profile to be created, the “properties” should at least contain one of the objective IDs passed in the querystring, for the property with id `consented_objectives`. Otherwise, the `CONSENT_MISMATCH` state is returned in the response.\n\nThe following values are valid privacy legislation zone values.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| CCPA                    | A profile is governed by CCPA in the State of California. |\n| GDPR                    | A profile is governed by GDPR in Europe. |\n| NYPA                    | A profile is governed by NYPA in the State of New York. |\n| PIPEDA                  | A profile is governed by PIPEDA in Canada. |\n| SB220                   | A profile is governed by SB220 in the State of Nevada. |\n| PERU_DPL                | A profile is governed by the Personal Data Protection Law (PDPL) of Peru. |\n| ARGENTINA_DPL           | A profile is governed by the Personal Data Protection Law (PDPL) of Argentina. |\n| SB1392                  | A profile is governed by SB1392 of the Commonwealth of Virginia |\n| SB190                   | A profile is governed by the State of Colorado. |\n| BRAZIL_LGPD             | A profile is governed by the Brazilian General Protection Law. |\n| ISRAEL_PPL              | A profile is governed by the Israel Protection Privacy Law. |\n| JAPAN_APPI              | A profile is governed by the Japan APPI. |\n| NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New Zealand Privacy Act. |\n| SWITZERLAND_DPA         | A profile is governed by the Switzerland Data Protection Act (DPA). |\n| UK_GDPR                 | A profile is governed by the United Kingdom General Data Protection Regulation. |\n| CHINA_PIPL              | A profile is governed by the People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy Act. |\n| NONE                    | The profile is not governed by a known privacy legislation zone; profile will just be created. NONE legislations are also targeted when 'Rest of World' is selected in an objective. |\n\n**Profile strategy**\n\nThe following values are valid strategies for profile operations. These can be used to create, update or delete profiles.\n\n| Name         | Description |\n| :----------- | :---------- |\n| UPSERT   | Will update (and insert if not found) the profile based on the rules passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the profile based on the rules passed along. |\n| DELETE   | Will delete the profile with the given ID. |\n\n**Timeline Strategy**\n\nThe following values are valid timeline strategies. These can either be used for the strategy property for a timeline event as a whole, or when passing rules to apply on nested timeline event properties.\n\n| Name     | Description |\n| :--------| :---------- |\n| SET      | Timeline event will be added to the profile timeline as is, possibly replacing the existing event with the same ID, event type ID, and date. |\n| UPSERT   | Will update (and insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| DELETE   | Will delete the timeline event with the given ID, event type ID and, optionally, a date. If not passed, all events matching the ID and event type ID will be deleted. |\n\n**Profile and Timeline property strategy**\n\nThe following values are valid property strategies. These rules apply on profile and timeline event properties.\n\n| Name         | Description |\n| :----------- | :---------- |\n| ADD          | Values will be added to the values that already existed in the profile or timeline event property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the profile or timeline event property. |\n| SET_IF_EMPTY | Only set values if the profile or timeline event property is empty. |\n| SUM          | Add the value to the value already stored in the profile property. This is not supported for timeline event properties. |\n| REMOVE       | Remove the value from the list of values already stored in the profile property. This is not yet supported for timeline event properties. |\n\n**Group property strategy**\n\nThe following values are valid property strategies. These rules apply on group properties.\n\n| Name         | Description                                                                                                  |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n| ADD          | Values will be added to the values that already existed in the group property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the group property.                                 |\n| SET_IF_EMPTY | Only set values if the group property is empty.                                                              |\n| SUM          | Add the value to the value already stored in the group property.                                             |\n| REMOVE       | Remove the value from the list of values already stored in the group property.                               |\n\n**Limits**\n\n* Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).\n* When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.",
+          "description" : "**Timeline event types**\n\nTimeline event types can be accessed through **Timeline event types** tab in BlueConic. In this tab you can create a new timeline event type, update, or delete existing ones.\n\nIt's possible to add, update, or remove properties and nested properties from a timeline event type. The property ID of timeline event property can only be changed until it's saved.\nTo update the property ID after saving, the property will have to be deleted and recreated with the desired ID.\n\n**Timeline events**\n\nEvents are data points tied to the [BlueConic Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic) of a profile, e.g. an order the customer placed. BlueConic comes out of the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types). \nEvents can be HIGH or LOW priority. There is a maximum number of 250 events per profile allowed.\nLOW priority events have a retention period between 1 and 365 days (the default is 30 days).\nHIGH priority events have a retention period of 1 day and up.\nThe default is indefinitely; however, they are constrained by the total number of events and take precedence over LOW priority events, which are capped at 50 if there are 200 or more HIGH priority events.\n\n**Privacy legislations and consent management**\n\nAny `objectiveIds` passed in the query string are matched against the profile that is being created.\nMatching is done against the special profile property `consented_objectives`, which reflects the objective IDs that the profile has explicitly consented to. So, for the profile to be created, the “properties” should at least contain one of the objective IDs passed in the querystring, for the property with id `consented_objectives`. Otherwise, the `CONSENT_MISMATCH` state is returned in the response.\n\nThe following values are valid privacy legislation zone values.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| CCPA                    | A profile is governed by CCPA in the State of California. |\n| GDPR                    | A profile is governed by GDPR in Europe. |\n| NYPA                    | A profile is governed by NYPA in the State of New York. |\n| PIPEDA                  | A profile is governed by PIPEDA in Canada. |\n| SB220                   | A profile is governed by SB220 in the State of Nevada. |\n| PERU_DPL                | A profile is governed by the Personal Data Protection Law (PDPL) of Peru. |\n| ARGENTINA_DPL           | A profile is governed by the Personal Data Protection Law (PDPL) of Argentina. |\n| SB1392                  | A profile is governed by SB1392 of the Commonwealth of Virginia |\n| SB190                   | A profile is governed by the State of Colorado. |\n| BRAZIL_LGPD             | A profile is governed by the Brazilian General Protection Law. |\n| ISRAEL_PPL              | A profile is governed by the Israel Protection Privacy Law. |\n| JAPAN_APPI              | A profile is governed by the Japan APPI. |\n| NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New Zealand Privacy Act. |\n| SWITZERLAND_DPA         | A profile is governed by the Switzerland Data Protection Act (DPA). |\n| UK_GDPR                 | A profile is governed by the United Kingdom General Data Protection Regulation. |\n| CHINA_PIPL              | A profile is governed by the People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy Act. |\n| NONE                    | The profile is not governed by a known privacy legislation zone; profile will just be created. NONE legislations are also targeted when 'Rest of World' is selected in an objective. |\n\n**Profile strategy**\n\nThe following values are valid strategies for profile operations. These can be used to create, update or delete profiles.\n\n| Name         | Description |\n| :----------- | :---------- |\n| UPSERT   | Will update (and insert if not found) the profile based on the rules passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the profile based on the rules passed along. |\n| DELETE   | Will delete the profile with the given ID. |\n\n**Timeline Strategy**\n\nThe following values are valid timeline strategies. These can either be used for the strategy property for a timeline event as a whole, or when passing rules to apply on nested timeline event properties.\n\n| Name     | Description |\n| :--------| :---------- |\n| SET      | Timeline event will be added to the profile timeline as is, possibly replacing the existing event with the same ID, event type ID, and date. |\n| UPSERT   | Will update (and insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| DELETE   | Will delete the timeline event with the given ID, event type ID and, optionally, a date. If not passed, all events matching the ID and event type ID will be deleted. |\n\n**Profile and Timeline property strategy**\n\nThe following values are valid property strategies. These rules apply on profile and timeline event properties.\n\n| Name         | Description |\n| :----------- | :---------- |\n| ADD          | Values will be added to the values that already existed in the profile or timeline event property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the profile or timeline event property. |\n| SET_IF_EMPTY | Only set values if the profile or timeline event property is empty. |\n| SUM          | Add the value to the value already stored in the profile property. This is not supported for timeline event properties. |\n| REMOVE       | Remove the value from the list of values already stored in the profile property. This is not yet supported for timeline event properties. |\n\n**Limits**\n\n* Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).\n* When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.",
           "content" : {
             "application/json" : {
               "schema" : {
@@ -1299,21 +926,13 @@
                   "description" : "Example that shows how to create one profile.",
                   "value" : "[{\n    \"matching\": [\n        [{\n            \"id\": \"email\",\n            \"value\": \"jane@example.com\"\n        }]\n    ],\n    \"properties\": [{\n            \"id\": \"zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"strategy\": \"UPSERT\"\n}]"
                 },
-                "Update objectives for a single profile" : {
-                  "description" : "The following properties have a special meaning:\n\n`privacy_legislation`: The value passed in this property should be one of the [privacy legislation zone values](https://support.blueconic.com/hc/en-us/articles/202528082-BlueConic-REST-API#h_01GDB09HCR8WYFPF7MDHJ3D6DW), and is used to determine if a profile should be matched against the passed `objectiveIds` in the querystring.\n`consented_objectives`: The value(s) passed in this property are used to match against the passed `objectiveIds` in the querystring. At least one must match in order for the profile to be created or updated; otherwise `CONSENT_MISMATCH` is returned.\n`refused_objectives`: The value(s) passed in this property are used to set the explicitly refused objectives.\n\nThe strategy can be set to `ADD`, `SET`, `SET_IF_EMPTY`, `INCREMENT`, or `REMOVE`. ",
-                  "value" : "{\n    \"id\": \"530cb682-5f67-48ec-9662-57512b3dc899\",\n    \"setProperties\": {\n        \"privacy_legislation\": [\n        \"GDPR\"\n        ],\n        \"consented_objectives\": [\n        \"qunit_tests\",\n        \"qunit_tests2\"\n        ],\n        \"refused_objectives\": [\n        \"qunit_tests3\",\n        \"qunit_tests4\"\n        ]\n    }\n}"
-                },
                 "Advanced example" : {
                   "description" : "This request contains three operations:\n\n* The first operation looks up a specific BlueConic profile by its id, then sets the property with id crm_id to 003Kz4Bsaa14 and adds a new entry to email property. If the profile cannot be found, nothing will happen.\n* The second operation deletes a specific BlueConic profile by its id.\n* The third operation tries to find profiles that either have an email address `jane@example.com` or a crm_id of `002wC4BadR1w` in the specified domain. If any profile is found, three properties and timeline event will be set:\n    * Zipcodes `02111` and `02112` will be added.\n    * `email` will be set to `jane@example.com.`\n    * `crm_id` will be set to `002wC4BadR1w`.\n    * An `order` event will be added to the profiles timeline:\n        * `quantity` 2\n        * `net price` 3.45\n        * `coupon` \"FREETV\"\n        * `delivery date` 23/1/2023 at 11:45 PM\n    * If no profile can be found, a new profile is created in the specified domaingroup. The three properties and the timeline event will be set on the profile.\n",
                   "value" : "[{\n        \"profileId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n        \"properties\": [{\n            \"id\": \"crm_id\",\n            \"values\": [\"003Kz4Bsaa11\"],\n            \"strategy\": \"SET\"\n        }, {\n            \"id\": \"email\",\n            \"values\": [\"user_0000@gmail.com\"],\n            \"strategy\": \"ADD\"\n        }]\n    },\n    {\n        \"profileId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n        \"strategy\": \"DELETE\"\n    },\n    {\n        \"matching\": [\n            [{\n                \"id\": \"email\",\n                \"value\": \"jane@example.com\"\n            }],\n            [{\n                \"id\": \"crm_id\",\n                \"value\": \"002wC5BadR1w\"\n            }]\n        ],\n        \"properties\": [{\n                \"id\": \"zipcode\",\n                \"values\": [\"02111\", \"02112\"],\n                \"strategy\": \"ADD\"\n            },\n            {\n                \"id\": \"email\",\n                \"values\": [\"jane99@example.com\"],\n                \"strategy\": \"ADD\"\n            },\n            {\n                \"id\": \"crm_id\",\n                \"values\": [\"002wC5BadR1w\"],\n                \"strategy\": \"SET\"\n            }\n        ],\n        \"timeline\": [{\n            \"eventTypeId\": \"order\",\n            \"data\": [{\n                \"id\": \"product\",\n                \"values\": [\n                    [{\n                        \"id\": \"quantity\",\n                        \"values\": [2]\n                    }, {\n                        \"id\": \"netprice\",\n                        \"values\": [3.45]\n                    }, {\n                        \"id\": \"coupon\",\n                        \"values\": [\"FREETV\"]\n                    }, {\n                        \"id\": \"deliverydate\",\n                        \"values\": [\"2023-01-23T23:45:56.789Z\"]\n                    }]\n                ]\n            }, {\n                \"id\": \"quantity\",\n                \"values\": [1]\n            }],\n            \"strategy\": \"SET\"\n        }],\n        \"strategy\": \"UPSERT\",\n        \"domainGroup\": \"85ee8f33-15a3-4e95-aff5-abfa5bc457ab\"\n    }\n]"
                 },
                 "Partial updates for timeline events" : {
                   "description" : "An example for partially updating a timeline event:\n\n\n* Will update (or insert if not exists) the order event with the given ID.\n    * `date` is optional and may be omitted, causing all events with the given ID to be updated.\n* Will add (or update if it exists) a product with id:PRODUCT-5469878987 to product.\n     * Note that the `strategy` can be left empty when the `identifier` is specified.\n* Will set `quantity` to 2 if the product does not have `quantity` set yet.\n* Will add `FREETV-CHRISTMAS-SPECIAL` to `coupon` for the product.\n* Will set `quantity` to 1 for this `order`.\n\nNotes on using an `identifier` for nested timeline event properties:\n\n* A timeline event type property marked as `identifier` can only contain one value; more values will be ignored (first value is used).\n* When sending an `identifier` in the bulk API, it cannot be empty.",
-                  "value" : "[{\n    \"matching\": [\n        [{\n            \"id\": \"email\",\n            \"value\": \"jane@example.com\"\n        }]\n    ],\n    \"properties\": [{\n            \"id\": \"zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"timeline\": [\n        {\n            \"id\": \"eb20c911-4d23-4791-a3e7-d113e7a326d9\",\n            \"date\": \"2023-01-01T00:00Z\",\n            \"eventTypeId\": \"order\",\n            \"data\": [{\n                    \"id\": \"product\",\n                    \"values\": [\n                        [\n                            {\n                                \"id\": \"id\",\n                                \"values\": [\"PRODUCT-5469878987\"]\n                            },\n                            {\n                                \"id\": \"quantity\",\n                                \"values\": [2],\n                                \"strategy\": \"SET_IF_EMPTY\"\n                            },\n                            {\n                                \"id\": \"coupon\",\n                                \"values\": [\"FREETV-CHRISTMAS-SPECIAL\"],\n                                \"strategy\": \"ADD\"\n                            }\n                        ]\n                    ],\n                    \"strategy\": \"UPSERT\"\n                },\n                {\n                    \"id\": \"quantity\",\n                    \"values\": [1],\n                    \"strategy\": \"SET\"\n                }\n            ],\n            \"strategy\": \"UPSERT\"\n        }\n\n    ],\n    \"strategy\": \"UPSERT\"\n}]"
-                },
-                "Basic delete profile example" : {
-                  "description" : "Delete a single profile",
-                  "value" : "{\n    \"profileId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"strategy\": \"DELETE\"\n}"
+                  "value" : "[{\n    \"matching\": [\n        [{\n            \"id\": \"email\",\n            \"value\": \"jane@example.com\"\n        }]\n    ],\n    \"properties\": [{\n            \"id\": \"zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"timeline\": [\n        {\n            \"id\": \"eb20c911-4d23-4791-a3e7-d113e7a326d9\",\n            \"date\": \"2023-01-01T00:00Z\",\n            \"eventTypeId\": \"order\",\n            \"data\": [{\n                    \"id\": \"product\",\n                    \"values\": [{\n                            \"id\": \"id\",\n                            \"values\": [\"PRODUCT-5469878987\"]\n                        },\n                        {\n                            \"id\": \"quantity\",\n                            \"values\": [2],\n                            \"strategy\": \"SET_IF_EMPTY\"\n                        },\n                        {\n                            \"id\": \"coupon\",\n                            \"values\": [\"FREETV-CHRISTMAS-SPECIAL\"],\n                            \"strategy\": \"ADD\"\n                        }\n                    ],\n                    \"strategy\": \"UPSERT\"\n                },\n                {\n                    \"id\": \"quantity\",\n                    \"values\": [1],\n                    \"strategy\": \"SET\"\n                }\n            ],\n            \"strategy\": \"UPSERT\"\n        }\n\n    ],\n    \"strategy\": \"UPSERT\"\n}]"
                 }
               }
             }
@@ -1426,21 +1045,17 @@
           "in" : "query",
           "description" : "Filter returned timeline events for a specific type.",
           "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
+            "type" : "string",
+            "format" : "uuid"
           },
           "example" : "order"
         }, {
           "name" : "eventProperty",
           "in" : "query",
-          "description" : "When the eventProperty is specified, the response will only return the values for the given property. If not specified, the values of all event properties will be returned, which may result in a large result set.",
+          "description" : "Filter returned timeline events for a specific type and specific event type properties.",
           "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
+            "type" : "string",
+            "format" : "uuid"
           },
           "example" : "order.orderline"
         }, {
@@ -1551,36 +1166,11 @@
         }, {
           "name" : "properties",
           "in" : "query",
-          "description" : "Specifies which profile properties values will be returned for each profile. If not specified, the values of all profile properties will be returned, which may result in a large result set. One or more profile property ids, separated by a comma.",
+          "description" : "Specifies for which profile properties values will be returned for each profile. If not specified, the values of all profile properties will be returned, which may result in a large result set. One or more profile property ids, separated by a comma.",
           "schema" : {
             "type" : "string"
           },
           "example" : "browserversion,email"
-        }, {
-          "name" : "refinement",
-          "in" : "query",
-          "description" : "**Refinement**\n\nSpecifies (URL-encoded) the refinement used to filter profiles. If not specified, all profiles of the given segment will be returned.\n\nTo filter groups using refinements you can use the query parameter refinement. The refinement parameter is a URL-encoded JSON object that contains the refinement in the form of one or more filters.\n\n**Logical operators**\n\nThe logical operators used when combining multiple filters.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| AND                     | All filters should match |\n| OR                      | Any of the filters should match |\n\n**Operators**\n\nThe operators used to filter the property or objectives within a group.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| IS_EMPTY                | If the given property value is empty | \n| NOT_IS_EMPTY            | If the given property value is not empty |\n| CONTAINS_ANY            | If the given property value contains any of the given values |\n| CONTAINS_ALL            | If the given property value contains all of the given values |\n| NOT_CONTAINS_ANY        | If the given property value does not contain any of the given values |\n| NOT_CONTAINS_ALL        | If the given property value does not contain all of the given values |\n| IN_RANGE                | If the given property value is in the given range |\n| NOT_IN_RANGE            | If the given property value is not in the given range |\n| IN_LAST_DAYS            | If the given property value is in the last given number of days |\n| NOT_IN_LAST_DAYS        | If the given property value is not in the last given number of days |\n| IN_NEXT_DAYS            | If the given property value is in the next given number of days |\n| NOT_IN_NEXT_DAYS        | If the given property value is not in the next given number of days |\n\n**Objective**\n\nThe objectives used to filter the property or objectives within a group.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| CONSENTED               | Objective consented |\n| REFUSED                 | Objective refused |\n| UNKNOWN                 | Unknown |\n| REFUSED_OR_UNKNOWN      | Refused or unknown | \n| CONSENTED_OR_UNNEEDED   | Consented or unneeded |\n\nCan only be used with the operators CONTAINS_ANY and CONTAINS_ALL",
-          "schema" : {
-            "$ref" : "#/components/schemas/RefinementBean"
-          },
-          "examples" : {
-            "URL encoded example" : {
-              "description" : "URL encoded example",
-              "value" : "%7B%22property%22%3A%20%22email%22%2C%20%22operator%22%3A%20%22IS_EMPTY%22%7D%0A"
-            },
-            "Example composite refinement (not yet URL-encoded)" : {
-              "description" : "Example composite refinement (not yet URL-encoded)",
-              "value" : "{\n  \"filters\": [{\n    \"property\": \"email\",\n    \"operator\": \"IS_EMPTY\"\n  }, {\n    \"property\": \"variant\",\n    \"operator\": \"CONTAINS_ANY\",\n    \"values\": [\"VariantA\", \"VariantB\"]\n  }\n  ],\n  \"operator\": \"AND\"\n}"
-            },
-            "Example property filter refinement (not yet URL-encoded)" : {
-              "description" : "Example property filter refinement (not yet URL-encoded)",
-              "value" : "{\n  \"property\": \"visits\",\n  \"operator\": \"IN_RANGE\",\n  \"fromValue\": 1,\n  \"toValue\": 10\n}\n"
-            },
-            "Example objective filter refinement (not yet URL-encoded)" : {
-              "description" : "Example objective filter refinement (not yet URL-encoded)",
-              "value" : "{\n  \"objective\": \"CONSENTED_OR_UNNEEDED\",\n  \"operator\": \"CONTAINS_ANY\",\n  \"values\": [\"objective1\", \"objective2\"]\n}\n"
-            }
-          }
         }, {
           "name" : "expand",
           "in" : "query",
@@ -1597,23 +1187,9 @@
           "in" : "query",
           "description" : "Filter for the returned timeline events for specific types. One or more IDs of a timeline event type.",
           "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
+            "type" : "string"
           },
           "example" : "order"
-        }, {
-          "name" : "eventProperty",
-          "in" : "query",
-          "description" : "When the eventProperty is specified, the response will only return the values for the given property. If not specified, the values of all event properties will be returned, which may result in a large result set.",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "example" : "order.orderline"
         }, {
           "name" : "eventCount",
           "in" : "query",
@@ -2023,7 +1599,7 @@
           },
           "objectType" : {
             "type" : "string",
-            "enum" : [ "DIALOGUE", "LISTENER", "CONNECTION", "VARIANT", "SEGMENT", "PROFILE_PROPERTY", "GROUP_PROPERTY", "TRACKER", "DASHBOARD", "LIFECYCLE", "PLUGIN", "USER", "ROLE", "CHANNEL", "BLUECONIC_HOSTNAME", "LANGUAGE", "CONTENTSTORE", "STATISTICS", "FAVORITE", "TEMPLATE", "NOTEBOOK", "PRIORITY", "GROUP_TYPE", "CLEANUP_RULE", "MERGE_RULE", "COMPOSITION_RULE", "OBJECTIVE", "TIMELINE_EVENT_TYPE", "PROFILE", "IP_RANGE", "GROUP", "SUPPORTED_LEGISLATION_ZONE", "DOMAIN_GROUP", "DOMAIN", "PRIVACY_SETTING", "SINGLE_SIGN_ON_SETTING", "BLUECONIC_SUPPORT_ACCESS_SETTING", "OAUTH_APPLICATION", "OAUTH_TOKEN", "TIMELINE_EVENT_ROLLUP", "INACTIVITY_TIMEOUT_SETTING" ]
+            "enum" : [ "DIALOGUE", "LISTENER", "CONNECTION", "VARIANT", "SEGMENT", "PROFILE_PROPERTY", "GROUP_PROPERTY", "TRACKER", "DASHBOARD", "LIFECYCLE", "PLUGIN", "USER", "ROLE", "CHANNEL", "BLUECONIC_HOSTNAME", "LANGUAGE", "CONTENTSTORE", "STATISTICS", "FAVORITE", "TEMPLATE", "NOTEBOOK", "PRIORITY", "GROUP_TYPE", "CLEANUP_RULE", "MERGE_RULE", "COMPOSITION_RULE", "OBJECTIVE", "TIMELINE_EVENT_TYPE", "PROFILE", "IP_RANGE", "GROUP", "SUPPORTED_LEGISLATION_ZONE", "DOMAIN_GROUP", "DOMAIN", "PRIVACY_SETTING", "SINGLE_SIGN_ON_SETTING", "BLUECONIC_SUPPORT_ACCESS_SETTING", "OAUTH_APPLICATION", "OAUTH_TOKEN" ]
           },
           "objects" : {
             "type" : "array",
@@ -2063,204 +1639,6 @@
           }
         }
       },
-      "ChannelBeanV2SchemaForChannelsV2" : {
-        "type" : "object",
-        "description" : "The channels.",
-        "properties" : {
-          "aliases" : {
-            "type" : "array",
-            "description" : "The aliases of the channel. Alternative hostnames, only applicable to web channels. For example, an alias of the hostname `www.blueconic.com` could be `blueconic.com`.",
-            "items" : {
-              "type" : "string",
-              "description" : "The aliases of the channel. Alternative hostnames, only applicable to web channels. For example, an alias of the hostname `www.blueconic.com` could be `blueconic.com`."
-            }
-          },
-          "domain" : {
-            "$ref" : "#/components/schemas/simpleDomain"
-          },
-          "hostname" : {
-            "type" : "string",
-            "description" : "The hostname of the channel. For web channels, the hostname of the website, excluding the protocol (e.g. `https://`) and path (e.g. `/`). For mobile channels, the App ID. For email channels, the hostname is empty."
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "The ID of the channel."
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The name of the channel."
-          },
-          "tags" : {
-            "type" : "array",
-            "description" : "The tags of the channel.",
-            "items" : {
-              "type" : "string",
-              "description" : "The tags of the channel."
-            }
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "The type of the channel.",
-            "enum" : [ "EMAIL", "MOBILE", "WEBSITE" ]
-          },
-          "visitorCount" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The visitor count of the channel."
-          }
-        }
-      },
-      "ChannelsV2Schema" : {
-        "type" : "object",
-        "properties" : {
-          "channels" : {
-            "type" : "array",
-            "description" : "The channels.",
-            "items" : {
-              "$ref" : "#/components/schemas/ChannelBeanV2SchemaForChannelsV2"
-            }
-          },
-          "itemsPerPage" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "Number of results per page."
-          },
-          "startIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The start index."
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of pages."
-          },
-          "totalResults" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of results."
-          }
-        }
-      },
-      "simpleDomain" : {
-        "type" : "object",
-        "description" : "The domain.",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "Unique identifier."
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "Name of this object."
-          }
-        }
-      },
-      "UserBean" : {
-        "type" : "object",
-        "description" : "BlueConic user.",
-        "properties" : {
-          "fullName" : {
-            "type" : "string",
-            "description" : "The full name of the user."
-          },
-          "userName" : {
-            "type" : "string",
-            "description" : "The username."
-          }
-        },
-        "readOnly" : true
-      },
-      "channel" : {
-        "type" : "object",
-        "properties" : {
-          "aliases" : {
-            "type" : "array",
-            "description" : "The aliases of the channel. Alternative hostnames, only applicable to web channels. For example, an alias of the hostname `www.blueconic.com` could be `blueconic.com`.",
-            "items" : {
-              "type" : "string",
-              "description" : "The aliases of the channel. Alternative hostnames, only applicable to web channels. For example, an alias of the hostname `www.blueconic.com` could be `blueconic.com`."
-            },
-            "uniqueItems" : true
-          },
-          "canDelete" : {
-            "type" : "boolean",
-            "description" : "If the item can be deleted or not.",
-            "readOnly" : true
-          },
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "creator" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "description" : {
-            "type" : "string",
-            "description" : "The description."
-          },
-          "domain" : {
-            "$ref" : "#/components/schemas/simpleDomain"
-          },
-          "favorite" : {
-            "type" : "boolean",
-            "description" : "If the item is favorited or not.",
-            "readOnly" : true
-          },
-          "hostname" : {
-            "type" : "string",
-            "description" : "The hostname of the channel. For web channels, the hostname of the website, excluding the protocol (e.g. `https://`) and path (e.g. `/`). For mobile channels, the App ID. For email channels, the hostname is empty."
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "The object ID."
-          },
-          "lastModifiedDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "lastModifiedUser" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "logo" : {
-            "type" : "string",
-            "description" : "The channel logo link."
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The object name."
-          },
-          "readOnly" : {
-            "type" : "boolean",
-            "description" : "If the item is read-only or not.",
-            "readOnly" : true
-          },
-          "tags" : {
-            "type" : "array",
-            "description" : "The tags (e.g. labels).",
-            "example" : "Address",
-            "items" : {
-              "type" : "string",
-              "description" : "The tags (e.g. labels).",
-              "example" : "Address"
-            }
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "The type of the channel.",
-            "enum" : [ "EMAIL", "MOBILE", "WEBSITE" ]
-          },
-          "visitorCount" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The visitor count of the channel."
-          }
-        }
-      },
       "InteractionEventBean" : {
         "type" : "object",
         "properties" : {
@@ -2277,7 +1655,7 @@
           "type" : {
             "type" : "string",
             "description" : "The event type.",
-            "enum" : [ "VIEW", "CLICK", "CONVERSION" ],
+            "enum" : [ "PAGEVIEW", "VIEW", "CLICK", "CONVERSION" ],
             "example" : "VIEW"
           },
           "url" : {
@@ -2389,349 +1767,6 @@
           }
         }
       },
-      "group" : {
-        "type" : "object",
-        "description" : "The groups.",
-        "properties" : {
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"."
-          },
-          "groupTypeId" : {
-            "type" : "string",
-            "description" : "The ID of the BlueConic group type."
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "The unique identifier for the object."
-          },
-          "lastModifiedDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"."
-          },
-          "properties" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/property"
-            }
-          }
-        }
-      },
-      "property" : {
-        "type" : "object",
-        "description" : "List of profile properties to be set.",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "The ID of the property."
-          },
-          "values" : {
-            "type" : "array",
-            "description" : "Values for this property.",
-            "items" : {
-              "type" : "string",
-              "description" : "Values for this property."
-            }
-          }
-        }
-      },
-      "GroupsAPIGroups" : {
-        "type" : "object",
-        "properties" : {
-          "cursor" : {
-            "type" : "string",
-            "description" : "The cursor of the current page. `*` when not passed."
-          },
-          "groups" : {
-            "type" : "array",
-            "description" : "The groups.",
-            "items" : {
-              "$ref" : "#/components/schemas/group"
-            }
-          },
-          "itemsPerPage" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "Number of results per page."
-          },
-          "links" : {
-            "type" : "array",
-            "description" : "The links to the first and next/last page.",
-            "items" : {
-              "$ref" : "#/components/schemas/link"
-            }
-          },
-          "nextCursor" : {
-            "type" : "string",
-            "description" : "The cursor of the next page (if any)."
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of pages."
-          },
-          "totalResults" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of results."
-          }
-        }
-      },
-      "link" : {
-        "type" : "object",
-        "properties" : {
-          "href" : {
-            "type" : "string"
-          },
-          "rel" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string"
-          }
-        }
-      },
-      "RefinementBean" : {
-        "type" : "object",
-        "properties" : {
-          "daysCount" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The days count"
-          },
-          "filters" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/RefinementBean"
-            }
-          },
-          "fromDate" : {
-            "type" : "string",
-            "description" : "The from date"
-          },
-          "fromValue" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The from value"
-          },
-          "groupProperty" : {
-            "type" : "string",
-            "description" : "The group property"
-          },
-          "hoursCount" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The hours count"
-          },
-          "objective" : {
-            "type" : "string",
-            "description" : "The objective"
-          },
-          "operator" : {
-            "type" : "string",
-            "description" : "The operator"
-          },
-          "property" : {
-            "type" : "string",
-            "description" : "The property"
-          },
-          "toDate" : {
-            "type" : "string",
-            "description" : "The to date"
-          },
-          "toValue" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The to value"
-          },
-          "values" : {
-            "type" : "array",
-            "description" : "The values",
-            "items" : {
-              "type" : "string",
-              "description" : "The values"
-            }
-          }
-        }
-      },
-      "BulkGroupInputEntry" : {
-        "type" : "object",
-        "properties" : {
-          "domainGroup" : {
-            "type" : "string",
-            "default" : "DEFAULT",
-            "description" : "Specifies the domain group in which a group is created. Used for matching and creating groups."
-          },
-          "groupId" : {
-            "type" : "string",
-            "description" : "The BlueConic group ID to search for."
-          },
-          "groupTypeId" : {
-            "type" : "string",
-            "description" : "The BlueConic group type ID."
-          },
-          "identifier" : {
-            "type" : "string",
-            "description" : "An (external) identifier which can be passed along with an operation and is returned in the response.",
-            "example" : "[[{\"id\": \"email\", value: \"test@test.com\"}]]"
-          },
-          "properties" : {
-            "type" : "object",
-            "description" : "The rules that will be executed on this group.",
-            "properties" : {
-              "id" : {
-                "type" : "string",
-                "description" : "The profile property ID to apply to this rule for."
-              },
-              "strategy" : {
-                "type" : "string",
-                "description" : "The strategy to apply to this rule.",
-                "enum" : [ "ADD", "SET", "SET_IF_EMPTY", "INCREMENT", "REMOVE" ]
-              },
-              "values" : {
-                "type" : "array",
-                "description" : "The values to apply to this rule.",
-                "items" : {
-                  "type" : "string",
-                  "description" : "The values to apply to this rule."
-                }
-              }
-            }
-          },
-          "strategy" : {
-            "type" : "string",
-            "default" : "UPDATE",
-            "description" : "The strategy to apply to the given entry. Can be used to create, update or delete groups.",
-            "enum" : [ "UPSERT", "UPDATE", "DELETE" ]
-          }
-        }
-      },
-      "BulkGroupResultBean" : {
-        "type" : "object",
-        "properties" : {
-          "groupId" : {
-            "type" : "string"
-          },
-          "groupTypeId" : {
-            "type" : "string"
-          },
-          "identifier" : {
-            "type" : "string",
-            "description" : "The identifier (optionally) as passed in the input, can be used as reference."
-          },
-          "state" : {
-            "type" : "string",
-            "description" : "The possible states for group related changes.",
-            "enum" : [ "CREATED", "SKIPPED", "MODIFIED", "UNCHANGED", "NOTFOUND", "DELETED", "UNKNOWN_GROUP_TYPE" ]
-          },
-          "validationErrors" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "array",
-              "description" : "The errors found for the given group changes (if any).",
-              "items" : {
-                "type" : "string",
-                "description" : "The errors found for the given group changes (if any)."
-              }
-            },
-            "description" : "The errors found for the given group changes (if any)."
-          }
-        }
-      },
-      "BadRequestBean" : {
-        "type" : "object",
-        "properties" : {
-          "code" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "errors" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ErrorBean"
-            }
-          },
-          "message" : {
-            "type" : "string"
-          }
-        }
-      },
-      "ErrorBean" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string"
-          }
-        }
-      },
-      "BulkResultBean" : {
-        "type" : "object",
-        "properties" : {
-          "identifier" : {
-            "type" : "string",
-            "description" : "The identifier (optionally) as passed in the input, can be used as reference."
-          },
-          "profileId" : {
-            "type" : "string",
-            "description" : "The profile ID of the profile that was created, updated or deleted."
-          },
-          "state" : {
-            "type" : "string",
-            "description" : "The possible states for profile related changes.",
-            "enum" : [ "CREATED", "SKIPPED", "MODIFIED", "UNCHANGED", "NOTFOUND", "RESTRICTION_MISMATCH", "CONSENT_MISMATCH", "DELETED" ]
-          },
-          "timeline" : {
-            "type" : "array",
-            "description" : "The feedback on the given timeline events.",
-            "items" : {
-              "$ref" : "#/components/schemas/TimelineResultBean"
-            }
-          },
-          "validationErrors" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "array",
-              "description" : "The errors found for the given profile changes (if any).",
-              "items" : {
-                "type" : "string",
-                "description" : "The errors found for the given profile changes (if any)."
-              }
-            },
-            "description" : "The errors found for the given profile changes (if any)."
-          }
-        }
-      },
-      "TimelineResultBean" : {
-        "type" : "object",
-        "description" : "The feedback on the given timeline events.",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "The ID for this event."
-          },
-          "identifier" : {
-            "type" : "string",
-            "description" : "The identifier (optionally) as passed in the input, can be used as reference."
-          },
-          "state" : {
-            "type" : "string",
-            "description" : "The possible states for timeline events.",
-            "enum" : [ "CREATED", "SET", "MODIFIED", "REJECTED", "NOTFOUND", "DELETED" ]
-          },
-          "validationErrors" : {
-            "type" : "array",
-            "description" : "The errors found for the given timeline event changes (if any).",
-            "example" : [ "#/total_revenue/0: expected type: Number, found: String" ],
-            "items" : {
-              "type" : "string",
-              "description" : "The errors found for the given timeline event changes (if any).",
-              "example" : "[\"#/total_revenue/0: expected type: Number, found: String\"]"
-            }
-          }
-        }
-      },
       "profileEvent" : {
         "type" : "object",
         "properties" : {
@@ -2783,6 +1818,24 @@
           }
         }
       },
+      "property" : {
+        "type" : "object",
+        "description" : "List of profile properties to be set.",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The ID of the property."
+          },
+          "values" : {
+            "type" : "array",
+            "description" : "Values for this property.",
+            "items" : {
+              "type" : "string",
+              "description" : "Values for this property."
+            }
+          }
+        }
+      },
       "Labels" : {
         "type" : "object",
         "properties" : {
@@ -2791,6 +1844,18 @@
             "items" : {
               "$ref" : "#/components/schemas/label"
             }
+          }
+        },
+        "readOnly" : true
+      },
+      "UserBean" : {
+        "type" : "object",
+        "properties" : {
+          "fullName" : {
+            "type" : "string"
+          },
+          "userName" : {
+            "type" : "string"
           }
         },
         "readOnly" : true
@@ -2828,6 +1893,20 @@
             "type" : "string"
           },
           "locale" : {
+            "type" : "string"
+          }
+        }
+      },
+      "link" : {
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string"
+          },
+          "rel" : {
+            "type" : "string"
+          },
+          "type" : {
             "type" : "string"
           }
         }
@@ -2888,7 +1967,6 @@
           },
           "favorite" : {
             "type" : "boolean",
-            "description" : "If the item is favorited or not.",
             "readOnly" : true
           },
           "filterType" : {
@@ -2917,7 +1995,6 @@
           "lastModifiedDate" : {
             "type" : "string",
             "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
             "readOnly" : true
           },
           "lastModifiedUser" : {
@@ -2965,7 +2042,6 @@
           },
           "readOnly" : {
             "type" : "boolean",
-            "description" : "If the item is read-only or not.",
             "readOnly" : true
           },
           "showInUI" : {
@@ -3181,10 +2257,10 @@
         "description" : "Lifecycle stages that the profile is part of.",
         "properties" : {
           "lifecycle" : {
-            "$ref" : "#/components/schemas/simpleObject"
+            "$ref" : "#/components/schemas/simpleDomain"
           },
           "stage" : {
-            "$ref" : "#/components/schemas/simpleObject"
+            "$ref" : "#/components/schemas/simpleDomain"
           }
         }
       },
@@ -3286,7 +2362,7 @@
           }
         }
       },
-      "simpleObject" : {
+      "simpleDomain" : {
         "type" : "object",
         "properties" : {
           "id" : {
@@ -3295,7 +2371,7 @@
           },
           "name" : {
             "type" : "string",
-            "description" : "The object name."
+            "description" : "Name of this object."
           }
         }
       },
@@ -3416,6 +2492,98 @@
           }
         }
       },
+      "BulkResultBean" : {
+        "type" : "object",
+        "properties" : {
+          "identifier" : {
+            "type" : "string",
+            "description" : "The identifier (optionally) as passed in the input, can be used as reference."
+          },
+          "profileId" : {
+            "type" : "string",
+            "description" : "The profile ID of the profile that was created, updated or deleted."
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "The possible states for profile related changes.",
+            "enum" : [ "CREATED", "SKIPPED", "MODIFIED", "UNCHANGED", "NOTFOUND", "RESTRICTION_MISMATCH", "CONSENT_MISMATCH", "DELETED" ]
+          },
+          "timeline" : {
+            "type" : "array",
+            "description" : "The feedback on the given timeline events.",
+            "items" : {
+              "$ref" : "#/components/schemas/TimelineResultBean"
+            }
+          },
+          "validationErrors" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "description" : "The errors found for the given profile changes (if any).",
+              "items" : {
+                "type" : "string",
+                "description" : "The errors found for the given profile changes (if any)."
+              }
+            },
+            "description" : "The errors found for the given profile changes (if any)."
+          }
+        }
+      },
+      "TimelineResultBean" : {
+        "type" : "object",
+        "description" : "The feedback on the given timeline events.",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The ID for this event."
+          },
+          "identifier" : {
+            "type" : "string",
+            "description" : "The identifier (optionally) as passed in the input, can be used as reference."
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "The possible states for timeline events.",
+            "enum" : [ "CREATED", "SET", "MODIFIED", "REJECTED", "NOTFOUND", "DELETED" ]
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "description" : "The errors found for the given timeline event changes (if any).",
+            "example" : [ "#/total_revenue/0: expected type: Number, found: String" ],
+            "items" : {
+              "type" : "string",
+              "description" : "The errors found for the given timeline event changes (if any).",
+              "example" : "[\"#/total_revenue/0: expected type: Number, found: String\"]"
+            }
+          }
+        }
+      },
+      "BadRequestBean" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ErrorBean"
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ErrorBean" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
       "SegmentProfiles" : {
         "type" : "object",
         "properties" : {
@@ -3482,7 +2650,6 @@
           },
           "favorite" : {
             "type" : "boolean",
-            "description" : "If the item is favorited or not.",
             "readOnly" : true
           },
           "id" : {
@@ -3498,7 +2665,6 @@
           "lastModifiedDate" : {
             "type" : "string",
             "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
             "readOnly" : true
           },
           "lastModifiedUser" : {
@@ -3510,7 +2676,6 @@
           },
           "readOnly" : {
             "type" : "boolean",
-            "description" : "If the item is read-only or not.",
             "readOnly" : true
           },
           "tags" : {
