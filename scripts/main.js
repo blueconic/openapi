@@ -38,6 +38,7 @@ if (hostname) {
         let selectedVersion = versionSelect.value;
         if (selectedVersion === "openapi_latest" || version === "current"){
             rapidoc.setAttribute("spec-url", `./definitions/openapi_latest.json`);
+            versionSelect.value = "openapi_latest";
         } else {
             rapidoc.setAttribute("spec-url", `./definitions/${selectedVersion}.json`);
         }
@@ -50,8 +51,17 @@ if (hostname || versionSelect.options.length == 1) {
 } else {
     // change spec on change
     versionSelect.addEventListener("change", () => {
-        // change spec
-        rapidoc.setAttribute("spec-url", `./definitions/${versionSelect.value}.json`);
+        let selectedVersion = versionSelect.value;
+        if (selectedVersion === "openapi_latest") {
+            selectedVersion = "current";
+        } else {
+            selectedVersion = selectedVersion.split("/")[0];
+        }
+
+        const url = new URL(window.location.href);
+        url.searchParams.delete("version");
+        url.searchParams.append("version", selectedVersion);
+        window.location.href = url;
     });
 }
 
