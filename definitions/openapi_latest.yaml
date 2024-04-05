@@ -1120,7 +1120,12 @@ paths:
           \ given number of days |\n| IN_NEXT_DAYS            | If the given property\
           \ value is in the next given number of days |\n| NOT_IN_NEXT_DAYS      \
           \  | If the given property value is not in the next given number of days\
-          \ |"
+          \ |\n| IN_LAST_HOURS           | If the given property value is in the last\
+          \ given number of hours |\n| NOT_IN_LAST_HOURS       | If the given property\
+          \ value is not in the last given number of hours |\n| IN_NEXT_HOURS    \
+          \       | If the given property value is in the next given number of hours\
+          \ |\n| NOT_IN_NEXT_HOURS       | If the given property value is not in the\
+          \ next given number of hours |"
         schema:
           $ref: "#/components/schemas/RefinementBean"
         examples:
@@ -2962,14 +2967,14 @@ paths:
         in: query
         description: "**Refinement**\n\nSpecifies (URL-encoded) the refinement used\
           \ to filter profiles. If not specified, all profiles of the given segment\
-          \ will be returned.\n\nTo filter groups using refinements you can use the\
-          \ query parameter refinement. The refinement parameter is a URL-encoded\
+          \ will be returned.\n\nTo filter profiles using refinements you can use\
+          \ the query parameter refinement. The refinement parameter is a URL-encoded\
           \ JSON object that contains the refinement in the form of one or more filters.\n\
           \n**Logical operators**\n\nThe logical operators used when combining multiple\
           \ filters.\n\n| Name                    | Description |\n| :----------------------\
           \ | :---------- |\n| AND                     | All filters should match\
           \ |\n| OR                      | Any of the filters should match |\n\n**Operators**\n\
-          \nThe operators used to filter the property or objectives within a group.\n\
+          \nThe operators used to filter the property or objectives within a profile.\n\
           \n| Name                    | Description |\n| :---------------------- |\
           \ :---------- |\n| IS_EMPTY                | If the given property value\
           \ is empty | \n| NOT_IS_EMPTY            | If the given property value is\
@@ -2986,13 +2991,18 @@ paths:
           \ given number of days |\n| IN_NEXT_DAYS            | If the given property\
           \ value is in the next given number of days |\n| NOT_IN_NEXT_DAYS      \
           \  | If the given property value is not in the next given number of days\
-          \ |\n\n**Objective**\n\nThe objectives used to filter the property or objectives\
-          \ within a group.\n\n| Name                    | Description |\n| :----------------------\
-          \ | :---------- |\n| CONSENTED               | Objective consented |\n|\
-          \ REFUSED                 | Objective refused |\n| UNKNOWN             \
-          \    | Unknown |\n| REFUSED_OR_UNKNOWN      | Refused or unknown | \n| CONSENTED_OR_UNNEEDED\
-          \   | Consented or unneeded |\n\nCan only be used with the operators CONTAINS_ANY\
-          \ and CONTAINS_ALL"
+          \ |\n| IN_LAST_HOURS           | If the given property value is in the last\
+          \ given number of hours |\n| NOT_IN_LAST_HOURS       | If the given property\
+          \ value is not in the last given number of hours |\n| IN_NEXT_HOURS    \
+          \       | If the given property value is in the next given number of hours\
+          \ |\n| NOT_IN_NEXT_HOURS       | If the given property value is not in the\
+          \ next given number of hours |\n\n**Objective**\n\nThe objectives used to\
+          \ filter the property or objectives within a profile.\n\n| Name        \
+          \            | Description |\n| :---------------------- | :---------- |\n\
+          | CONSENTED               | Objective consented |\n| REFUSED           \
+          \      | Objective refused |\n| UNKNOWN                 | Unknown |\n| REFUSED_OR_UNKNOWN\
+          \      | Refused or unknown | \n| CONSENTED_OR_UNNEEDED   | Consented or\
+          \ unneeded |\n\nCan only be used with the operators CONTAINS_ANY and CONTAINS_ALL"
         schema:
           $ref: "#/components/schemas/RefinementBean"
         examples:
