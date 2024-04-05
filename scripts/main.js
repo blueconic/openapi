@@ -34,8 +34,13 @@ if (hostname) {
         // set selected version in dropdown
         versionSelect.value = `${version}/openapi`;
     } else {
-        // use latest
-        rapidoc.setAttribute("spec-url", "./definitions/openapi_latest.json");
+        // use version as specified in the version dropdown
+        let selectedVersion = versionSelect.value;
+        if (selectedVersion === "openapi_latest"){
+            rapidoc.setAttribute("spec-url", `./definitions/openapi_latest.json`);
+        } else {
+            rapidoc.setAttribute("spec-url", `./definitions/${selectedVersion}.json`);
+        }
     }
 }
 
