@@ -10,6 +10,8 @@ const wrapper = document.getElementById("versionSelectWrapper");
 
 
 let hostname = getQueryStringParam("hostname");
+let version = getQueryStringParam("version");
+
 const rapidoc = document.getElementById("doc");
 if (hostname) {
     if (!hostname.startsWith("http")) {
@@ -22,7 +24,19 @@ if (hostname) {
     rapidoc.setAttribute("spec-url", `${hostname}/rest/v2/openapi.json`);
 } else {
     // load local OpenAPI spec
-    rapidoc.setAttribute("spec-url", "./definitions/openapi_latest.json");
+    if (version && version !== "current") {
+        // use specific version passed in querystring
+        if (!version.startsWith("r")) {
+            version = `r${version}`;
+        }
+        rapidoc.setAttribute("spec-url", `./definitions/${version}/openapi.json`);
+
+        // set selected version in dropdown
+        versionSelect.value = `${version}/openapi`;
+    } else {
+        // use latest
+        rapidoc.setAttribute("spec-url", "./definitions/openapi_latest.json");
+    }
 }
 
 if (hostname || versionSelect.options.length == 1) {
