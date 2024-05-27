@@ -74,7 +74,7 @@
         "parameters" : [ {
           "name" : "fromDate",
           "in" : "query",
-          "description" : "Only return entries that are created later than this date. The fromDate is in the https://www.ietf.org/rfc/rfc3339.txt format.",
+          "description" : "Only return entries that are created later than this date. The fromDate is in the ISO 8601 format (e.g. '2023-01-22T11:21:33.872Z').",
           "schema" : {
             "type" : "string"
           },
@@ -1456,19 +1456,19 @@
         }, {
           "name" : "fromDate",
           "in" : "query",
-          "description" : "Filter to only include timeline events that are dated later than this date. The format of fromDate is \"2023-01-01T00:00Z\" or with a time zone offset \"2023-01-01T00:00+05:00\"",
+          "description" : "Filter to only include timeline events that are dated later than this date. The fromDate is in the ISO 8601 format (e.g. '2023-01-22T11:21:33.872Z').",
           "schema" : {
             "type" : "string"
           },
-          "example" : "2023-01-22T11:21:33Z"
+          "example" : "2023-01-22T11:21:33.000Z"
         }, {
           "name" : "toDate",
           "in" : "query",
-          "description" : "Filter to only include timeline events that are dated before this date. The format of toDate is \"2023-01-01T00:00Z\" or with a time zone offset \"2023-01-01T00:00+05:00\"",
+          "description" : "Filter to only include timeline events that are dated before this date. The toDate is in the ISO 8601 format (e.g. '2023-01-22T11:21:33.872Z').",
           "schema" : {
             "type" : "string"
           },
-          "example" : "2023-03-05T12:00:00Z"
+          "example" : "2023-02-22T11:21:33.000Z"
         }, {
           "name" : "collapse",
           "in" : "query",
@@ -1809,7 +1809,7 @@
               "examples" : {
                 "Example body" : {
                   "description" : "Example body",
-                  "value" : "[{\n        \"id\": \"first\",\n        \"boosts\": [{\n                \"value\": \"1\",\n                \"algorithm\": \"RECENCY\"\n            },\n            {\n                \"value\": \"2\",\n                \"algorithm\": \"COLLABORATIVE_FILTERING\",\n                \"rampUp\": \"FAST\"\n            },\n            {\n                \"value\": \"1\",\n                \"algorithm\": \"RECENT_VIEW\"\n            },\n            {\n                \"value\": \"1\",\n                \"algorithm\": \"RECENT_CTR\"\n            }\n        ],\n        \"filters\": [\n            \"category:politics\",\n            \"viewed\"\n        ],\n        \"count\": 3\n    },\n    {\n        \"id\": \"second\",\n        \"boosts\": [{\n                \"value\": \"2\",\n                \"algorithm\": \" COLLABORATIVE_FILTERING \",\n                \"rampup\": \"SLOW\"\n            },\n            {\n                \"value\": \"1\",\n                \"algorithm\": \" RECENT_CTR\"\n            }\n        ],\n        \"filters\": [\n            \"category:politics\",\n            \"!category:economie\",\n            \"VIEWED\"\n        ],\n        \"count\": 3\n    },\n    {\n        \"id\": \"default\",\n        \"filters\": [\n            \"publicationDate>2023-04-17T14:30+0200\",\n            \"!category:economie\",\n            \"VIEWED\"\n        ],\n        \"boosts\": [{\n            \"value\": \"1\",\n            \"algorithm\": \"RECENT_CTR\"\n        }]\n    }\n]"
+                  "value" : "[{\n        \"id\": \"first\",\n        \"boosts\": [{\n                \"value\": \"1\",\n                \"algorithm\": \"RECENCY\"\n            },\n            {\n                \"value\": \"2\",\n                \"algorithm\": \"COLLABORATIVE_FILTERING\",\n                \"rampUp\": \"FAST\"\n            },\n            {\n                \"value\": \"1\",\n                \"algorithm\": \"RECENT_VIEW\"\n            },\n            {\n                \"value\": \"1\",\n                \"algorithm\": \"RECENT_CTR\"\n            }\n        ],\n        \"filters\": [\n            \"category:politics\",\n            \"viewed\"\n        ],\n        \"count\": 3\n    },\n    {\n        \"id\": \"second\",\n        \"boosts\": [{\n                \"value\": \"2\",\n                \"algorithm\": \" COLLABORATIVE_FILTERING \",\n                \"rampup\": \"SLOW\"\n            },\n            {\n                \"value\": \"1\",\n                \"algorithm\": \" RECENT_CTR\"\n            }\n        ],\n        \"filters\": [\n            \"category:politics\",\n            \"!category:economie\",\n            \"VIEWED\"\n        ],\n        \"count\": 3\n    },\n    {\n        \"id\": \"default\",\n        \"filters\": [\n            \"publicationDate>2023-04-17T14:30+02:00\",\n            \"!category:economie\",\n            \"VIEWED\"\n        ],\n        \"boosts\": [{\n            \"value\": \"1\",\n            \"algorithm\": \"RECENT_CTR\"\n        }]\n    }\n]"
                 }
               }
             }
@@ -2509,7 +2509,7 @@
           },
           "fromDate" : {
             "type" : "string",
-            "description" : "The from date"
+            "description" : "The from date in ISO 8601 format (e.g. '2023-01-22T11:21:33.872Z')"
           },
           "fromValue" : {
             "type" : "integer",
@@ -2539,7 +2539,7 @@
           },
           "toDate" : {
             "type" : "string",
-            "description" : "The to date"
+            "description" : "The to date in ISO 8601 format (e.g. '2023-01-22T11:21:33.872Z')"
           },
           "toValue" : {
             "type" : "integer",
