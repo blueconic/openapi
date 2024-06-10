@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "93.0"
+  version: "92.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -2298,59 +2298,55 @@ paths:
           \ Data Protection Law (PDPL) of Argentina. |\n| SB1392                 \
           \ | A profile is governed by SB1392 of the Commonwealth of Virginia |\n\
           | SB190                   | A profile is governed by the State of Colorado.\
-          \ |\n| CDPA_CTCPDA             | A profile is governed by CDPA/CTCPDA in\
-          \ the State of Connecticut. |\n| UCPA                    | A profile is\
-          \ governed by UCPA in the State of Utah. |\n| BRAZIL_LGPD             |\
-          \ A profile is governed by the Brazilian General Protection Law. |\n| ISRAEL_PPL\
-          \              | A profile is governed by the Israel Protection Privacy\
-          \ Law. |\n| JAPAN_APPI              | A profile is governed by the Japan\
-          \ APPI. |\n| MEXICO_LFPDPPP          | A profile is governed by the Mexico\
-          \ LFPDPPP. |\n| NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New\
-          \ Zealand Privacy Act. |\n| SWITZERLAND_DPA         | A profile is governed\
-          \ by the Switzerland Data Protection Act (DPA). |\n| UK_GDPR           \
-          \      | A profile is governed by the United Kingdom General Data Protection\
-          \ Regulation. |\n| CHINA_PIPL              | A profile is governed by the\
-          \ People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile\
-          \ is governed by the Australian Privacy Act. |\n| NONE                 \
-          \   | The profile is not governed by a known privacy legislation zone; profile\
-          \ will just be created. NONE legislations are also targeted when 'Rest of\
-          \ World' is selected in an objective. |\n\n**Profile strategy**\n\nThe following\
-          \ values are valid strategies for profile operations. These can be used\
-          \ to create, update or delete profiles.\n\n| Name         | Description\
-          \ |\n| :----------- | :---------- |\n| UPSERT   | Will update (and insert\
-          \ if not found) the profile based on the rules passed along. |\n| UPDATE\
-          \   | Will update (but doesn’t insert if not found) the profile based on\
-          \ the rules passed along. |\n| DELETE   | Will delete the profile with the\
-          \ given ID. |\n\n**Timeline Strategy**\n\nThe following values are valid\
-          \ timeline strategies. These can either be used for the strategy property\
-          \ for a timeline event as a whole, or when passing rules to apply on nested\
-          \ timeline event properties.\n\n| Name     | Description |\n| :--------|\
-          \ :---------- |\n| SET      | Timeline event will be added to the profile\
-          \ timeline as is, possibly replacing the existing event with the same ID,\
-          \ event type ID, and date. |\n| UPSERT   | Will update (and insert if not\
-          \ found) the timeline event with the given ID, event type ID, and date,\
-          \ based on the rules that are passed along. |\n| UPDATE   | Will update\
-          \ (but doesn’t insert if not found) the timeline event with the given ID,\
-          \ event type ID, and date, based on the rules that are passed along. |\n\
-          | DELETE   | Will delete the timeline event with the given ID, event type\
-          \ ID and, optionally, a date. If not passed, all events matching the ID\
-          \ and event type ID will be deleted. |\n\n**Profile and Timeline property\
-          \ strategy**\n\nThe following values are valid property strategies. These\
-          \ rules apply on profile and timeline event properties.\n\n| Name      \
-          \   | Description |\n| :----------- | :---------- |\n| ADD          | Values\
-          \ will be added to the values that already existed in the profile or timeline\
-          \ event property. Duplicates will not be added. |\n| SET          | Values\
-          \ will overwrite the values that already existed in the profile or timeline\
-          \ event property. |\n| SET_IF_EMPTY | Only set values if the profile or\
-          \ timeline event property is empty. |\n| SUM          | Add the value to\
-          \ the value already stored in the profile property. This is not supported\
-          \ for timeline event properties. |\n| REMOVE       | Remove the value from\
-          \ the list of values already stored in the profile property. This is not\
-          \ yet supported for timeline event properties. |\n\n**Group property strategy**\n\
-          \nThe following values are valid property strategies. These rules apply\
-          \ on group properties.\n\n| Name         | Description                 \
+          \ |\n| BRAZIL_LGPD             | A profile is governed by the Brazilian\
+          \ General Protection Law. |\n| ISRAEL_PPL              | A profile is governed\
+          \ by the Israel Protection Privacy Law. |\n| JAPAN_APPI              | A\
+          \ profile is governed by the Japan APPI. |\n| NEW_ZEALAND_PRIVACY_ACT |\
+          \ A profile is governed by the New Zealand Privacy Act. |\n| SWITZERLAND_DPA\
+          \         | A profile is governed by the Switzerland Data Protection Act\
+          \ (DPA). |\n| UK_GDPR                 | A profile is governed by the United\
+          \ Kingdom General Data Protection Regulation. |\n| CHINA_PIPL          \
+          \    | A profile is governed by the People's Republic of China PIPL. |\n\
+          | AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy\
+          \ Act. |\n| NONE                    | The profile is not governed by a known\
+          \ privacy legislation zone; profile will just be created. NONE legislations\
+          \ are also targeted when 'Rest of World' is selected in an objective. |\n\
+          \n**Profile strategy**\n\nThe following values are valid strategies for\
+          \ profile operations. These can be used to create, update or delete profiles.\n\
+          \n| Name         | Description |\n| :----------- | :---------- |\n| UPSERT\
+          \   | Will update (and insert if not found) the profile based on the rules\
+          \ passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found)\
+          \ the profile based on the rules passed along. |\n| DELETE   | Will delete\
+          \ the profile with the given ID. |\n\n**Timeline Strategy**\n\nThe following\
+          \ values are valid timeline strategies. These can either be used for the\
+          \ strategy property for a timeline event as a whole, or when passing rules\
+          \ to apply on nested timeline event properties.\n\n| Name     | Description\
+          \ |\n| :--------| :---------- |\n| SET      | Timeline event will be added\
+          \ to the profile timeline as is, possibly replacing the existing event with\
+          \ the same ID, event type ID, and date. |\n| UPSERT   | Will update (and\
+          \ insert if not found) the timeline event with the given ID, event type\
+          \ ID, and date, based on the rules that are passed along. |\n| UPDATE  \
+          \ | Will update (but doesn’t insert if not found) the timeline event with\
+          \ the given ID, event type ID, and date, based on the rules that are passed\
+          \ along. |\n| DELETE   | Will delete the timeline event with the given ID,\
+          \ event type ID and, optionally, a date. If not passed, all events matching\
+          \ the ID and event type ID will be deleted. |\n\n**Profile and Timeline\
+          \ property strategy**\n\nThe following values are valid property strategies.\
+          \ These rules apply on profile and timeline event properties.\n\n| Name\
+          \         | Description |\n| :----------- | :---------- |\n| ADD       \
+          \   | Values will be added to the values that already existed in the profile\
+          \ or timeline event property. Duplicates will not be added. |\n| SET   \
+          \       | Values will overwrite the values that already existed in the profile\
+          \ or timeline event property. |\n| SET_IF_EMPTY | Only set values if the\
+          \ profile or timeline event property is empty. |\n| SUM          | Add the\
+          \ value to the value already stored in the profile property. This is not\
+          \ supported for timeline event properties. |\n| REMOVE       | Remove the\
+          \ value from the list of values already stored in the profile property.\
+          \ This is not yet supported for timeline event properties. |\n\n**Group\
+          \ property strategy**\n\nThe following values are valid property strategies.\
+          \ These rules apply on group properties.\n\n| Name         | Description\
           \                                                                      \
-          \           |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n\
+          \                            |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n\
           | ADD          | Values will be added to the values that already existed\
           \ in the group property. Duplicates will not be added. |\n| SET        \
           \  | Values will overwrite the values that already existed in the group\
@@ -3086,19 +3082,17 @@ paths:
       - name: fromDate
         in: query
         description: Filter to only include timeline events that are dated later than
-          this date. In the ISO 8601 format '2023-01-22T11:21:33.872Z' or with time
-          zone offset `2023-01-22T11:21:33.872+05:00`.
+          this date. ISO date like `2023-01-01T00:00Z` or with time zone offset `2023-01-01T00:00+05:00`.
         schema:
           type: string
-        example: 2023-01-22T11:21:33.872Z
+        example: 2023-01-01T00:00Z
       - name: toDate
         in: query
         description: Filter to only include timeline events that are dated before
-          this date. In the ISO 8601 format '2023-01-22T11:21:33.872Z' or with time
-          zone offset `2023-01-22T11:21:33.872+05:00`.
+          this date. ISO date like `2023-01-01T00:00Z` or with time zone offset `2023-01-01T00:00+05:00`.
         schema:
           type: string
-        example: 2023-02-22T11:21:33.872Z
+        example: 2023-01-01T00:00Z
       responses:
         "200":
           description: "Returns the profiles of the given segment in a streaming fashion\
@@ -3306,98 +3300,43 @@ paths:
                     {
                       "itemsPerPage" : 10,
                       "segments" : [ {
-                        "creationDate" : "2024-03-21T15:04:58.390Z",
-                        "creator" : {
-                          "fullName" : "BlueConic",
-                          "userName" : "BlueConic"
-                        },
-                        "description" : "The segment description",
                         "favorite" : false,
                         "id" : "aa9c3c86-edec-4ac5-8521-a1be602eb7c6",
                         "inverseOf" : "",
                         "inversedBy" : "",
-                        "lastModifiedDate" : "2024-03-21T15:04:58.390Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "BlueConic",
-                          "userName" : "BlueConic"
-                        },
                         "name" : "All Visitors",
                         "readOnly" : true,
                         "tags" : ["a tag"]
                       }, {
-                        "creationDate" : "2024-03-21T15:16:26.843Z",
-                        "creator" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
-                        "description" : "",
                         "favorite" : false,
                         "id" : "dcd46509-0c5f-40a5-8b91-e9b9315466ef",
                         "inverseOf" : "",
                         "inversedBy" : "",
-                        "lastModifiedDate" : "2024-03-21T15:16:26.843Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
                         "name" : "Preferred visit hour: Afternoon",
                         "readOnly" : false,
                         "tags" : [ ]
                       }, {
-                        "creationDate" : "2024-03-21T15:16:26.848Z",
-                        "creator" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
-                        "description" : "",
                         "favorite" : false,
                         "id" : "6c2785b1-66fd-4504-9b26-20c8b24b1c46",
                         "inverseOf" : "",
                         "inversedBy" : "",
-                        "lastModifiedDate" : "2024-03-21T15:16:26.848Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
                         "name" : "Preferred visit hour: Evening",
                         "readOnly" : false,
                         "tags" : [ ]
                       }, {
-                        "creationDate" : "2024-03-21T15:16:26.839Z",
-                        "creator" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
-                        "description" : "",
                         "favorite" : true,
                         "id" : "194b246b-26c5-4e9a-bc3a-f3896c8dc96e",
                         "inverseOf" : "",
                         "inversedBy" : "",
-                        "lastModifiedDate" : "2024-03-21T15:16:26.839Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
                         "name" : "Preferred visit hour: Morning",
                         "readOnly" : false,
                         "tags" : [ ]
                       }, {
-                        "creationDate" : "2024-03-21T15:16:26.837Z",
-                        "creator" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
-                        "description" : "",
                         "favorite" : false,
                         "id" : "1e557d7c-e655-415a-a0bd-256009af183a",
                         "inverseOf" : "",
                         "inversedBy" : "",
-                        "lastModifiedDate" : "2024-03-21T15:16:26.837Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "ondemand@blueconic.com",
-                          "userName" : "ondemand@blueconic.com"
-                        },
-                        "name" : "Preferred visit hour : Night",
+                        "name" : "Preferred visit hour: Night",
                         "readOnly" : false,
                         "tags" : [ ]
                       } ],
@@ -4149,6 +4088,10 @@ components:
               \ applicable to web channels. For example, an alias of the hostname\
               \ `www.blueconic.com` could be `blueconic.com`."
           uniqueItems: true
+        canDelete:
+          type: boolean
+          description: If the item can be deleted or not.
+          readOnly: true
         creationDate:
           type: string
           format: date-time
@@ -4162,6 +4105,10 @@ components:
           description: The description.
         domain:
           $ref: "#/components/schemas/simpleDomain"
+        favorite:
+          type: boolean
+          description: If the item is favorited or not.
+          readOnly: true
         hostname:
           type: string
           description: "The hostname of the channel. For web channels, the hostname\
@@ -4186,6 +4133,10 @@ components:
         name:
           type: string
           description: The object name.
+        readOnly:
+          type: boolean
+          description: If the item is read-only or not.
+          readOnly: true
         tags:
           type: array
           description: The tags (e.g. labels).
@@ -4684,6 +4635,10 @@ components:
           default: false
           description: Whether the profile property is available as a filter to create
             segments.
+        canDelete:
+          type: boolean
+          description: If the item can be deleted or not.
+          readOnly: true
         canRead:
           type: boolean
           default: false
@@ -4723,6 +4678,10 @@ components:
         description:
           type: string
           description: The description.
+        favorite:
+          type: boolean
+          description: If the item is favorited or not.
+          readOnly: true
         filterType:
           type: string
           default: None
@@ -4801,6 +4760,10 @@ components:
           readOnly: true
         range:
           $ref: "#/components/schemas/range"
+        readOnly:
+          type: boolean
+          description: If the item is read-only or not.
+          readOnly: true
         showInUI:
           type: boolean
           default: true
@@ -5026,9 +4989,6 @@ components:
           - UK_GDPR
           - CHINA_PIPL
           - AUSTRALIA_PRIVACY_ACT
-          - CDPA_CTCPDA
-          - UCPA
-          - MEXICO_LFPDPPP
         consentedObjectives:
           type: array
           description: List of objective IDs that the profile has given consent to.
@@ -5149,9 +5109,6 @@ components:
           - UK_GDPR
           - CHINA_PIPL
           - AUSTRALIA_PRIVACY_ACT
-          - CDPA_CTCPDA
-          - MEXICO_LFPDPPP
-          - UCPA
         profileId:
           type: string
           description: "The BlueConic profile ID to search for. When specified, it\
@@ -5282,6 +5239,10 @@ components:
       type: object
       description: The segments.
       properties:
+        canDelete:
+          type: boolean
+          description: If the item can be deleted or not.
+          readOnly: true
         creationDate:
           type: string
           format: date-time
@@ -5293,6 +5254,10 @@ components:
         description:
           type: string
           description: The description.
+        favorite:
+          type: boolean
+          description: If the item is favorited or not.
+          readOnly: true
         id:
           type: string
           description: The object ID.
@@ -5312,6 +5277,10 @@ components:
         name:
           type: string
           description: The object name.
+        readOnly:
+          type: boolean
+          description: If the item is read-only or not.
+          readOnly: true
         tags:
           type: array
           description: The tags (e.g. labels).
