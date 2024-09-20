@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "94.0"
+  version: "93.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -1706,6 +1706,7 @@ paths:
                       "canDelete" : true,
                       "canRead" : true,
                       "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
                       "createNewProfile" : false,
                       "creationDate" : "2023-03-22T09:33:26.319Z",
                       "creator" : {
@@ -1816,6 +1817,7 @@ paths:
                       "canDelete" : true,
                       "canRead" : true,
                       "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
                       "createNewProfile" : false,
                       "creationDate" : "2023-03-22T09:43:58.910Z",
                       "creator" : {
@@ -1865,6 +1867,7 @@ paths:
                       "canDelete" : true,
                       "canRead" : true,
                       "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
                       "createNewProfile" : false,
                       "creationDate" : "2023-03-22T09:47:26.491Z",
                       "creator" : {
@@ -1960,6 +1963,7 @@ paths:
                       "canDelete" : true,
                       "canRead" : true,
                       "canWrite" : true,
+                      "compositionStrategy" : "BOTH",
                       "createNewProfile" : false,
                       "creationDate" : "2023-03-22T09:33:26.319Z",
                       "creator" : {
@@ -2117,6 +2121,7 @@ paths:
                         "canDelete" : true,
                         "canRead" : true,
                         "canWrite" : true,
+                        "compositionStrategy" : "BOTH",
                         "createNewProfile" : false,
                         "creationDate" : "2023-03-20T13:53:35.046Z",
                         "dataSensitivity" : "NON_PII",
@@ -2306,50 +2311,46 @@ paths:
           \      | A profile is governed by the United Kingdom General Data Protection\
           \ Regulation. |\n| CHINA_PIPL              | A profile is governed by the\
           \ People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile\
-          \ is governed by the Australian Privacy Act. |\n| TDPSA                \
-          \   | A profile is governed by TDPSA in the State of Texas. |\n| MTCDPA\
-          \                  | A profile is governed by MTCDPA in the State of Montana.\
-          \ |\n| FDBR                    | A profile is governed by FDBR in the State\
-          \ of Florida. |\n| OCPA                    | A profile is governed by OCPA\
-          \ in the State of Oregon. |\n| NONE                    | The profile is\
-          \ not governed by a known privacy legislation zone; profile will just be\
-          \ created. NONE legislations are also targeted when 'Rest of World' is selected\
-          \ in an objective. |\n\n**Profile strategy**\n\nThe following values are\
-          \ valid strategies for profile operations. These can be used to create,\
-          \ update or delete profiles.\n\n| Name         | Description |\n| :-----------\
-          \ | :---------- |\n| UPSERT   | Will update (and insert if not found) the\
-          \ profile based on the rules passed along. |\n| UPDATE   | Will update (but\
-          \ doesn’t insert if not found) the profile based on the rules passed along.\
-          \ |\n| DELETE   | Will delete the profile with the given ID. |\n\n**Timeline\
-          \ Strategy**\n\nThe following values are valid timeline strategies. These\
-          \ can either be used for the strategy property for a timeline event as a\
-          \ whole, or when passing rules to apply on nested timeline event properties.\n\
-          \n| Name     | Description |\n| :--------| :---------- |\n| SET      | Timeline\
-          \ event will be added to the profile timeline as is, possibly replacing\
-          \ the existing event with the same ID, event type ID, and date. |\n| UPSERT\
-          \   | Will update (and insert if not found) the timeline event with the\
-          \ given ID, event type ID, and date, based on the rules that are passed\
-          \ along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the\
-          \ timeline event with the given ID, event type ID, and date, based on the\
-          \ rules that are passed along. |\n| DELETE   | Will delete the timeline\
-          \ event with the given ID, event type ID and, optionally, a date. If not\
-          \ passed, all events matching the ID and event type ID will be deleted.\
-          \ |\n\n**Profile and Timeline property strategy**\n\nThe following values\
-          \ are valid property strategies. These rules apply on profile and timeline\
-          \ event properties.\n\n| Name         | Description |\n| :----------- |\
-          \ :---------- |\n| ADD          | Values will be added to the values that\
-          \ already existed in the profile or timeline event property. Duplicates\
-          \ will not be added. |\n| SET          | Values will overwrite the values\
-          \ that already existed in the profile or timeline event property. |\n| SET_IF_EMPTY\
-          \ | Only set values if the profile or timeline event property is empty.\
-          \ |\n| SUM          | Add the value to the value already stored in the profile\
-          \ property. This is not supported for timeline event properties. |\n| REMOVE\
-          \       | Remove the value from the list of values already stored in the\
-          \ profile property. This is not yet supported for timeline event properties.\
-          \ |\n\n**Group property strategy**\n\nThe following values are valid property\
-          \ strategies. These rules apply on group properties.\n\n| Name         |\
-          \ Description                                                          \
-          \                                        |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n\
+          \ is governed by the Australian Privacy Act. |\n| NONE                 \
+          \   | The profile is not governed by a known privacy legislation zone; profile\
+          \ will just be created. NONE legislations are also targeted when 'Rest of\
+          \ World' is selected in an objective. |\n\n**Profile strategy**\n\nThe following\
+          \ values are valid strategies for profile operations. These can be used\
+          \ to create, update or delete profiles.\n\n| Name         | Description\
+          \ |\n| :----------- | :---------- |\n| UPSERT   | Will update (and insert\
+          \ if not found) the profile based on the rules passed along. |\n| UPDATE\
+          \   | Will update (but doesn’t insert if not found) the profile based on\
+          \ the rules passed along. |\n| DELETE   | Will delete the profile with the\
+          \ given ID. |\n\n**Timeline Strategy**\n\nThe following values are valid\
+          \ timeline strategies. These can either be used for the strategy property\
+          \ for a timeline event as a whole, or when passing rules to apply on nested\
+          \ timeline event properties.\n\n| Name     | Description |\n| :--------|\
+          \ :---------- |\n| SET      | Timeline event will be added to the profile\
+          \ timeline as is, possibly replacing the existing event with the same ID,\
+          \ event type ID, and date. |\n| UPSERT   | Will update (and insert if not\
+          \ found) the timeline event with the given ID, event type ID, and date,\
+          \ based on the rules that are passed along. |\n| UPDATE   | Will update\
+          \ (but doesn’t insert if not found) the timeline event with the given ID,\
+          \ event type ID, and date, based on the rules that are passed along. |\n\
+          | DELETE   | Will delete the timeline event with the given ID, event type\
+          \ ID and, optionally, a date. If not passed, all events matching the ID\
+          \ and event type ID will be deleted. |\n\n**Profile and Timeline property\
+          \ strategy**\n\nThe following values are valid property strategies. These\
+          \ rules apply on profile and timeline event properties.\n\n| Name      \
+          \   | Description |\n| :----------- | :---------- |\n| ADD          | Values\
+          \ will be added to the values that already existed in the profile or timeline\
+          \ event property. Duplicates will not be added. |\n| SET          | Values\
+          \ will overwrite the values that already existed in the profile or timeline\
+          \ event property. |\n| SET_IF_EMPTY | Only set values if the profile or\
+          \ timeline event property is empty. |\n| SUM          | Add the value to\
+          \ the value already stored in the profile property. This is not supported\
+          \ for timeline event properties. |\n| REMOVE       | Remove the value from\
+          \ the list of values already stored in the profile property. This is not\
+          \ yet supported for timeline event properties. |\n\n**Group property strategy**\n\
+          \nThe following values are valid property strategies. These rules apply\
+          \ on group properties.\n\n| Name         | Description                 \
+          \                                                                      \
+          \           |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n\
           | ADD          | Values will be added to the values that already existed\
           \ in the group property. Duplicates will not be added. |\n| SET        \
           \  | Values will overwrite the values that already existed in the group\
@@ -2592,12 +2593,10 @@ paths:
               Basic delete profile example:
                 description: Delete a single profile
                 value: |-
-                  [
-                      {
-                          "profileId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
-                          "strategy": "DELETE"
-                      }
-                  ]
+                  {
+                      "profileId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
+                      "strategy": "DELETE"
+                  }
         required: true
       responses:
         "200":
@@ -2723,7 +2722,6 @@ paths:
         description: |
           Expand the information in the result set. Use "profile.permissions.exceptions" to include permission level and exception data.
           Use "profile.timeline" to include timeline event information.
-          Use "profile.segments" to include the segments a profile is part of.
           Use multiple "expand" querystring parameters to return combinations.
         schema:
           type: array
@@ -2733,33 +2731,9 @@ paths:
       - name: properties
         in: query
         description: Only returns the given profile properties in the response.
-        deprecated: true
         schema:
           type: string
         example: "email,fullname,visits"
-      - name: profileProperty
-        in: query
-        description: "When the profileProperty is specified, the response will only\
-          \ return the values for the given profile property. If not specified, the\
-          \ values of all profile properties will be returned, which may result in\
-          \ a large result set."
-        schema:
-          type: array
-          items:
-            type: string
-        example: email
-      - name: groupProperty
-        in: query
-        description: "When the groupProperty is specified, the response will only\
-          \ return the values for the given group property. If not specified, the\
-          \ values of all group properties will be returned, which may result in a\
-          \ large result set. Only relevant when `&expand=profiles.profile.groups`\
-          \ is supplied."
-        schema:
-          type: array
-          items:
-            type: string
-        example: city
       - name: eventTypeId
         in: query
         description: Filter returned timeline events for a specific type.
@@ -2988,33 +2962,9 @@ paths:
           \ each profile. If not specified, the values of all profile properties will\
           \ be returned, which may result in a large result set. One or more profile\
           \ property ids, separated by a comma."
-        deprecated: true
         schema:
           type: string
         example: "browserversion,email"
-      - name: profileProperty
-        in: query
-        description: "When the profileProperty is specified, the response will only\
-          \ return the values for the given profile property. If not specified, the\
-          \ values of all profile properties will be returned, which may result in\
-          \ a large result set."
-        schema:
-          type: array
-          items:
-            type: string
-        example: email
-      - name: groupProperty
-        in: query
-        description: "When the groupProperty is specified, the response will only\
-          \ return the values for the given group property. If not specified, the\
-          \ values of all group properties will be returned, which may result in a\
-          \ large result set. Only relevant when `&expand=profiles.profile.groups`\
-          \ is supplied."
-        schema:
-          type: array
-          items:
-            type: string
-        example: city
       - name: refinement
         in: query
         description: "**Refinement**\n\nSpecifies (URL-encoded) the refinement used\
@@ -3099,9 +3049,8 @@ paths:
           to include permission level. Use `profiles.profile.replace` to include profile
           merge information. Use `profiles.profile.segments` to include the segments
           a profile is part of. Use `profiles.profile.timeline` to include timeline
-          event information. Use `profiles.profile.groups` to include group information.  Use
-          `profiles.profile.matchingGroups` to include matching group information.
-          Use multiple `expand` querystring parameters to return combinations.
+          event information. Use multiple `expand` querystring parameters to return
+          combinations.
         schema:
           type: array
           items:
@@ -3527,117 +3476,47 @@ paths:
           default: false
         example: true
       requestBody:
-        description: "The body of a recommendations request consists of a JSON array\
-          \ that holds one or more sets of recommendation definition objects. Each\
-          \ recommendation definition object contains a combination of algorithms\
-          \ and filters and a number of items that should be returned. This allows\
-          \ you to return items based on different mixes of algorithms. You can also\
-          \ define a default to fall back to when not enough matching recommendations\
-          \ can be found.\n\nThe following [boosting algorithms](https://support.blueconic.com/hc/en-us/articles/360022093313-BlueConic-recommendation-algorithms#breaking-news-top-products-based-on-the-recent-view-field--0-0)\
-          \ are supported:\n\n|Name|Description|Example|\n|:----|:----|:----|\n|Breaking\
-          \ news|Items most viewed by all visitors in the time frame defined in the\
-          \ collector.|`\"boosts\": [{\"value\": 1, \"algorithm\": \"RECENT_VIEW\"\
-          }]`\n|Viral news|Items most used as a landing page by all visitors in the\
-          \ time frame defined in the collector.|`\"boosts\": [{\"value\": 1, \"algorithm\"\
-          : \"RECENT_ENTRYPAGE\"}]`\n|Recency|Items most recently added items based\
-          \ on the publication date property.|`\"boosts\": [{\"value\": 1, \"algorithm\"\
-          : \"RECENCY\"}]`\n|Recent high CTRs|Items most clicked-through from BlueConic\
-          \ recommendations by all visitors in the time frame defined in the collector.|`\"\
-          boosts\": [{\"value\": 1, \"algorithm\": \"RECENT_CTR\"}]`\n|Recently bought\
-          \ items|Items recently bought by the provided profileId.|`\"boosts\": [{\"\
-          value\": 1, \"algorithm\": \"RECENTLY_BOUGHT\"}]`\n|Recently carted items|Items\
-          \ recently put in the shopping cart by the provided profileId.|`\"boosts\"\
-          : [{\"value\": 1, \"algorithm\": \"RECENTLY_SHOPPINGCART\"}]`\n|Same category|Items\
-          \ of the same category as the item with the provided itemId.|`\"boosts\"\
-          : [{\"value\": 1, \"algorithm\": \"SAME_CATEGORY\" }]`\n|Look-alike-articles|Items\
-          \ that have similar content to the item with the provided itemId.|`\"boosts\"\
-          : [{\"value\": 1, \"algorithm\": \" LOOK_ALIKE\" }]`\n|Seen articles|Items\
-          \ the provided profileId recently viewed.|`\"boosts\": [{\"value\": 1, \"\
-          algorithm\": \" RECENTLY_VIEWED\" }]`\n|Same interest|Items that look similar\
-          \ to the items already viewed by the provided profileId.|`\"boosts\": [{\"\
-          value\": 1, \"algorithm\": \"INTEREST\", \"rampUp\": \"FAST\"}]`\n|Collaborative\
-          \ filtering|Items popular with other profiles who viewed the same items\
-          \ as the provided profileId.|`\"boosts\": [{\"value\": 1, \"algorithm\"\
-          : \"COLLABORATIVE_FILTERING\", \"rampUp\": \"FAST\"}]`|\n\nRecommendation\
-          \ definition objects may contain filters that restrict the items that will\
-          \ be returned. \n\nFormat:  \n`\"filters\": [\"<property ID>\":<absolute\
-          \ literal value>,<absolute literal value2>\"]`  \nto only include items\
-          \ that have a specific value for a specific profile property.\n\nUse the\
-          \ `!` before the property to **exclude** items. Format:  \n`\"filters\"\
-          : [\"!<property ID>\":<absolute literal value>,<absolute literal value2>\"\
-          ]`  \n\nYou can also use the comparison operators `<`, `>`, `<=`, `>=` for\
-          \ data type number, date time, currency, and decimal properties. \nFor example\
-          \ `\"filters\": [\"<property ID>\">=<absolute literal value>,<absolute literal\
-          \ value2>\"]`\n\nWhen combining multiple filters, these have an implicit\
-          \ AND relation.  \nTo combine filters, follow the format `\"filters\": [\"\
-          <property ID>\":<absolute literal value>,<absolute literal value2>\", \"\
-          <property ID2>\":<absolute literal value3>,<absolute literal value4>\"].`\n\
-          \nProfile property value filtering can be done by explicitly passing an\
-          \ absolute literal value. You can’t reference another profile property in\
-          \ the filter or use relative dates (for example, 14 days ago).\n\nSee examples\
-          \ below.\n\n| Example                                                  |\
-          \ Description                                                          \
-          \                                                                      \
-          \                                          |\n|:---------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
-          | `\"filters\": [\"VIEWED\"]`                                  | Exclude\
-          \ the items already viewed by the provided profileId.                  \
-          \                                                                      \
-          \                                  |\n| `\"filters\": [\"SHOPPINGCART\"\
-          ]`                            | Exclude the items in the shopping cart of\
-          \ the provided profileId.                                              \
-          \                                                                      |\n\
-          | `\"filters\": [\"BOUGHT\"]`                                  | Exclude\
-          \ the items already bought by the provided profileId.                  \
-          \                                                                      \
-          \                                  |\n| `\"filters\": [\"VIEWED_ONLY\"]`\
-          \                             | Include only items that were viewed by the\
-          \ provided profileId.                                                  \
-          \                                                                     |\n\
-          | `\"filters\": [\"SHOPPINGCART_ONLY\"]`                       | Include\
-          \ only items that were in the shopping cart of the provided profileId. \
-          \                                                                      \
-          \                                  |\n| `\"filters\": [\"BOUGHT_ONLY\"]`\
-          \                             | Include only items that were bought by the\
-          \ provided profileId.                                                  \
-          \                                                                     |\n\
-          | `\"filters\": [\"SAME_CATEGORY\"]`                           | Include\
-          \ only items that have the same category as the provided itemId.       \
-          \                                                                      \
-          \                                  |\n| `\"filters\": [\"IN_STOCK\"]`  \
-          \                              | Include only items that are in stock. \
-          \                                                                      \
-          \                                                                      \
-          \   |\n| `\"filters\": [\"publicationDate>2023-06-01T00:00+02:00\"]`  |\
-          \ Include only items with a publication date after June 1<sup>st</sup> 2023.\
-          \ The format of publicationDate is `2023-01-01T00:00Z` or with a time zone\
-          \ offset `2023-01-01T00:00+05:00`  |\n| `\"filters\": [\"publicationDate<=2023-06-01T00:00+02:00\"\
-          ]` | Include only items with a publication date before June 1<sup>st</sup>\
-          \ 2023. The format of publicationDate is `2023-01-01T00:00Z` or with a time\
-          \ zone offset `2023-01-01T00:00+05:00` |\n| `\"filters\": [\"category:politics\"\
-          ]`                       | Include only items that have a specific value\
-          \ for a specific property, e.g. “politics” for property “category”.    \
-          \                                                                  |\n|\
-          \ `\"filters\": [\"!category:politics\"]`                      | Exclude\
-          \ items that do not have a specific value, e.g. “politics” for property\
-          \ “category”.                                                          \
-          \                                  |\n| `\"filters\": [\"category:politics\"\
-          ,\"category:sports\"]`     | Include only items that have all specific values,\
-          \ e.g. “politics” and “sports” for property “category”.                \
-          \                                                              |\n| `\"\
-          filters\": [\"category:politics,sports\"]`                | Include only\
-          \ items that have any of the specified values, e.g. “politics” or “sports”\
-          \ for property “category”.                                             \
-          \                          |\n| `\"filters\": [\"!category:politics\",\"\
-          !category:sports\"]`   | Include only items that do not have any of the\
-          \ specified values, e.g. “politics” or “sports” for property “category”\
-          .                                                                |\n| `\"\
-          filters\": [\"!category:politics,sports\"]`               | Include only\
-          \ items that do not have all of the specified values, e.g. “politics” and\
-          \ “sports” for property “category”.                                    \
-          \                           |\n| `\"filters\": [\"hasproperty:image\"]`\
-          \                       | Include only items that have an image.       \
-          \                                                                      \
-          \                                                                  |\n"
+        description: |
+          The body of a recommendations request consists of a JSON array that holds one or more sets of recommendation definition objects. Each recommendation definition object contains a combination of algorithms and filters and a number of items that should be returned. This allows you to return items based on different mixes of algorithms. You can also define a default to fall back to when not enough matching recommendations can be found.
+
+          The following boosting algorithms are supported:
+
+          |Name|Description|Example|
+          |:----|:----|:----|
+          |Breaking news|Items most viewed by all visitors in the time frame defined in the collector.|`"boosts": [{"value": 1, "algorithm": "RECENT_VIEW"}]`
+          |Viral news|Items most used as a landing page by all visitors in the time frame defined in the collector.|`"boosts": [{"value": 1, "algorithm": "RECENT_ENTRYPAGE"}]`
+          |Recency|Items most recently added items based on the publication date property.|`"boosts": [{"value": 1, "algorithm": "RECENCY"}]`
+          |Recent high CTRs|Items most clicked-through from BlueConic recommendations by all visitors in the time frame defined in the collector.|`"boosts": [{"value": 1, "algorithm": "RECENT_CTR"}]`
+          |Recently bought items|Items recently bought by the provided profileId.|`"boosts": [{"value": 1, "algorithm": "RECENTLY_BOUGHT"}]`
+          |Recently carted items|Items recently put in the shopping cart by the provided profileId.|`"boosts": [{"value": 1, "algorithm": "RECENTLY_SHOPPINGCART"}]`
+          |Same category|Items of the same category as the item with the provided itemId.|`"boosts": [{"value": 1, "algorithm": "SAME_CATEGORY" }]`
+          |Look-alike-articles|Items that have similar content to the item with the provided itemId.|`"boosts": [{"value": 1, "algorithm": " LOOK_ALIKE" }]`
+          |Seen articles|Items the provided profileId recently viewed.|`"boosts": [{"value": 1, "algorithm": " RECENTLY_VIEWED" }]`
+          |Same interest|Items that look similar to the items already viewed by the provided profileId.|`"boosts": [{"value": 1, "algorithm": "INTEREST", "rampUp": "FAST"}]`
+          |Collaborative filtering|Items popular with other profiles who viewed the same items as the provided profileId.|`"boosts": [{"value": 1, "algorithm": "COLLABORATIVE_FILTERING", "rampUp": "FAST"}]`|
+
+          Recommendation definition objects may contain filters that restrict the items that may be returned.
+          When combining multiple filters, these have an implicit `AND` relation.
+
+          | Example                                                  | Description                                                                                                                                                                          |
+          |:---------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+          | `"filters": ["VIEWED"]`                                  | Exclude the items already viewed by the provided profileId.                                                                                                                          |
+          | `"filters": ["SHOPPINGCART"]`                            | Exclude the items in the shopping of the provided profileId.                                                                                                                         |
+          | `"filters": ["BOUGHT"]`                                  | Exclude the items already bought by the provided profileId.                                                                                                                          |
+          | `"filters": ["VIEWED_ONLY"]`                             | Include only items that were viewed by the provided profileId.                                                                                                                       |
+          | `"filters": ["SHOPPINGCART_ONLY"]`                       | Include only items that were in the shoppingcart of the provided profileId.                                                                                                          |
+          | `"filters": ["BOUGHT_ONLY"]`                             | Include only items that were bought by the provided profileId.                                                                                                                       |
+          | `"filters": ["SAME_CATEGORY"]`                           | Include only items that have the same category as the provided itemId.                                                                                                               |
+          | `"filters": ["IN_STOCK"]`                                | Include only items that are in stock.                                                                                                                                                |
+          | `"filters": ["publicationDate>2023-06-01T00:00+02:00"]`  | Include only items with a publication date after June 1<sup>st</sup> 2023. The format of publicationDate is `2023-01-01T00:00Z` or with a time zone offset `2023-01-01T00:00+05:00`  |
+          | `"filters": ["publicationDate<=2023-06-01T00:00+02:00"]` | Include only items with a publication date before June 1<sup>st</sup> 2023. The format of publicationDate is `2023-01-01T00:00Z` or with a time zone offset `2023-01-01T00:00+05:00` |
+          | `"filters": ["category:politics"]`                       | Include only items that have a specific value for a specific property, e.g. “politics” for property “category”.                                                                      |
+          | `"filters": ["!category:politics"]`                      | Exclude items that do not have a specific value, e.g. “politics” for property “category”.                                                                                            |
+          | `"filters": ["category:politics","category:sports"]`     | Include only items that have all specific values, e.g. “politics” and “sports” for property “category”.                                                                              |
+          | `"filters": ["category:politics,sports"]`                | Include only items that have any of the specified values, e.g. “politics” or “sports” for property “category”.                                                                       |
+          | `"filters": ["!category:politics","!category:sports"]`   | Include only items that do not have any of the specified values, e.g. “politics” or “sports” for property “category”.                                                                |
+          | `"filters": ["!category:politics,sports"]`               | Include only items that do not have all of the specified values, e.g. “politics” and “sports” for property “category”.                                                               |
+          | `"filters": ["hasproperty:image"]`                       | Include only items that have an image.                                                                                                                                               |
         content:
           application/json:
             schema:
@@ -4430,7 +4309,7 @@ components:
           description: The token type of the access and refresh token.
     group:
       type: object
-      description: Groups that the profile is a part of.
+      description: The groups.
       properties:
         creationDate:
           type: string
@@ -4815,6 +4694,9 @@ components:
           default: false
           description: Whether the visitor's browser is allowed to write a (new) value
             into this profile property.
+        compositionStrategy:
+          type: string
+          readOnly: true
         createNewProfile:
           type: boolean
           default: false
@@ -5103,19 +4985,6 @@ components:
           $ref: "#/components/schemas/simpleObject"
         stage:
           $ref: "#/components/schemas/simpleObject"
-    matchingGroup:
-      type: object
-      description: Groups that the profile is a part of and match the segment refinements.
-      properties:
-        profilePropertyId:
-          type: string
-          description: The ID of the BlueConic profile property.
-        groupIds:
-          type: array
-          description: The matching group IDs.
-          items:
-            type: string
-            description: The matching group IDs.
     permissions:
       type: object
       properties:
@@ -5185,17 +5054,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/event"
-        groups:
-          type: array
-          description: Groups that the profile is a part of.
-          items:
-            $ref: "#/components/schemas/group"
-        matchingGroups:
-          type: array
-          description: Groups that the profile is a part of and match the segment
-            refinements.
-          items:
-            $ref: "#/components/schemas/matchingGroup"
         lifecycleStages:
           type: array
           description: Lifecycle stages that the profile is part of.
@@ -5294,10 +5152,6 @@ components:
           - CDPA_CTCPDA
           - MEXICO_LFPDPPP
           - UCPA
-          - TDPSA
-          - MTCDPA
-          - FDBR
-          - OCPA
         profileId:
           type: string
           description: "The BlueConic profile ID to search for. When specified, it\
@@ -5682,3 +5536,4 @@ components:
           authorizationUrl: /rest/v2/oauth/authorize
           tokenUrl: /rest/v2/oauth/token
           refreshUrl: /rest/v2/oauth/token
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
