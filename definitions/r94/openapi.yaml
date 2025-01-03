@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "95.0"
+  version: "94.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -2311,17 +2311,11 @@ paths:
           \                  | A profile is governed by MTCDPA in the State of Montana.\
           \ |\n| FDBR                    | A profile is governed by FDBR in the State\
           \ of Florida. |\n| OCPA                    | A profile is governed by OCPA\
-          \ in the State of Oregon. |\n| DPDPA                   | A profile is governed\
-          \ by DPDPA in the State of Delaware. |\n| ICDPA                   | A profile\
-          \ is governed by ICDPA in the State of Iowa. |\n| NHPA                 \
-          \   | A profile is governed by NHPA in the State of New Hampshire. |\n|\
-          \ NJDPA                   | A profile is governed by NJDPA in the State\
-          \ of New Jersey. |\n| NEDPA                   | A profile is governed by\
-          \ NEDPA in the State of Nebraska. |\n| NONE                    | The profile\
-          \ is not governed by a known privacy legislation zone; profile will just\
-          \ be created. NONE legislations are also targeted when 'Rest of World' is\
-          \ selected in an objective. |\n\n**Profile strategy**\n\nThe following values\
-          \ are valid strategies for profile operations. These can be used to create,\
+          \ in the State of Oregon. |\n| NONE                    | The profile is\
+          \ not governed by a known privacy legislation zone; profile will just be\
+          \ created. NONE legislations are also targeted when 'Rest of World' is selected\
+          \ in an objective. |\n\n**Profile strategy**\n\nThe following values are\
+          \ valid strategies for profile operations. These can be used to create,\
           \ update or delete profiles.\n\n| Name         | Description |\n| :-----------\
           \ | :---------- |\n| UPSERT   | Will update (and insert if not found) the\
           \ profile based on the rules passed along. |\n| UPDATE   | Will update (but\
@@ -5304,11 +5298,6 @@ components:
           - MTCDPA
           - FDBR
           - OCPA
-          - DPDPA
-          - ICDPA
-          - NHPA
-          - NJDPA
-          - NEDPA
         profileId:
           type: string
           description: "The BlueConic profile ID to search for. When specified, it\
@@ -5345,16 +5334,6 @@ components:
             for this profile.
           items:
             $ref: "#/components/schemas/event"
-        triggerOnEventAdded:
-          type: boolean
-          default: false
-          description: "Whether or not to execute the configured triggers (for example,\
-            \ a webhook connection) when a timeline event is created or updated."
-        triggerOnPropertyChange:
-          type: boolean
-          default: true
-          description: "Whether or not to execute the configured triggers (for example,\
-            \ a webhook connection) when a profile property value changes."
     Criterium:
       type: object
       description: "The profile properties to match (only use \"Unique Identifier\"\
