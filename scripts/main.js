@@ -11,6 +11,7 @@ const wrapper = document.getElementById("versionSelectWrapper");
 
 let hostname = getQueryStringParam("hostname");
 let version = getQueryStringParam("version");
+let product = getQueryStringParam("product");
 
 const rapidoc = document.getElementById("doc");
 if (hostname) {
@@ -22,6 +23,9 @@ if (hostname) {
     }
     // load actual OpenAPI spec from hostname
     rapidoc.setAttribute("spec-url", `${hostname}/rest/v2/openapi.json`);
+} else if (product === "jebbit") {
+    // product selection Jebbit, load Jebbit spec
+    rapidoc.setAttribute("spec-url", `./definitions/jebbit/openapi.json`);
 } else {
     // load local OpenAPI spec
     if (version && version !== "current") {
@@ -45,7 +49,7 @@ if (hostname) {
     }
 }
 
-if (hostname || versionSelect.options.length == 1) {
+if (hostname || versionSelect.options.length == 1 || product) {
     // don't show version pulldown, it's always pointing to the actual spec
     wrapper.style.display = "none";
 } else {

@@ -1,0 +1,3939 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Jebbit API",
+    "description": "# Introduction\nUse our Jebbit API to automate tasks relating to your Jebbit Businesses, Campaigns, Product Feed, Launch Links, and Integrations.\n# Authentication Guide\nUse the `client_id` and `client_secret` provided by Jebbit in the [Auth Endpoint](/#tag/Auth) to generate an `access_token`. This token is valid for 24 hours. After that you'll need to hit the endpoint again to generate a new token.\n## Making API Requests\nJebbit requires your `access_token` (which is a [Json Web Token](https://jwt.io/) / JWT) to be included in all API requests. It must be sent in the `Authorization` header in the following format:\n\n`Authorization: Bearer <your access_token here>`\n\n**Important:** If your `access_token` has permissions (scopes) to multiple businesses, then we require you to send an `x-jebbit-business` header with every request. The value of this header is a business' ID. This header sets the scope of the request to the business provided.\n## API Resource Sorting\nAll resources from the API are listed descending by the time they were created.\n# Integration/Webhook Client Guide\nWhen using our [Integrations endpoint](/#tag/Integrations) to receive Jebbit webhooks there are a few key things you want to keep top-of-mind. To help assist in this process, we've created an [Example Webhook Client Repo](https://github.com/jebbit/jebbit-webhook-client-example) as a kickstarter.\n## Test Webhooks\nYou're able to [send a test webhook](/#tag/Integrations/) to your endpoint to verify that your integration and endpoint are properly set up. Test Webhooks allow you to test out the signature verification process before activating your Integration.\n\n**Important:** Jebbit sends an `x-jebbit-test` header with every test webhook. You should ensure there is logic in your application to properly discard these webhooks and not continue processing them through your data ingestion process.\n## Jebbit Webhooks\nAll webhooks Jebbit sends contain an `x-jebbit-signature` header. This header is how you can verify that the request to your endpoint is from Jebbit.\n## Anatomy of a Jebbit Signature\nThe value of a Jebbit Signature will be a string with two key/value pairs separated by a comma. The first part is the unix timestamp of when the webhook was sent and the second part is the hmac of the payload it carries.\n`x-jebbit-signature: t=#{timestamp},v1=#{hmac}`\n## Verifying a Signature\nThe first step of validating a signature is ensuring that the timestamp provided is within a reasonable threshold from the current timestamp, say 5 minutes. If a webhook is outside of this threshold it is recommended to not process it any further -- this helps guard against replay attacks.\n\n\n```ruby\n# Example in Ruby\nif timestamp < Time.now.to_i - 300 # 300 seconds = 5 minutes\n  raise StandardError, 'Timestamp outside of tolerance'\nend\n```\n\nThe next step will be to verify the `hmac` passed along by the `v1` attribute of the signature. To verify this you'll need to do the following:\n\n```ruby\n# Example in Ruby/Rails\n# Step 1 - regenerate the payload by using the timestamp the header\ngenerated_payload = \"#{timestamp}.#{request.body}\"\n\n# Step 2 - create an HMAC of the generated_payload using the `shared_secret` for the integration\n\ncalculated_hmac = Base64.strict_encode64(\n  OpenSSL::HMAC.digest('sha256', shared_secret, generated_payload)\n)\n\n# Step 3 - securely verify that the two hmacs are equal\nActiveSupport::SecurityUtils.secure_compare(hmac, calculated_hmac)\n\n# if they are equal, then you can accept the payload as valid & continue processing.\n```\n",
+    "version": "v1",
+    "x-logo": {
+      "url": "https://jebbit-public-api-docs.s3.amazonaws.com/images/logo.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Jebbit"
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "flows": {
+          "authorizationCode": {
+            "tokenUrl": "https://auth.jebbit.com/oauth/token",
+            "scopes": {
+              "read": "Grants read access",
+              "write": "Grants write access",
+              "delete": "Grants delete access"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "auth_request": {
+        "type": "object",
+        "properties": {
+          "client_id": "string",
+          "client_secret": "string"
+        },
+        "required": [
+          "client_id",
+          "client_secret"
+        ]
+      },
+      "token": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "access_token": {
+                    "type": "string"
+                  },
+                  "token_type": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "business": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "businesses": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "business"
+            }
+          }
+        }
+      },
+      "campaign": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "launch_date": {
+                    "type": "date",
+                    "nullable": true
+                  },
+                  "active_iteration": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "title",
+                  "launch_date",
+                  "active_iteration"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "campaigns": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "campaign"
+            }
+          }
+        }
+      },
+      "launch_links": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "created_at": {
+                      "type": "date"
+                    },
+                    "custom_param_value": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "link_group": {
+                      "type": "string"
+                    },
+                    "link_parameter": {
+                      "type": "string"
+                    },
+                    "include_uid_param": {
+                      "type": "boolean"
+                    },
+                    "complete_live_link": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "created_at",
+                    "enabled",
+                    "label",
+                    "link_group",
+                    "complete_live_link"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            }
+          }
+        }
+      },
+      "integration": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "endpoint": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "include_uids": {
+                    "type": "boolean"
+                  },
+                  "region": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "require_opt_in": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "created_at": {
+                    "type": "date"
+                  },
+                  "updated_at": {
+                    "type": "date"
+                  },
+                  "service_name": {
+                    "type": "string"
+                  },
+                  "shared_secret": {
+                    "type": "string",
+                    "nullable": false
+                  },
+                  "include_mapped_attributes": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "endpoint",
+                  "service_name",
+                  "shared_secret"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "integration_request": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "default": "integrations"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "endpoint": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string",
+                    "default": "us"
+                  },
+                  "additional_options": {
+                    "type": "object",
+                    "properties": {
+                      "campaign_name_filter": {
+                        "type": "string"
+                      },
+                      "include_url_params": {
+                        "type": "boolean"
+                      },
+                      "include_sub_channel": {
+                        "type": "boolean"
+                      },
+                      "include_outcome_names": {
+                        "type": "boolean"
+                      },
+                      "require_outcomes": {
+                        "type": "boolean"
+                      },
+                      "hash_pii": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "integrations": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "integration"
+            }
+          }
+        }
+      },
+      "integration_historic_backfill": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "date"
+                  },
+                  "updated_at": {
+                    "type": "date"
+                  },
+                  "integration_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "integration_id"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "integration_historic_backfills": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "integration_historic_backfill"
+            }
+          }
+        }
+      },
+      "integration_historic_backfill_request": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "default": "integration_historic_backfills"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "integration_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "integration_mapping": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "client_var": {
+                    "type": "string"
+                  },
+                  "jebbit_var": {
+                    "type": "string"
+                  },
+                  "integration_id": {
+                    "type": "string"
+                  },
+                  "default": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "client_var",
+                  "jebbit_var",
+                  "integration_id"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "integration_mappings": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "integration_mapping"
+            }
+          }
+        }
+      },
+      "feed": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "source",
+                  "status"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "feed_request": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "source",
+                  "status"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "feeds": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "feed"
+            }
+          }
+        }
+      },
+      "feed_column": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "feed_id"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "feed_column_request": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "feed_id"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "feed_columns": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "feed_column"
+            }
+          }
+        }
+      },
+      "feed_row": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "feed_id": {
+                    "type": "string"
+                  },
+                  "product_identifier": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "json"
+                  }
+                },
+                "required": [
+                  "product_identifier",
+                  "feed_id",
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "feed_row_request": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "feed_id": {
+                    "type": "string"
+                  },
+                  "product_identifier": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "json"
+                  }
+                },
+                "required": [
+                  "product_identifier",
+                  "feed_id",
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        }
+      },
+      "feed_rows": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "feed_row"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth": {
+      "post": {
+        "summary": "Request Token",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "access_token": "some.jwt.here",
+                        "token_type": "Bearer",
+                        "scope": "read:business:mybiz"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/campaigns": {
+      "get": {
+        "summary": "Lists campaigns",
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "campaigns",
+                          "attributes": {
+                            "title": "My Cool Campaign",
+                            "launch_date": "2021-01-01T18:35:53.371Z",
+                            "active_iteration": "ajH"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "campaigns",
+                          "attributes": {
+                            "title": "My Cool Campaign",
+                            "launch_date": "2021-01-01T18:35:53.371Z",
+                            "active_iteration": "K6n"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/campaigns"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/campaigns/{campaign_id}": {
+      "get": {
+        "summary": "Retrieves a Campaign",
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "def567",
+                        "type": "campaigns",
+                        "attributes": {
+                          "title": "My Cool Campaign",
+                          "launch_date": "2021-01-01T18:35:53.371Z",
+                          "active_iteration": "K6n"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/campaign"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/api/v1/feed_columns": {
+      "get": {
+        "summary": "Lists feed columns",
+        "tags": [
+          "Feed Columns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "filter[feed_id]",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Feed ID"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "feed_columns",
+                          "attributes": {
+                            "name": "Column 1"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "feed_columns",
+                          "attributes": {
+                            "name": "Column 2"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_columns"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 400,
+                          "title": "Bad Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a feed column",
+        "tags": [
+          "Feed Columns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_column",
+                        "attributes": {
+                          "name": "Column Name"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_column"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 400,
+                          "title": "Bad Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/feed_column_request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feed_columns/{feed_column_id}": {
+      "get": {
+        "summary": "Retrieves a Feed Column",
+        "tags": [
+          "Feed Columns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_column_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_column",
+                        "attributes": {
+                          "name": "Column Name"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_column"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates a Feed Column",
+        "tags": [
+          "Feed Columns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_column_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_columns",
+                        "attributes": {
+                          "name": "Column Name"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_column"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/feed_column"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/feed_column_request"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a Feed Column",
+        "tags": [
+          "Feed Columns"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_column_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/feed_rows": {
+      "get": {
+        "summary": "Lists feed rows",
+        "tags": [
+          "Feed Rows"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "filter[feed_id]",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Feed ID"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "feed_rows",
+                          "attributes": {
+                            "data": "{\"hello\":\"world\"}"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "feed_rows",
+                          "attributes": {
+                            "data": "{\"hello\":\"world\"}"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_rows"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 400,
+                          "title": "Bad Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a feed row",
+        "tags": [
+          "Feed Rows"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_row",
+                        "attributes": {
+                          "data": "{\"hello\":\"world\"}"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_row"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 400,
+                          "title": "Bad Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/feed_row_request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feed_rows/{feed_row_id}": {
+      "get": {
+        "summary": "Retrieves a Feed Row",
+        "tags": [
+          "Feed Rows"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_row_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_row",
+                        "attributes": {
+                          "data": "{\"hello\":\"world\"}"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_row"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates a Feed Row",
+        "tags": [
+          "Feed Rows"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_row_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_rows",
+                        "attributes": {
+                          "data": "{\"data\":\"data\"}"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_row"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/feed_row"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/feed_row_request"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a Feed Row",
+        "tags": [
+          "Feed Rows"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_row_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/feeds": {
+      "get": {
+        "summary": "Lists feeds",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "feeds",
+                          "attributes": {
+                            "name": "My Feed",
+                            "status": "uploaded",
+                            "source": "API"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "feeds",
+                          "attributes": {
+                            "title": "My Other Feed",
+                            "status": "uploaded",
+                            "source": "Platform"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feeds"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a feed",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed",
+                        "attributes": {
+                          "name": "My Test Feed",
+                          "version": "1234235234",
+                          "status": "uploaded",
+                          "source": "API"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 400,
+                          "title": "Bad Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/feed_request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feeds/{feed_id}": {
+      "get": {
+        "summary": "Retrieves a Feed",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed",
+                        "attributes": {
+                          "name": "My Test Feed"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates a Feed",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed",
+                        "attributes": {
+                          "name": "My Test Feed"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/feed_request"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a feed",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/feeds/{feed_id}/feed_columns": {
+      "get": {
+        "summary": "Retrieves Related Feed Columns",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_columns",
+                        "attributes": {
+                          "name": "Column Name"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_columns"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/feeds/{feed_id}/feed_rows": {
+      "get": {
+        "summary": "Retrieves Related Feed Rows",
+        "tags": [
+          "Feeds"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "feed_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "feed_rows",
+                        "attributes": {
+                          "data": "{\"hello\":\"world\"}"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/feed_rows"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/integration_historic_backfills": {
+      "get": {
+        "summary": "Index Integration Historic Backfills",
+        "tags": [
+          "Integration Historic Backfills"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "integration_historic_backfills",
+                          "attributes": {
+                            "endpoint": "processing",
+                            "integration_id": "asdf1234"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "integration_historic_backfills",
+                          "attributes": {
+                            "status": "received",
+                            "integration_id": "zmejas58"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_historic_backfills"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "integration_historic_backfills",
+        "tags": [
+          "Integration Historic Backfills"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration_historic_backfills",
+                        "attributes": {
+                          "status": "processing"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_historic_backfill"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request -- cannot request a backfill for an inactive integration"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "bad request (no params given)",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration_historic_backfills",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_historic_backfill"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/integration_historic_backfill_request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integration_historic_backfills/{backfill_id}": {
+      "get": {
+        "summary": "Shows an Integration Historic Backfill",
+        "tags": [
+          "Integration Historic Backfills"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "backfill_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration_historic_backfills",
+                        "attributes": {
+                          "status": "processing"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_historic_backfill"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "update integration historic backfill",
+        "tags": [
+          "Integration Historic Backfills"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "backfill_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "cannot restart in-progress (processing) job"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integration_mappings": {
+      "get": {
+        "summary": "Index Integration Mappings",
+        "tags": [
+          "Integration Mappings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "integration_mappings",
+                          "attributes": {
+                            "jebbit_var": "Outcome",
+                            "client_var": "Bucket",
+                            "integration_id": "asdf1234"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "integration_mappings",
+                          "attributes": {
+                            "jebbit_var": "Outcome",
+                            "client_var": "Bucket",
+                            "integration_id": "zmejas58"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_mappings"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "integration_mappings",
+        "tags": [
+          "Integration Mappings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration_mappings",
+                        "attributes": {
+                          "jebbit_var": "Outcome",
+                          "client_var": "Bucket",
+                          "default": "Default"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_mapping"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request -- Invalid 'jebbit_var' cannot be '$metadata'"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "bad request (no params given)",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration_mappings",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_mapping"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integration_mappings/{integration_mapping_id}": {
+      "get": {
+        "summary": "Shows an Integration Mapping",
+        "tags": [
+          "Integration Mappings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_mapping_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration_mappings",
+                        "attributes": {
+                          "jebbit_var": "Outcome",
+                          "client_var": "Bucket",
+                          "default": "Default"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration_mapping"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "update integration mapping",
+        "tags": [
+          "Integration Mappings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_mapping_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an Integration Mapping",
+        "tags": [
+          "Integration Mappings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_mapping_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Conent"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/api/v1/integrations": {
+      "get": {
+        "summary": "integrations",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abc123",
+                          "type": "integrations",
+                          "attributes": {
+                            "endpoint": "https://www.example.com/webhook",
+                            "service_name": "webhook"
+                          }
+                        },
+                        {
+                          "id": "def567",
+                          "type": "integrations",
+                          "attributes": {
+                            "endpoint": "https://www.example.com/webhook2",
+                            "service_name": "webhook"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integrations"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "integrations",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request - must be a valid region (us|eu)",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/integration_request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrations/{integration_id}": {
+      "get": {
+        "summary": "Retrieves an Integration",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates an Integration",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "integration",
+                        "attributes": {
+                          "name": "Jebbit"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/integration"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an Integration",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Conent"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 403,
+                          "title": "Forbidden"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/api/v1/integrations/{integration_id}/test": {
+      "post": {
+        "summary": "Send A test Integration Submission",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "integration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/api/v1/campaigns/{campaign_id}/launch_links": {
+      "get": {
+        "summary": "Lists Launch Links for a Campaign",
+        "tags": [
+          "Launch Links"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "abC1234",
+                          "type": "launch_links",
+                          "attributes": {
+                            "created_at": "2021-01-17T19:37:47.151Z",
+                            "custom_param_value": "JC=Product+Quiz+LP",
+                            "enabled": "true",
+                            "label": "Product Quiz LP",
+                            "link_group": "Owned Web",
+                            "link_parameter": "L=Owned+Web",
+                            "include_uid_param": "false",
+                            "complete_live_link": "http://localhost:3001/bce4291?L=Owned+Web&JC=Product+Quiz+LP"
+                          }
+                        },
+                        {
+                          "id": "def6789",
+                          "type": "launch_links",
+                          "attributes": {
+                            "created_at": "2020-12-29T18:58:35.791Z",
+                            "custom_param_value": "null",
+                            "enabled": "true",
+                            "label": "Linkedin",
+                            "link_group": "Linkedin",
+                            "link_parameter": "L=Linkedin",
+                            "include_uid_param": "false",
+                            "complete_live_link": "http://localhost:3001/bce4291?L=Linkedin"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/launch_links"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/self": {
+      "get": {
+        "summary": "self",
+        "tags": [
+          "Businesses"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "data": {
+                        "id": "abc123",
+                        "type": "businesses",
+                        "attributes": {
+                          "name": "Jebbit Business"
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/business"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "examples": {
+                  "example_0": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": 401,
+                          "title": "Unauthorized Request"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api2.jebbit.com/"
+    }
+  ]
+}
