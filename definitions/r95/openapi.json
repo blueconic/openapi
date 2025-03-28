@@ -12,7 +12,7 @@
       "name" : "BlueConic",
       "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
-    "version" : "96.0"
+    "version" : "95.0"
   },
   "servers" : [ {
     "url" : "https://{blueconicHostname}/rest/v2",
@@ -63,12 +63,6 @@
   }, {
     "name" : "URL mappings",
     "description" : "The following methods allow you to create, modify, and retrieve URL mappings (tracking pixel or shortened URL). These can be created via the External tracker tab, but can also be created as a separate object (not visible in the UI) via this REST API directly. You can use external trackers to track customer or visitor activity outside domains in your BlueConic tenant. [Read more](https://support.blueconic.com/hc/en-us/articles/202531862-External-Trackers)."
-  }, {
-    "name" : "Roles",
-    "description" : "A role contains a collection of data privacy and feature access permissions that you can assign to a user. Every BlueConic user is assigned to at least one role. A user can only access the features their role grants to them. [Read more](https://support.blueconic.com/hc/en-us/articles/202607121-BlueConic-Roles?utm_source=BlueConic_User)"
-  }, {
-    "name" : "Users",
-    "description" : "Users are the people who have access to the BlueConic environment. [Read more](https://support.blueconic.com/hc/en-us/articles/360000013785-Users)"
   } ],
   "paths" : {
     "/auditEvents" : {
@@ -205,7 +199,7 @@
                 "examples" : {
                   "Example channel response" : {
                     "description" : "Example channel response",
-                    "value" : "{\n  \"aliases\" : [ \"blueconic.com\" ],\n  \"creationDate\" : \"2024-01-24T12:30:50.000Z\",\n  \"creator\" : {\n    \"fullName\" : \"user@blueconic.com\",\n    \"userName\" : \"user@blueconic.com\"\n  },\n  \"description\" : \"BlueConic website\",\n  \"domain\": {\n    \"id\" : \"6398b714-45fd-4c28-ab08-80d8fea50757\",\n    \"name\" : \"www.blueconic.com\"\n  },\n  \"hostname\" : \"www.blueconic.com\",\n  \"id\" : \"6b44d80c-73c8-485b-ad76-b53a103751af\",\n  \"lastModifiedDate\" : \"2024-02-01T12:30:50.000Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"user@blueconic.com\",\n    \"userName\" : \"user@blueconic.com\"\n  },\n  \"logo\" : \"https://bc.blueconic.net/rest/v2/channels/6b44d80c-73c8-485b-ad76-b53a103751af/logo?etag=3082b317eba5029e0aea03b42e3f3ca1\",\n  \"name\" : \"www.blueconic.com\",\n  \"tags\" : [ \"Marketing\", \"Data\", \"Privacy\" ],\n  \"type\" : \"WEBSITE\",\n  \"visitorCount\" : 10\n}"
+                    "value" : "{\n  \"aliases\" : [ \"blueconic.com\" ],\n  \"canDelete\" : true,\n  \"creationDate\" : \"2024-01-24T12:30:50.000Z\",\n  \"creator\" : {\n    \"fullName\" : \"user@blueconic.com\",\n    \"userName\" : \"user@blueconic.com\"\n  },\n  \"description\" : \"BlueConic website\",\n  \"domain\": {\n    \"id\" : \"6398b714-45fd-4c28-ab08-80d8fea50757\",\n    \"name\" : \"www.blueconic.com\"\n  },\n  \"favorite\" : false,\n  \"hostname\" : \"www.blueconic.com\",\n  \"id\" : \"6b44d80c-73c8-485b-ad76-b53a103751af\",\n  \"lastModifiedDate\" : \"2024-02-01T12:30:50.000Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"user@blueconic.com\",\n    \"userName\" : \"user@blueconic.com\"\n  },\n  \"logo\" : \"https://bc.blueconic.net/rest/v2/channels/6b44d80c-73c8-485b-ad76-b53a103751af/logo?etag=3082b317eba5029e0aea03b42e3f3ca1\",\n  \"name\" : \"www.blueconic.com\",\n  \"readOnly\" : false,\n  \"tags\" : [ \"Marketing\", \"Data\", \"Privacy\" ],\n  \"type\" : \"WEBSITE\",\n  \"visitorCount\" : 10\n}"
                   }
                 }
               }
@@ -888,7 +882,7 @@
           "schema" : {
             "type" : "integer",
             "format" : "int32",
-            "default" : "0"
+            "default" : 0
           },
           "example" : 0
         }, {
@@ -898,7 +892,7 @@
           "schema" : {
             "type" : "integer",
             "format" : "int32",
-            "default" : "20"
+            "default" : 20
           },
           "example" : 20
         } ],
@@ -970,7 +964,7 @@
                 "examples" : {
                   "Response body" : {
                     "description" : "Response body",
-                    "value" : "{\n  \"availableForSegmentation\" : true,\n  \"canDelete\" : true,\n  \"canRead\" : true,\n  \"canWrite\" : true,\n  \"createNewProfile\" : false,\n  \"creationDate\" : \"2023-03-22T09:33:26.319Z\",\n  \"creator\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"dataSensitivity\" : \"NON_PII\",\n  \"description\" : \"Test description.\",\n  \"filterType\" : \"RANGE\",\n  \"id\" : \"test_property\",\n  \"indexed\" : false,\n  \"isIdProperty\" : false,\n  \"lastModifiedDate\" : \"2023-03-22T09:41:21.491Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/profileProperties/test_property\",\n    \"rel\" : \"alt\",\n    \"type\" : \"application/json\"\n  } ],\n  \"mergeStrategy\" : \"HIGHEST\",\n  \"name\" : \"Test property\",\n  \"permissionLevel\" : \"ANONYMOUS\",\n  \"precision\" : 0,\n  \"profileCount\" : 0,\n  \"showInUI\" : true,\n  \"tags\" : [ \"Tech\", \"Metrics\" ],\n  \"totalProfileCount\" : 130300,\n  \"useValidation\" : true,\n  \"values\" : [ ]\n}"
+                    "value" : "{\n  \"availableForSegmentation\" : true,\n  \"canDelete\" : true,\n  \"canRead\" : true,\n  \"canWrite\" : true,\n  \"createNewProfile\" : false,\n  \"creationDate\" : \"2023-03-22T09:33:26.319Z\",\n  \"creator\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"dataSensitivity\" : \"NON_PII\",\n  \"description\" : \"Test description.\",\n  \"favorite\" : false,\n  \"filterType\" : \"RANGE\",\n  \"id\" : \"test_property\",\n  \"indexed\" : false,\n  \"isIdProperty\" : false,\n  \"lastModifiedDate\" : \"2023-03-22T09:41:21.491Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/profileProperties/test_property\",\n    \"rel\" : \"alt\",\n    \"type\" : \"application/json\"\n  } ],\n  \"mergeStrategy\" : \"HIGHEST\",\n  \"name\" : \"Test property\",\n  \"permissionLevel\" : \"ANONYMOUS\",\n  \"precision\" : 0,\n  \"profileCount\" : 0,\n  \"readOnly\" : false,\n  \"showInUI\" : true,\n  \"tags\" : [ \"Tech\", \"Metrics\" ],\n  \"totalProfileCount\" : 130300,\n  \"useValidation\" : true,\n  \"values\" : [ ]\n}"
                   }
                 }
               }
@@ -1037,7 +1031,7 @@
                 "examples" : {
                   "Response body with currency" : {
                     "description" : "Response body with currency",
-                    "value" : "{\n  \"availableForSegmentation\" : true,\n  \"canRead\" : true,\n  \"canWrite\" : true,\n  \"createNewProfile\" : false,\n  \"creationDate\" : \"2023-03-22T09:43:58.910Z\",\n  \"creator\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"currency\" : {\n    \"isoCode\" : \"USD\",\n    \"name\" : \"United States dollar\",\n    \"precision\" : 2,\n    \"symbol\" : \"$\"\n  },\n  \"dataSensitivity\" : \"NON_PII\",\n  \"description\" : \"The description for the currency\",\n  \"filterType\" : \"CURRENCY\",\n  \"id\" : \"test_currency\",\n  \"indexed\" : false,\n  \"isIdProperty\" : false,\n  \"lastModifiedDate\" : \"2023-03-22T09:43:58.910Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/profileProperties/test_currency\",\n    \"rel\" : \"alt\",\n    \"type\" : \"application/json\"\n  } ],\n  \"mergeStrategy\" : \"BOTH\",\n  \"name\" : \"Test currency\",\n  \"permissionLevel\" : \"ANONYMOUS\",\n  \"precision\" : 2,\n  \"profileCount\" : 0,\n  \"showInUI\" : true,\n  \"tags\" : [ \"Metrics\" ],\n  \"totalProfileCount\" : 130300,\n  \"useValidation\" : true,\n  \"values\" : [ ]\n}"
+                    "value" : "{\n  \"availableForSegmentation\" : true,\n  \"canDelete\" : true,\n  \"canRead\" : true,\n  \"canWrite\" : true,\n  \"createNewProfile\" : false,\n  \"creationDate\" : \"2023-03-22T09:43:58.910Z\",\n  \"creator\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"currency\" : {\n    \"isoCode\" : \"USD\",\n    \"name\" : \"United States dollar\",\n    \"precision\" : 2,\n    \"symbol\" : \"$\"\n  },\n  \"dataSensitivity\" : \"NON_PII\",\n  \"description\" : \"The description for the currency\",\n  \"favorite\" : false,\n  \"filterType\" : \"CURRENCY\",\n  \"id\" : \"test_currency\",\n  \"indexed\" : false,\n  \"isIdProperty\" : false,\n  \"lastModifiedDate\" : \"2023-03-22T09:43:58.910Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/profileProperties/test_currency\",\n    \"rel\" : \"alt\",\n    \"type\" : \"application/json\"\n  } ],\n  \"mergeStrategy\" : \"BOTH\",\n  \"name\" : \"Test currency\",\n  \"permissionLevel\" : \"ANONYMOUS\",\n  \"precision\" : 2,\n  \"profileCount\" : 0,\n  \"readOnly\" : false,\n  \"showInUI\" : true,\n  \"tags\" : [ \"Metrics\" ],\n  \"totalProfileCount\" : 130300,\n  \"useValidation\" : true,\n  \"values\" : [ ]\n}"
                   },
                   "Response body with unit pixel" : {
                     "description" : "Response body with unit pixel",
@@ -1096,7 +1090,7 @@
                 "examples" : {
                   "Response body" : {
                     "description" : "Response body",
-                    "value" : "{\n  \"availableForSegmentation\" : true,\n  \"canDelete\" : true,\n  \"canRead\" : true,\n  \"canWrite\" : true,\n  \"createNewProfile\" : false,\n  \"creationDate\" : \"2023-03-22T09:33:26.319Z\",\n  \"creator\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"dataSensitivity\" : \"NON_PII\",\n  \"description\" : \"Test description.\",\n  \"filterType\" : \"RANGE\",\n  \"id\" : \"test_property\",\n  \"indexed\" : false,\n  \"isIdProperty\" : false,\n  \"lastModifiedDate\" : \"2023-03-22T09:41:21.491Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/profileProperties/test_property\",\n    \"rel\" : \"alt\",\n    \"type\" : \"application/json\"\n  } ],\n  \"mergeStrategy\" : \"HIGHEST\",\n  \"name\" : \"Test property\",\n  \"permissionLevel\" : \"ANONYMOUS\",\n  \"precision\" : 0,\n  \"profileCount\" : 0,\n  \"showInUI\" : true,\n  \"tags\" : [ \"Tech\", \"Metrics\" ],\n  \"totalProfileCount\" : 130300,\n  \"useValidation\" : true,\n  \"values\" : [ ]\n}"
+                    "value" : "{\n  \"availableForSegmentation\" : true,\n  \"canDelete\" : true,\n  \"canRead\" : true,\n  \"canWrite\" : true,\n  \"createNewProfile\" : false,\n  \"creationDate\" : \"2023-03-22T09:33:26.319Z\",\n  \"creator\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"dataSensitivity\" : \"NON_PII\",\n  \"description\" : \"Test description.\",\n  \"favorite\" : false,\n  \"filterType\" : \"RANGE\",\n  \"id\" : \"test_property\",\n  \"indexed\" : false,\n  \"isIdProperty\" : false,\n  \"lastModifiedDate\" : \"2023-03-22T09:41:21.491Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"test@blueconic.com\",\n    \"userName\" : \"test@blueconic.com\"\n  },\n  \"links\" : [ {\n    \"href\" : \"https://localhost/rest/v2/profileProperties/test_property\",\n    \"rel\" : \"alt\",\n    \"type\" : \"application/json\"\n  } ],\n  \"mergeStrategy\" : \"HIGHEST\",\n  \"name\" : \"Test property\",\n  \"permissionLevel\" : \"ANONYMOUS\",\n  \"precision\" : 0,\n  \"profileCount\" : 0,\n  \"readOnly\" : false,\n  \"showInUI\" : true,\n  \"tags\" : [ \"Tech\", \"Metrics\" ],\n  \"totalProfileCount\" : 130300,\n  \"useValidation\" : true,\n  \"values\" : [ ]\n}"
                   }
                 }
               }
@@ -1176,7 +1170,7 @@
                 "examples" : {
                   "Response body" : {
                     "description" : "Response body",
-                    "value" : "{\n  \"itemsPerPage\": 20,\n  \"startIndex\" : 0,\n  \"totalPages\" : 8,\n  \"totalResults\" : 144,\n  \"links\": {\n    \"links\": [{\n      \"href\": \"https://localhost/rest/v2/profileProperties\",\n      \"rel\": \"alt\",\n      \"type\": \"application/json\"\n    }]\n  },\n  \"profileProperties\": [{\n    \"availableForSegmentation\": true,\n    \"canDelete\": true,\n    \"canRead\": true,\n    \"canWrite\": true,\n    \"createNewProfile\": false,\n    \"creationDate\": \"2023-03-20T13:53:34.687Z\",\n    \"dataSensitivity\": \"NON_PII\",\n    \"description\": \"The unique Facebook Ads custom audience IDs to which a user has been added by BlueConic.\",\n    \"filterType\": \"SELECT\",\n    \"id\": \"_facebookAdsAudiences\",\n    \"indexed\": false,\n    \"isIdProperty\": false,\n    \"lastModifiedDate\": \"2023-03-20T13:53:34.687Z\",\n    \"links\": [{\n      \"href\": \"https://localhost/rest/v2/profileProperties/_facebookAdsAudiences?alt=application%2Fjson\",\n      \"rel\": \"self\",\n      \"type\": \"application/json\"\n    }],\n    \"mergeStrategy\": \"BOTH\",\n    \"name\": \"Facebook Ads synced custom audience IDs\",\n    \"permissionLevel\": \"ANONYMOUS\",\n    \"precision\": 0,\n    \"profileCount\": 0,\n    \"showInUI\": false,\n    \"tags\": [\"Identifier\"],\n    \"totalProfileCount\": 130300,\n    \"useValidation\": true,\n    \"values\": []\n  }, {\n    \"availableForSegmentation\" : true,\n    \"canDelete\" : true,\n    \"canRead\" : true,\n    \"canWrite\" : true,\n    \"createNewProfile\" : false,\n    \"creationDate\" : \"2023-03-20T13:53:35.046Z\",\n    \"dataSensitivity\" : \"NON_PII\",\n    \"description\" : \"Indicates whether an ad blocker was detected for the visitor. Will contain the value \\\"yes\\\" if one was detected.\",\n    \"filterType\" : \"SELECT\",\n    \"id\" : \"adblock_detected\",\n    \"indexed\" : false,\n    \"isIdProperty\" : false,\n    \"lastModifiedDate\" : \"2023-03-22T09:34:55.568Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"test@blueconic.com\",\n      \"userName\" : \"test@blueconic.com\"\n    },\n    \"links\" : [ {\n      \"href\" : \"https://localhost/rest/v2/profileProperties/adblock_detected?alt=application%2Fjson\",\n      \"rel\" : \"self\",\n      \"type\" : \"application/json\"\n    } ],\n    \"mergeStrategy\" : \"BOTH\",\n    \"name\" : \"AdBlock usage detected\",\n    \"permissionLevel\" : \"ANONYMOUS\",\n    \"precision\" : 0,\n    \"profileCount\" : 0,\n    \"showInUI\" : true,\n    \"tags\" : [ \"Address\", \"Process\" ],\n    \"totalProfileCount\" : 130300,\n    \"useValidation\" : true,\n    \"values\" : [ ]\n  }]\n}"
+                    "value" : "{\n  \"itemsPerPage\": 20,\n  \"startIndex\" : 0,\n  \"totalPages\" : 8,\n  \"totalResults\" : 144,\n  \"links\": {\n    \"links\": [{\n      \"href\": \"https://localhost/rest/v2/profileProperties\",\n      \"rel\": \"alt\",\n      \"type\": \"application/json\"\n    }]\n  },\n  \"profileProperties\": [{\n    \"availableForSegmentation\": true,\n    \"canDelete\": true,\n    \"canRead\": true,\n    \"canWrite\": true,\n    \"createNewProfile\": false,\n    \"creationDate\": \"2023-03-20T13:53:34.687Z\",\n    \"dataSensitivity\": \"NON_PII\",\n    \"description\": \"The unique Facebook Ads custom audience IDs to which a user has been added by BlueConic.\",\n    \"favorite\": false,\n    \"filterType\": \"SELECT\",\n    \"id\": \"_facebookAdsAudiences\",\n    \"indexed\": false,\n    \"isIdProperty\": false,\n    \"lastModifiedDate\": \"2023-03-20T13:53:34.687Z\",\n    \"links\": [{\n      \"href\": \"https://localhost/rest/v2/profileProperties/_facebookAdsAudiences?alt=application%2Fjson\",\n      \"rel\": \"self\",\n      \"type\": \"application/json\"\n    }],\n    \"mergeStrategy\": \"BOTH\",\n    \"name\": \"Facebook Ads synced custom audience IDs\",\n    \"permissionLevel\": \"ANONYMOUS\",\n    \"precision\": 0,\n    \"profileCount\": 0,\n    \"readOnly\": false,\n    \"showInUI\": false,\n    \"tags\": [\"Identifier\"],\n    \"totalProfileCount\": 130300,\n    \"useValidation\": true,\n    \"values\": []\n  }, {\n    \"availableForSegmentation\" : true,\n    \"canDelete\" : true,\n    \"canRead\" : true,\n    \"canWrite\" : true,\n    \"createNewProfile\" : false,\n    \"creationDate\" : \"2023-03-20T13:53:35.046Z\",\n    \"dataSensitivity\" : \"NON_PII\",\n    \"description\" : \"Indicates whether an ad blocker was detected for the visitor. Will contain the value \\\"yes\\\" if one was detected.\",\n    \"favorite\" : false,\n    \"filterType\" : \"SELECT\",\n    \"id\" : \"adblock_detected\",\n    \"indexed\" : false,\n    \"isIdProperty\" : false,\n    \"lastModifiedDate\" : \"2023-03-22T09:34:55.568Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"test@blueconic.com\",\n      \"userName\" : \"test@blueconic.com\"\n    },\n    \"links\" : [ {\n      \"href\" : \"https://localhost/rest/v2/profileProperties/adblock_detected?alt=application%2Fjson\",\n      \"rel\" : \"self\",\n      \"type\" : \"application/json\"\n    } ],\n    \"mergeStrategy\" : \"BOTH\",\n    \"name\" : \"AdBlock usage detected\",\n    \"permissionLevel\" : \"ANONYMOUS\",\n    \"precision\" : 0,\n    \"profileCount\" : 0,\n    \"readOnly\" : false,\n    \"showInUI\" : true,\n    \"tags\" : [ \"Address\", \"Process\" ],\n    \"totalProfileCount\" : 130300,\n    \"useValidation\" : true,\n    \"values\" : [ ]\n  }]\n}"
                   }
                 }
               }
@@ -1291,7 +1285,7 @@
           }
         } ],
         "requestBody" : {
-          "description" : "**Timeline event types**\n\nTimeline event types can be accessed through **Timeline event types** tab in BlueConic. In this tab you can create a new timeline event type, update, or delete existing ones.\n\nIt's possible to add, update, or remove properties and nested properties from a timeline event type. The property ID of timeline event property can only be changed until it's saved.\nTo update the property ID after saving, the property will have to be deleted and recreated with the desired ID.\n\n**Timeline events**\n\nEvents are data points tied to the [BlueConic Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic) of a profile, e.g. an order the customer placed. BlueConic comes out of the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types). \nEvents can be HIGH or LOW priority. There is a maximum number of 250 events per profile allowed.\nLOW priority events have a retention period between 1 and 365 days (the default is 30 days).\nHIGH priority events have a retention period of 1 day and up.\nThe default is indefinitely; however, they are constrained by the total number of events and take precedence over LOW priority events, which are capped at 50 if there are 200 or more HIGH priority events.\n\n**Privacy legislations and consent management**\n\nAny `objectiveIds` passed in the query string are matched against the profile that is being created.\nMatching is done against the special profile property `consented_objectives`, which reflects the objective IDs that the profile has explicitly consented to. So, for the profile to be created, the “properties” should at least contain one of the objective IDs passed in the querystring, for the property with id `consented_objectives`. Otherwise, the `CONSENT_MISMATCH` state is returned in the response.\n\nThe following values are valid privacy legislation zone values.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| CCPA                    | A profile is governed by CCPA in the State of California. |\n| GDPR                    | A profile is governed by GDPR in Europe. |\n| NYPA                    | A profile is governed by NYPA in the State of New York. |\n| PIPEDA                  | A profile is governed by PIPEDA in Canada. |\n| SB220                   | A profile is governed by SB220 in the State of Nevada. |\n| PERU_DPL                | A profile is governed by the Personal Data Protection Law (PDPL) of Peru. |\n| ARGENTINA_DPL           | A profile is governed by the Personal Data Protection Law (PDPL) of Argentina. |\n| SB1392                  | A profile is governed by SB1392 of the Commonwealth of Virginia |\n| SB190                   | A profile is governed by the State of Colorado. |\n| CDPA_CTCPDA             | A profile is governed by CDPA/CTCPDA in the State of Connecticut. |\n| UCPA                    | A profile is governed by UCPA in the State of Utah. |\n| BRAZIL_LGPD             | A profile is governed by the Brazilian General Protection Law. |\n| ISRAEL_PPL              | A profile is governed by the Israel Protection Privacy Law. |\n| JAPAN_APPI              | A profile is governed by the Japan APPI. |\n| MEXICO_LFPDPPP          | A profile is governed by the Mexico LFPDPPP. |\n| NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New Zealand Privacy Act. |\n| SWITZERLAND_DPA         | A profile is governed by the Switzerland Data Protection Act (DPA). |\n| UK_GDPR                 | A profile is governed by the United Kingdom General Data Protection Regulation. |\n| CHINA_PIPL              | A profile is governed by the People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy Act. |\n| TDPSA                   | A profile is governed by TDPSA in the State of Texas. |\n| MTCDPA                  | A profile is governed by MTCDPA in the State of Montana. |\n| FDBR                    | A profile is governed by FDBR in the State of Florida. |\n| OCPA                    | A profile is governed by OCPA in the State of Oregon. |\n| DPDPA                   | A profile is governed by DPDPA in the State of Delaware. |\n| ICDPA                   | A profile is governed by ICDPA in the State of Iowa. |\n| NHPA                    | A profile is governed by NHPA in the State of New Hampshire. |\n| NJDPA                   | A profile is governed by NJDPA in the State of New Jersey. |\n| NEDPA                   | A profile is governed by NEDPA in the State of Nebraska. |\n| HAITI_APD               | A profile is governed by the Haiti Arrêté de Protection des Données (APD). |\n| JAMAICA_DPA             | A profile is governed by the Jamaica Data Protection Act (DPA). |\n| TRINIDAD_TOBAGO_DPA     | A profile is governed by the Trinidad & Tobago Data Protection Act (DPA). |\n| COSTA_RICA_L8968        | A profile is governed by the Costa Rica Law No. 8968 on Protection of Individuals Against the Processing of Personal Data. |\n| GUATEMALA_LAIP          | A profile is governed by the Guatemala Ley de Acceso a la Información Pública, Decree 57-2008. |\n| PANAMA_L81              | A profile is governed by the Panama Data Protection Law No. 81. |\n| HONDURAS_LPDCP          | A profile is governed by the Honduras LPDCP. |\n| EL_SALVADOR             | A profile is governed by the El Salvador Privacy Statutes. |\n| COLOMBIA_L1581_D1377    | A profile is governed by the Colombia Law 1581, 2012; Decree 1377, 2013. |\n| NICARAGUA_L787          | A profile is governed by the Nicaragua Law No. 787. |\n| CHILE_L19_628           | A profile is governed by the Chile Law No. 19.628 on Protection of Privacy. |\n| BELIZE_DPA              | A profile is governed by the Belieze Data Protection Act (DPA). |\n| NONE                    | The profile is not governed by a known privacy legislation zone; profile will just be created. NONE legislations are also targeted when 'Rest of World' is selected in an objective. |\n\n**Profile strategy**\n\nThe following values are valid strategies for profile operations. These can be used to create, update or delete profiles.\n\n| Name         | Description |\n| :----------- | :---------- |\n| UPSERT   | Will update (and insert if not found) the profile based on the rules passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the profile based on the rules passed along. |\n| DELETE   | Will delete the profile with the given ID. |\n\n**Timeline Strategy**\n\nThe following values are valid timeline strategies. These can either be used for the strategy property for a timeline event as a whole, or when passing rules to apply on nested timeline event properties.\n\n| Name     | Description |\n| :--------| :---------- |\n| SET      | Timeline event will be added to the profile timeline as is, possibly replacing the existing event with the same ID, event type ID, and date. |\n| UPSERT   | Will update (and insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| DELETE   | Will delete the timeline event with the given ID, event type ID and, optionally, a date. If not passed, all events matching the ID and event type ID will be deleted. |\n\n**Profile and Timeline property strategy**\n\nThe following values are valid property strategies. These rules apply on profile and timeline event properties.\n\n| Name         | Description |\n| :----------- | :---------- |\n| ADD          | Values will be added to the values that already existed in the profile or timeline event property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the profile or timeline event property. |\n| SET_IF_EMPTY | Only set values if the profile or timeline event property is empty. |\n| SUM          | Add the value to the value already stored in the profile property. This is not supported for timeline event properties. |\n| REMOVE       | Remove the value from the list of values already stored in the profile property. This is not yet supported for timeline event properties. |\n\n**Group property strategy**\n\nThe following values are valid property strategies. These rules apply on group properties.\n\n| Name         | Description                                                                                                  |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n| ADD          | Values will be added to the values that already existed in the group property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the group property.                                 |\n| SET_IF_EMPTY | Only set values if the group property is empty.                                                              |\n| SUM          | Add the value to the value already stored in the group property.                                             |\n| REMOVE       | Remove the value from the list of values already stored in the group property.                               |\n\n**Limits**\n\n* Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).\n* When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.",
+          "description" : "**Timeline event types**\n\nTimeline event types can be accessed through **Timeline event types** tab in BlueConic. In this tab you can create a new timeline event type, update, or delete existing ones.\n\nIt's possible to add, update, or remove properties and nested properties from a timeline event type. The property ID of timeline event property can only be changed until it's saved.\nTo update the property ID after saving, the property will have to be deleted and recreated with the desired ID.\n\n**Timeline events**\n\nEvents are data points tied to the [BlueConic Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic) of a profile, e.g. an order the customer placed. BlueConic comes out of the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types). \nEvents can be HIGH or LOW priority. There is a maximum number of 250 events per profile allowed.\nLOW priority events have a retention period between 1 and 365 days (the default is 30 days).\nHIGH priority events have a retention period of 1 day and up.\nThe default is indefinitely; however, they are constrained by the total number of events and take precedence over LOW priority events, which are capped at 50 if there are 200 or more HIGH priority events.\n\n**Privacy legislations and consent management**\n\nAny `objectiveIds` passed in the query string are matched against the profile that is being created.\nMatching is done against the special profile property `consented_objectives`, which reflects the objective IDs that the profile has explicitly consented to. So, for the profile to be created, the “properties” should at least contain one of the objective IDs passed in the querystring, for the property with id `consented_objectives`. Otherwise, the `CONSENT_MISMATCH` state is returned in the response.\n\nThe following values are valid privacy legislation zone values.\n\n| Name                    | Description |\n| :---------------------- | :---------- |\n| CCPA                    | A profile is governed by CCPA in the State of California. |\n| GDPR                    | A profile is governed by GDPR in Europe. |\n| NYPA                    | A profile is governed by NYPA in the State of New York. |\n| PIPEDA                  | A profile is governed by PIPEDA in Canada. |\n| SB220                   | A profile is governed by SB220 in the State of Nevada. |\n| PERU_DPL                | A profile is governed by the Personal Data Protection Law (PDPL) of Peru. |\n| ARGENTINA_DPL           | A profile is governed by the Personal Data Protection Law (PDPL) of Argentina. |\n| SB1392                  | A profile is governed by SB1392 of the Commonwealth of Virginia |\n| SB190                   | A profile is governed by the State of Colorado. |\n| CDPA_CTCPDA             | A profile is governed by CDPA/CTCPDA in the State of Connecticut. |\n| UCPA                    | A profile is governed by UCPA in the State of Utah. |\n| BRAZIL_LGPD             | A profile is governed by the Brazilian General Protection Law. |\n| ISRAEL_PPL              | A profile is governed by the Israel Protection Privacy Law. |\n| JAPAN_APPI              | A profile is governed by the Japan APPI. |\n| MEXICO_LFPDPPP          | A profile is governed by the Mexico LFPDPPP. |\n| NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New Zealand Privacy Act. |\n| SWITZERLAND_DPA         | A profile is governed by the Switzerland Data Protection Act (DPA). |\n| UK_GDPR                 | A profile is governed by the United Kingdom General Data Protection Regulation. |\n| CHINA_PIPL              | A profile is governed by the People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy Act. |\n| TDPSA                   | A profile is governed by TDPSA in the State of Texas. |\n| MTCDPA                  | A profile is governed by MTCDPA in the State of Montana. |\n| FDBR                    | A profile is governed by FDBR in the State of Florida. |\n| OCPA                    | A profile is governed by OCPA in the State of Oregon. |\n| DPDPA                   | A profile is governed by DPDPA in the State of Delaware. |\n| ICDPA                   | A profile is governed by ICDPA in the State of Iowa. |\n| NHPA                    | A profile is governed by NHPA in the State of New Hampshire. |\n| NJDPA                   | A profile is governed by NJDPA in the State of New Jersey. |\n| NEDPA                   | A profile is governed by NEDPA in the State of Nebraska. |\n| NONE                    | The profile is not governed by a known privacy legislation zone; profile will just be created. NONE legislations are also targeted when 'Rest of World' is selected in an objective. |\n\n**Profile strategy**\n\nThe following values are valid strategies for profile operations. These can be used to create, update or delete profiles.\n\n| Name         | Description |\n| :----------- | :---------- |\n| UPSERT   | Will update (and insert if not found) the profile based on the rules passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the profile based on the rules passed along. |\n| DELETE   | Will delete the profile with the given ID. |\n\n**Timeline Strategy**\n\nThe following values are valid timeline strategies. These can either be used for the strategy property for a timeline event as a whole, or when passing rules to apply on nested timeline event properties.\n\n| Name     | Description |\n| :--------| :---------- |\n| SET      | Timeline event will be added to the profile timeline as is, possibly replacing the existing event with the same ID, event type ID, and date. |\n| UPSERT   | Will update (and insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |\n| DELETE   | Will delete the timeline event with the given ID, event type ID and, optionally, a date. If not passed, all events matching the ID and event type ID will be deleted. |\n\n**Profile and Timeline property strategy**\n\nThe following values are valid property strategies. These rules apply on profile and timeline event properties.\n\n| Name         | Description |\n| :----------- | :---------- |\n| ADD          | Values will be added to the values that already existed in the profile or timeline event property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the profile or timeline event property. |\n| SET_IF_EMPTY | Only set values if the profile or timeline event property is empty. |\n| SUM          | Add the value to the value already stored in the profile property. This is not supported for timeline event properties. |\n| REMOVE       | Remove the value from the list of values already stored in the profile property. This is not yet supported for timeline event properties. |\n\n**Group property strategy**\n\nThe following values are valid property strategies. These rules apply on group properties.\n\n| Name         | Description                                                                                                  |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n| ADD          | Values will be added to the values that already existed in the group property. Duplicates will not be added. |\n| SET          | Values will overwrite the values that already existed in the group property.                                 |\n| SET_IF_EMPTY | Only set values if the group property is empty.                                                              |\n| SUM          | Add the value to the value already stored in the group property.                                             |\n| REMOVE       | Remove the value from the list of values already stored in the group property.                               |\n\n**Limits**\n\n* Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).\n* When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.",
           "content" : {
             "application/json" : {
               "schema" : {
@@ -1328,7 +1322,7 @@
         },
         "responses" : {
           "200" : {
-            "description" : "Bulk response \n\n**JSON Response**\n\nEvery bulk operation is returned in the response as well.\nThe state can be one of the following values: `CREATED`, `CONSENT_MISMATCH`, `SKIPPED`, `MODIFIED`, `DELETED`, `UNCHANGED`, `NOTFOUND`, `RESTRICTION_MISMATCH`, `UNAUTHORIZED`. \n`UNAUTHORIZED` is returned in case the user performing the request has invalid (PII) permissions. Please check your OAuth Application configuration.\n\n\n```json\n[{\n    \"state\": \"CREATED\",\n    \"profileId\": \"profile-UUID of the created profile\",\n    \"identifier\": \" my-external-identifier\"\n}]\n```\n\nWhen the profile operation contains timeline events, the response will also contain a response per timeline event supplied. The state can be one of the following values: `CREATED`, `SET`, `MODIFIED`, `REJECTED`, `NOTFOUND` or `DELETED`.\n\n```json\n[{\n    \"state\": \"CREATED\",\n    \"profileId\": \"profile-UUID of the created profile\",\n    \"identifier\": \" my-external-identifier\",\n    \"timeline\": [{\n        \"id\": \"order_1\",\n        \"identifier\": \"my-external-order-identifier\",\n        \"state\": \"REJECTED\",\n        \"validationErrors\": [\"#/total_revenue/0: expected type: Number, found: String\"]\n    }]\n}]      \n```",
+            "description" : "Bulk response \n\n**JSON Response**\n\nEvery bulk operation is returned in the response as well.\nThe state can be one of the following values: `CREATED`, `SKIPPED`, `MODIFIED`, `DELETED`, `UNCHANGED`, `NOTFOUND`, `RESTRICTION_MISMATCH` or `CONSENT_MISMATCH`.\n\n```json\n[{\n    \"state\": \"CREATED\",\n    \"profileId\": \"profile-UUID of the created profile\",\n    \"identifier\": \" my-external-identifier\"\n}]\n```\n\nWhen the profile operation contains timeline events, the response will also contain a response per timeline event supplied. The state can be one of the following values: `CREATED`, `SET`, `MODIFIED`, `REJECTED`, `NOTFOUND` or `DELETED`.\n\n```json\n[{\n    \"state\": \"CREATED\",\n    \"profileId\": \"profile-UUID of the created profile\",\n    \"identifier\": \" my-external-identifier\",\n    \"timeline\": [{\n        \"id\": \"order_1\",\n        \"identifier\": \"my-external-order-identifier\",\n        \"state\": \"REJECTED\",\n        \"validationErrors\": [\"#/total_revenue/0: expected type: Number, found: String\"]\n    }]\n}]      \n```",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1340,7 +1334,7 @@
                 "examples" : {
                   "Example bulk response" : {
                     "description" : "Example bulk response",
-                    "value" : "[\n  {\n    \"profileId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"state\": \"MODIFIED\",\n    \"timeline\": []\n  },\n  {\n    \"profileId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"state\": \"DELETED\"\n  },\n  {\n    \"profileId\": \"324fe9e8-ee83-4c1c-8a32-9132f958f743\",\n    \"state\": \"UNAUTHORIZED\"\n  },\n  {\n    \"profileId\": \"e4c45d3b-f59b-4391-ad46-7413961e8cbd\",\n    \"state\": \"CREATED\",\n    \"timeline\": [\n      {\n        \"id\": \"63cec368-c40e-4c2c-ae08-7d4513edd125\",\n        \"state\": \"SET\"\n      }\n    ]\n  }\n]"
+                    "value" : "[\n  {\n    \"profileId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"state\": \"MODIFIED\",\n    \"timeline\": []\n  },\n  {\n    \"profileId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"state\": \"DELETED\"\n  },\n  {\n    \"profileId\": \"e4c45d3b-f59b-4391-ad46-7413961e8cbd\",\n    \"state\": \"CREATED\",\n    \"timeline\": [\n      {\n        \"id\": \"63cec368-c40e-4c2c-ae08-7d4513edd125\",\n        \"state\": \"SET\"\n      }\n    ]\n  }\n]"
                   }
                 }
               }
@@ -1360,7 +1354,7 @@
             "description" : "Authentication failed (unauthorized)."
           },
           "403" : {
-            "description" : "Forbidden, invalid permissions to perform the request. Please check your OAuth Application configuration."
+            "description" : "Forbidden, invalid (PII) permissions to perform the request. Please check your OAuth Application configuration."
           },
           "413" : {
             "description" : "More than the allowed 1000 entries are sent in the request. The entries that are processed are returned in the response.",
@@ -1375,7 +1369,7 @@
                 "examples" : {
                   "Example bulk response" : {
                     "description" : "Example bulk response",
-                    "value" : "[\n  {\n    \"profileId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"state\": \"MODIFIED\",\n    \"timeline\": []\n  },\n  {\n    \"profileId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"state\": \"DELETED\"\n  },\n  {\n    \"profileId\": \"324fe9e8-ee83-4c1c-8a32-9132f958f743\",\n    \"state\": \"UNAUTHORIZED\"\n  },\n  {\n    \"profileId\": \"e4c45d3b-f59b-4391-ad46-7413961e8cbd\",\n    \"state\": \"CREATED\",\n    \"timeline\": [\n      {\n        \"id\": \"63cec368-c40e-4c2c-ae08-7d4513edd125\",\n        \"state\": \"SET\"\n      }\n    ]\n  }\n]"
+                    "value" : "[\n  {\n    \"profileId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"state\": \"MODIFIED\",\n    \"timeline\": []\n  },\n  {\n    \"profileId\": \"a84fe9e8-ee83-4c1c-8a32-9132f958fe13\",\n    \"state\": \"DELETED\"\n  },\n  {\n    \"profileId\": \"e4c45d3b-f59b-4391-ad46-7413961e8cbd\",\n    \"state\": \"CREATED\",\n    \"timeline\": [\n      {\n        \"id\": \"63cec368-c40e-4c2c-ae08-7d4513edd125\",\n        \"state\": \"SET\"\n      }\n    ]\n  }\n]"
                   }
                 }
               }
@@ -1479,7 +1473,7 @@
           "schema" : {
             "type" : "integer",
             "format" : "int32",
-            "default" : "20"
+            "default" : 20
           },
           "example" : 10
         }, {
@@ -1504,9 +1498,9 @@
           "description" : "Collapse the information in the result set. Use profile.segments to exclude segment information.",
           "schema" : {
             "type" : "array",
-            "default" : "",
             "items" : {
-              "type" : "string"
+              "type" : "string",
+              "default" : ""
             }
           },
           "example" : "profile.segments"
@@ -1691,51 +1685,6 @@
             "type" : "string"
           },
           "example" : "2023-02-22T11:21:33.872Z"
-        }, {
-          "name" : "audienceId",
-          "in" : "query",
-          "description" : "This is used to track if a profile has already been exported to an audience. If a profile has already been exported to this audience then it is only included in the result when there are recent modifications to the given trackProperties.",
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "2f7dfdec-35c4-4f6e-b56d-7ccacc4a3311"
-        }, {
-          "name" : "autoCommit",
-          "in" : "query",
-          "description" : "If the exported profiles should be auto-committed to the given audience.",
-          "schema" : {
-            "type" : "boolean",
-            "default" : "true"
-          },
-          "example" : true
-        }, {
-          "name" : "trackPropertiesModifiedSince",
-          "in" : "query",
-          "description" : "The date since which the provided trackProperties should have changed.",
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "2023-04-15T11:24:01.183Z"
-        }, {
-          "name" : "trackProperties",
-          "in" : "query",
-          "description" : "The tracked properties that should be checked for changes since the given trackPropertiesModifiedSince date.",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "example" : "geo_city_name"
-        }, {
-          "name" : "trackPropertyChangesInNumberOfDays",
-          "in" : "query",
-          "description" : "The number of days to track property changes.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "example" : 32
         } ],
         "responses" : {
           "200" : {
@@ -1808,7 +1757,7 @@
                 "examples" : {
                   "Example segment response" : {
                     "description" : "Example segment response",
-                    "value" : "{\n  \"itemsPerPage\" : 10,\n  \"segments\" : [ {\n    \"creationDate\" : \"2024-03-21T15:04:58.390Z\",\n    \"creator\" : {\n      \"fullName\" : \"BlueConic\",\n      \"userName\" : \"BlueConic\"\n    },\n    \"description\" : \"The segment description\",\n    \"id\" : \"aa9c3c86-edec-4ac5-8521-a1be602eb7c6\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:04:58.390Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"BlueConic\",\n      \"userName\" : \"BlueConic\"\n    },\n    \"name\" : \"All Visitors\",\n    \"tags\" : [\"a tag\"]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.843Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"id\" : \"dcd46509-0c5f-40a5-8b91-e9b9315466ef\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.843Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour: Afternoon\",\n    \"tags\" : [ ]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.848Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"id\" : \"6c2785b1-66fd-4504-9b26-20c8b24b1c46\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.848Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour: Evening\",\n    \"tags\" : [ ]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.839Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"id\" : \"194b246b-26c5-4e9a-bc3a-f3896c8dc96e\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.839Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour: Morning\",\n    \"tags\" : [ ]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.837Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"id\" : \"1e557d7c-e655-415a-a0bd-256009af183a\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.837Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour : Night\",\n    \"tags\" : [ ]\n  } ],\n  \"startIndex\" : 0,\n  \"totalPages\" : 1,\n  \"totalResults\" : 5\n}"
+                    "value" : "{\n  \"itemsPerPage\" : 10,\n  \"segments\" : [ {\n    \"creationDate\" : \"2024-03-21T15:04:58.390Z\",\n    \"creator\" : {\n      \"fullName\" : \"BlueConic\",\n      \"userName\" : \"BlueConic\"\n    },\n    \"description\" : \"The segment description\",\n    \"favorite\" : false,\n    \"id\" : \"aa9c3c86-edec-4ac5-8521-a1be602eb7c6\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:04:58.390Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"BlueConic\",\n      \"userName\" : \"BlueConic\"\n    },\n    \"name\" : \"All Visitors\",\n    \"readOnly\" : true,\n    \"tags\" : [\"a tag\"]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.843Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"favorite\" : false,\n    \"id\" : \"dcd46509-0c5f-40a5-8b91-e9b9315466ef\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.843Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour: Afternoon\",\n    \"readOnly\" : false,\n    \"tags\" : [ ]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.848Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"favorite\" : false,\n    \"id\" : \"6c2785b1-66fd-4504-9b26-20c8b24b1c46\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.848Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour: Evening\",\n    \"readOnly\" : false,\n    \"tags\" : [ ]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.839Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"favorite\" : true,\n    \"id\" : \"194b246b-26c5-4e9a-bc3a-f3896c8dc96e\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.839Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour: Morning\",\n    \"readOnly\" : false,\n    \"tags\" : [ ]\n  }, {\n    \"creationDate\" : \"2024-03-21T15:16:26.837Z\",\n    \"creator\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"description\" : \"\",\n    \"favorite\" : false,\n    \"id\" : \"1e557d7c-e655-415a-a0bd-256009af183a\",\n    \"inverseOf\" : \"\",\n    \"inversedBy\" : \"\",\n    \"lastModifiedDate\" : \"2024-03-21T15:16:26.837Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"ondemand@blueconic.com\",\n      \"userName\" : \"ondemand@blueconic.com\"\n    },\n    \"name\" : \"Preferred visit hour : Night\",\n    \"readOnly\" : false,\n    \"tags\" : [ ]\n  } ],\n  \"startIndex\" : 0,\n  \"totalPages\" : 1,\n  \"totalResults\" : 5\n}"
                   }
                 }
               }
@@ -1889,7 +1838,7 @@
           "description" : "Prevent updating recommendation statistics for the recommended items. Can be used to generate offline recommendation items without influencing the profile.",
           "schema" : {
             "type" : "boolean",
-            "default" : "false"
+            "default" : false
           },
           "example" : true
         } ],
@@ -2100,230 +2049,6 @@
           "oauth2" : [ "write:url-mappings" ]
         } ]
       }
-    },
-    "/roles" : {
-      "get" : {
-        "tags" : [ "Roles" ],
-        "summary" : "Get all roles",
-        "description" : "Retrieves all roles.",
-        "operationId" : "getAllRoles",
-        "parameters" : [ {
-          "name" : "count",
-          "in" : "query",
-          "description" : "Specifies the number of results to return.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 20,
-            "example" : 10
-          }
-        }, {
-          "name" : "startIndex",
-          "in" : "query",
-          "description" : "Specifies the index of the first item to include in the result.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 0,
-            "example" : 0
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the roles.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/roles"
-                },
-                "examples" : {
-                  "Response body" : {
-                    "description" : "Response body",
-                    "value" : "{\n  \"itemsPerPage\" : 10,\n  \"roles\" : [ {\n    \"creationDate\" : \"2024-01-24T14:06:19.100Z\",\n    \"creator\" : {\n      \"fullName\" : \"BlueConic\",\n      \"userName\" : \"BlueConic\"\n    },\n    \"description\" : \"description here\",\n    \"id\" : \"35718e9a-f8d3-4d2d-8501-a020c563cc25\",\n    \"lastModifiedDate\" : \"2024-01-24T14:06:19.100Z\",\n    \"lastModifiedUser\" : {\n      \"fullName\" : \"BlueConic\",\n      \"userName\" : \"BlueConic\"\n    },\n    \"name\" : \"Application Manager\",\n    \"permissions\" : [ \"MANAGE_PROPERTIES\", \"READ_PROFILES\", \"MANAGE_PROFILES\", \"MANAGE_LISTENERS\", \"MANAGE_TRACKERS\", \"MANAGE_SEGMENTS\", \"MANAGE_PROFILE_MERGE_RULES\", \"MANAGE_PROFILE_COMPOSITION_RULES\", \"MANAGE_DIALOGUES\", \"CREATE_POSITIONS\", \"MANAGE_INSIGHTS\", \"MANAGE_EMAIL_NOTIFICATIONS\", \"MANAGE_LIFECYCLES\", \"USE_SIMULATOR\", \"MANAGE_CHANNELS\", \"MANAGE_PLUGINS\", \"MANAGE_CONNECTIONS\", \"MANAGE_API_V1_ACCESS_KEYS\", \"MANAGE_USERS\", \"MANAGE_ROLES\", \"MANAGE_PRIVACY_SETTINGS\", \"MANAGE_GENERAL_SETTINGS\", \"PERSONAL\", \"MANAGE_TEMPLATES\", \"MANAGE_NOTEBOOKS\", \"USE_NOTEBOOK_EDITOR\", \"APPLY_BULK_OPERATIONS\", \"MANAGE_OBJECTIVES\", \"MANAGE_TIMELINE_EVENT_TYPES\", \"READ_GROUPS\", \"MANAGE_GROUPS\", \"MANAGE_PII_VALUES\", \"READ_AUDIT_EVENTS\", \"READ_EXACT_PROFILE_STATISTICS\", \"MANAGE_APPLICATIONS\", \"AUTHORIZE_APPLICATIONS\", \"MANAGE_SINGLE_SIGN_ON_SETTINGS\", \"MANAGE_IP_BASED_ACCESS_SETTINGS\", \"MANAGE_SUPPORT_ACCESS_SETTINGS\", \"MANAGE_TIMELINE_EVENT_ROLLUPS\", \"READ_TIMEOUT_SETTINGS\", \"MANAGE_TIMEOUT_SETTINGS\", \"READ_SECURITY_SETTINGS\", \"MANAGE_SECURITY_SETTINGS\" ],\n    \"tags\" : [ \"a tag here\" ]\n  } ],\n  \"startIndex\" : 0,\n  \"totalPages\" : 14,\n  \"totalResults\" : 14\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:roles" ]
-        } ]
-      }
-    },
-    "/roles/{role}" : {
-      "get" : {
-        "tags" : [ "Roles" ],
-        "summary" : "Get one role",
-        "description" : "Retrieves a single role.",
-        "operationId" : "getRole",
-        "parameters" : [ {
-          "name" : "role",
-          "in" : "path",
-          "description" : "The id of the role to retrieve.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the role.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/RoleBean"
-                },
-                "examples" : {
-                  "Response body" : {
-                    "description" : "Response body",
-                    "value" : "{\n  \"creationDate\" : \"2024-03-27T12:14:02.651Z\",\n  \"creator\" : {\n    \"fullName\" : \"admin@blueconic.com\",\n    \"userName\" : \"admin@blueconic.com\"\n  },\n  \"description\" : \"Role description here\",\n  \"id\" : \"0d8a5b63-a2c8-4cbd-b5de-415c1743d67c\",\n  \"lastModifiedDate\" : \"2024-03-27T12:26:31.300Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"admin@blueconic.com\",\n    \"userName\" : \"admin@blueconic.com\"\n  },\n  \"name\" : \"Marketeers\",\n  \"permissions\" : [ \"MANAGE_USERS\", \"READ_EXACT_PROFILE_STATISTICS\", \"MANAGE_APPLICATIONS\", \"AUTHORIZE_APPLICATIONS\" ],\n  \"tags\" : [ \"a tag here\" ]\n}\n"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "404" : {
-            "description" : "The role doesn't exist."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:roles" ]
-        } ]
-      }
-    },
-    "/users" : {
-      "get" : {
-        "tags" : [ "Users" ],
-        "summary" : "Get all users",
-        "description" : "Retrieves all users.",
-        "operationId" : "getAllUsers",
-        "parameters" : [ {
-          "name" : "count",
-          "in" : "query",
-          "description" : "Specifies the number of results to return.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 20,
-            "example" : 10
-          }
-        }, {
-          "name" : "startIndex",
-          "in" : "query",
-          "description" : "Specifies the index of the first item to include in the result.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 0,
-            "example" : 0
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the users.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/users"
-                },
-                "examples" : {
-                  "Response body" : {
-                    "description" : "Response body",
-                    "value" : "{\n  \"itemsPerPage\": 1,\n  \"startIndex\": 0,\n  \"totalPages\": 37,\n  \"totalResults\": 74,\n  \"users\": [\n    {\n      \"creationDate\": \"2024-02-29T15:50:20.489Z\",\n      \"creator\": {\n        \"fullName\": \"example_user1@blueconic.com\",\n        \"userName\": \"example_user1@blueconic.com\"\n      },\n      \"description\": \"\",\n      \"domains\": [\n        {\n          \"id\": \"6748f4a6-cf42-42f0-bbae-05ce936dfc7f\",\n          \"name\": \"www.blueconic.test\"\n        }\n      ],\n      \"id\": \"admin@blueconic.com\",\n      \"hasAllDomains\": false,\n      \"lastLoginDate\": \"2024-09-27T18:30:35.663Z\",\n      \"lastModifiedDate\": \"2024-02-29T15:50:20.489Z\",\n      \"lastModifiedUser\": {\n        \"fullName\": \"admin@blueconic.com\",\n        \"userName\": \"admin@blueconic.com\"\n      },\n      \"name\": \"\",\n      \"permissions\": [\n        \"CREATE_POSITIONS\",\n        \"MANAGE_APPLICATIONS\",\n        \"READ_AUDIT_EVENTS\",\n        \"AUTHORIZE_APPLICATIONS\",\n        \"MANAGE_SUPPORT_ACCESS_SETTINGS\",\n        \"APPLY_BULK_OPERATIONS\",\n        \"MANAGE_PROFILE_COMPOSITION_RULES\",\n        \"MANAGE_API_V1_ACCESS_KEYS\",\n        \"MANAGE_CONNECTIONS\",\n        \"MANAGE_DIALOGUES\",\n        \"MANAGE_GROUPS\",\n        \"MANAGE_PROFILES\",\n        \"MANAGE_EMAIL_NOTIFICATIONS\",\n        \"READ_EXACT_PROFILE_STATISTICS\",\n        \"MANAGE_GENERAL_SETTINGS\",\n        \"READ_GROUPS\",\n        \"MANAGE_INSIGHTS\",\n        \"MANAGE_IP_BASED_ACCESS_SETTINGS\",\n        \"MANAGE_LIFECYCLES\",\n        \"MANAGE_LISTENERS\",\n        \"MANAGE_PROFILE_MERGE_RULES\",\n        \"MANAGE_NOTEBOOKS\",\n        \"USE_NOTEBOOK_EDITOR\",\n        \"MANAGE_OBJECTIVES\",\n        \"PERSONAL\",\n        \"MANAGE_PII_VALUES\",\n        \"MANAGE_PLUGINS\",\n        \"MANAGE_PRIVACY_SETTINGS\",\n        \"MANAGE_PROPERTIES\",\n        \"READ_PROFILES\",\n        \"MANAGE_ROLES\",\n        \"READ_SECURITY_SETTINGS\",\n        \"MANAGE_SECURITY_SETTINGS\",\n        \"MANAGE_SEGMENTS\",\n        \"USE_SIMULATOR\",\n        \"MANAGE_SINGLE_SIGN_ON_SETTINGS\",\n        \"MANAGE_TEMPLATES\",\n        \"MANAGE_TIMELINE_EVENT_ROLLUPS\",\n        \"MANAGE_TIMELINE_EVENT_TYPES\",\n        \"READ_TIMEOUT_SETTINGS\",\n        \"MANAGE_TIMEOUT_SETTINGS\",\n        \"MANAGE_TRACKERS\",\n        \"MANAGE_CHANNELS\",\n        \"MANAGE_USERS\"\n      ],\n      \"roles\": [\n        {\n          \"id\": \"35718e9a-f8d3-4d2d-8501-a020c563cc25\",\n          \"name\": \"Application Manager\"\n        }\n      ],\n      \"tags\": []\n    }\n  ]\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:users" ]
-        } ]
-      }
-    },
-    "/users/{user}" : {
-      "get" : {
-        "tags" : [ "Users" ],
-        "summary" : "Get one user",
-        "description" : "Retrieves a single user.",
-        "operationId" : "getUser",
-        "parameters" : [ {
-          "name" : "user",
-          "in" : "path",
-          "description" : "The ID of the user.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "examples" : {
-            "Email address" : {
-              "description" : "Email address",
-              "value" : "user.name@domain.com"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the user.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/BlueConicUserBean"
-                },
-                "examples" : {
-                  "Response body" : {
-                    "description" : "Response body",
-                    "value" : "{\n  \"creationDate\": \"2024-11-20T14:35:49.480Z\",\n  \"creator\": {\n    \"fullName\": \"Admin\",\n    \"userName\": \"admin@blueconic.com\"\n  },\n  \"description\": \"a description\",\n  \"domains\": [\n    {\n      \"id\": \"6748f4a6-cf42-42f0-bbae-05ce936dfc7f\",\n      \"name\": \"www.blueconic.test\"\n    }\n  ],\n  \"id\": \"john@blueconic.com\",\n  \"hasAllDomains\": false,\n  \"lastModifiedDate\": \"2024-11-29T12:37:30.145Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"Admin\",\n    \"userName\": \"admin@blueconic.com\"\n  },\n  \"name\": \"John Doe\",\n  \"permissions\": [\n    \"CREATE_POSITIONS\",\n    \"MANAGE_APPLICATIONS\",\n    \"READ_AUDIT_EVENTS\",\n    \"AUTHORIZE_APPLICATIONS\",\n    \"MANAGE_SUPPORT_ACCESS_SETTINGS\",\n    \"APPLY_BULK_OPERATIONS\",\n    \"MANAGE_PROFILE_COMPOSITION_RULES\",\n    \"MANAGE_API_V1_ACCESS_KEYS\",\n    \"MANAGE_CONNECTIONS\",\n    \"MANAGE_DIALOGUES\",\n    \"MANAGE_GROUPS\",\n    \"MANAGE_PROFILES\",\n    \"MANAGE_EMAIL_NOTIFICATIONS\",\n    \"READ_EXACT_PROFILE_STATISTICS\",\n    \"MANAGE_GENERAL_SETTINGS\",\n    \"READ_GROUPS\",\n    \"MANAGE_INSIGHTS\",\n    \"MANAGE_IP_BASED_ACCESS_SETTINGS\",\n    \"MANAGE_LIFECYCLES\",\n    \"MANAGE_LISTENERS\",\n    \"MANAGE_PROFILE_MERGE_RULES\",\n    \"MANAGE_NOTEBOOKS\",\n    \"USE_NOTEBOOK_EDITOR\",\n    \"MANAGE_OBJECTIVES\",\n    \"PERSONAL\",\n    \"MANAGE_PII_VALUES\",\n    \"MANAGE_PLUGINS\",\n    \"MANAGE_PRIVACY_SETTINGS\",\n    \"MANAGE_PROPERTIES\",\n    \"READ_PROFILES\",\n    \"MANAGE_ROLES\",\n    \"READ_SECURITY_SETTINGS\",\n    \"MANAGE_SECURITY_SETTINGS\",\n    \"MANAGE_SEGMENTS\",\n    \"USE_SIMULATOR\",\n    \"MANAGE_SINGLE_SIGN_ON_SETTINGS\",\n    \"MANAGE_TEMPLATES\",\n    \"MANAGE_TIMELINE_EVENT_ROLLUPS\",\n    \"MANAGE_TIMELINE_EVENT_TYPES\",\n    \"READ_TIMEOUT_SETTINGS\",\n    \"MANAGE_TIMEOUT_SETTINGS\",\n    \"MANAGE_TRACKERS\",\n    \"MANAGE_CHANNELS\",\n    \"MANAGE_USERS\"\n  ],\n  \"roles\": [\n    {\n      \"id\": \"3b694f5b-7a9e-497d-9b4b-fab9a7620216\",\n      \"name\": \"Application Manager\"\n    },\n    {\n      \"id\": \"3d7c5aa2-2fe1-4bfe-af41-fb914dfb94b3\",\n      \"name\": \"Content Manager\"\n    }\n  ],\n  \"tags\": []\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "404" : {
-            "description" : "The user doesn't exist."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:users" ]
-        } ]
-      }
     }
   },
   "components" : {
@@ -2401,7 +2126,7 @@
           },
           "hostname" : {
             "type" : "string",
-            "description" : "The hostname of the channel. For web channels, the hostname of the website, excluding the protocol (e.g. `https://`) and path (e.g. `/`). For mobile/ctv channels, the App ID. For email channels, the hostname is empty."
+            "description" : "The hostname of the channel. For web channels, the hostname of the website, excluding the protocol (e.g. `https://`) and path (e.g. `/`). For mobile channels, the App ID. For email channels, the hostname is empty."
           },
           "id" : {
             "type" : "string",
@@ -2422,7 +2147,7 @@
           "type" : {
             "type" : "string",
             "description" : "The type of the channel.",
-            "enum" : [ "EMAIL", "MOBILE", "WEBSITE", "CTV" ]
+            "enum" : [ "EMAIL", "MOBILE", "WEBSITE" ]
           },
           "visitorCount" : {
             "type" : "integer",
@@ -2475,8 +2200,7 @@
             "type" : "string",
             "description" : "Name of this object."
           }
-        },
-        "readOnly" : true
+        }
       },
       "UserBean" : {
         "type" : "object",
@@ -2548,11 +2272,11 @@
           },
           "tags" : {
             "type" : "array",
-            "description" : "The tags (i.e. labels).",
+            "description" : "The tags (e.g. labels).",
             "example" : "Address",
             "items" : {
               "type" : "string",
-              "description" : "The tags (i.e. labels).",
+              "description" : "The tags (e.g. labels).",
               "example" : "Address"
             }
           },
@@ -2987,7 +2711,7 @@
           "state" : {
             "type" : "string",
             "description" : "The possible states for profile related changes.",
-            "enum" : [ "CREATED", "SKIPPED", "MODIFIED", "UNCHANGED", "NOTFOUND", "RESTRICTION_MISMATCH", "CONSENT_MISMATCH", "DELETED", "UNAUTHORIZED" ]
+            "enum" : [ "CREATED", "SKIPPED", "MODIFIED", "UNCHANGED", "NOTFOUND", "RESTRICTION_MISMATCH", "CONSENT_MISMATCH", "DELETED" ]
           },
           "timeline" : {
             "type" : "array",
@@ -3263,11 +2987,11 @@
           },
           "tags" : {
             "type" : "array",
-            "description" : "The tags (i.e. labels).",
+            "description" : "The tags (e.g. labels).",
             "example" : "Address",
             "items" : {
               "type" : "string",
-              "description" : "The tags (i.e. labels).",
+              "description" : "The tags (e.g. labels).",
               "example" : "Address"
             }
           },
@@ -3652,7 +3376,7 @@
           "privacyLegislation" : {
             "type" : "string",
             "description" : "Specifies the privacy legislation when creating a profile. Not used for matching.",
-            "enum" : [ "NONE", "GDPR", "PIPEDA", "CCPA", "SB220", "NYPA", "PERU_DPL", "ARGENTINA_DPL", "SB1392", "SB190", "BRAZIL_LGPD", "ISRAEL_PPL", "JAPAN_APPI", "NEW_ZEALAND_PRIVACY_ACT", "SWITZERLAND_DPA", "UK_GDPR", "CHINA_PIPL", "AUSTRALIA_PRIVACY_ACT", "CDPA_CTCPDA", "MEXICO_LFPDPPP", "UCPA", "TDPSA", "MTCDPA", "FDBR", "OCPA", "DPDPA", "ICDPA", "NHPA", "NJDPA", "NEDPA", "HAITI_APD", "JAMAICA_DPA", "TRINIDAD_TOBAGO_DPA", "COSTA_RICA_L8968", "GUATEMALA_LAIP", "PANAMA_L81", "HONDURAS_LPDCP", "EL_SALVADOR", "COLOMBIA_L1581_D1377", "NICARAGUA_L787", "CHILE_L19_628", "BELIZE_DPA" ]
+            "enum" : [ "NONE", "GDPR", "PIPEDA", "CCPA", "SB220", "NYPA", "PERU_DPL", "ARGENTINA_DPL", "SB1392", "SB190", "BRAZIL_LGPD", "ISRAEL_PPL", "JAPAN_APPI", "NEW_ZEALAND_PRIVACY_ACT", "SWITZERLAND_DPA", "UK_GDPR", "CHINA_PIPL", "AUSTRALIA_PRIVACY_ACT", "CDPA_CTCPDA", "MEXICO_LFPDPPP", "UCPA", "TDPSA", "MTCDPA", "FDBR", "OCPA", "DPDPA", "ICDPA", "NHPA", "NJDPA", "NEDPA" ]
           },
           "profileId" : {
             "type" : "string",
@@ -3830,11 +3554,11 @@
           },
           "tags" : {
             "type" : "array",
-            "description" : "The tags (i.e. labels).",
+            "description" : "The tags (e.g. labels).",
             "example" : "Address",
             "items" : {
               "type" : "string",
-              "description" : "The tags (i.e. labels).",
+              "description" : "The tags (e.g. labels).",
               "example" : "Address"
             }
           }
@@ -4053,216 +3777,6 @@
           }
         },
         "required" : [ "id", "properties", "url" ]
-      },
-      "RoleBean" : {
-        "type" : "object",
-        "properties" : {
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "creator" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "description" : {
-            "type" : "string",
-            "description" : "The description."
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "The object ID."
-          },
-          "lastModifiedDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "lastModifiedUser" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The object name."
-          },
-          "permissions" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "enum" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_TIMEOUT_SETTINGS", "MANAGE_TIMEOUT_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS" ]
-            }
-          },
-          "tags" : {
-            "type" : "array",
-            "description" : "The tags (i.e. labels).",
-            "example" : "Address",
-            "items" : {
-              "type" : "string",
-              "description" : "The tags (i.e. labels).",
-              "example" : "Address"
-            }
-          }
-        },
-        "required" : [ "permissions" ]
-      },
-      "roles" : {
-        "type" : "object",
-        "properties" : {
-          "itemsPerPage" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "Number of results per page."
-          },
-          "roles" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/RoleBean"
-            }
-          },
-          "startIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The start index."
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of pages."
-          },
-          "totalResults" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of results."
-          }
-        }
-      },
-      "BlueConicUserBean" : {
-        "type" : "object",
-        "description" : "The user.",
-        "properties" : {
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "creator" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "description" : {
-            "type" : "string",
-            "description" : "The description."
-          },
-          "domains" : {
-            "type" : "array",
-            "description" : "The domains the user has access to. Only available if `hasAllDomains` is false.",
-            "items" : {
-              "$ref" : "#/components/schemas/simpleDomain"
-            },
-            "readOnly" : true,
-            "uniqueItems" : true
-          },
-          "hasAllDomains" : {
-            "type" : "boolean",
-            "description" : "Indicates if the user has access to all domains. If false, the configured domains are returned in the `domains` property.",
-            "readOnly" : true
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "The object ID."
-          },
-          "lastLoginDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The last login date."
-          },
-          "lastModifiedDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "lastModifiedUser" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The object name."
-          },
-          "permissions" : {
-            "type" : "array",
-            "description" : "The permissions assigned to this user.",
-            "items" : {
-              "type" : "string",
-              "description" : "The permissions assigned to this user."
-            }
-          },
-          "roles" : {
-            "type" : "array",
-            "description" : "The roles assigned to this user.",
-            "items" : {
-              "$ref" : "#/components/schemas/SimpleRoleBean"
-            },
-            "uniqueItems" : true
-          },
-          "tags" : {
-            "type" : "array",
-            "description" : "The tags (i.e. labels).",
-            "example" : "Address",
-            "items" : {
-              "type" : "string",
-              "description" : "The tags (i.e. labels).",
-              "example" : "Address"
-            }
-          }
-        }
-      },
-      "SimpleRoleBean" : {
-        "type" : "object",
-        "description" : "The roles assigned to this user.",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "The ID of the role."
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The name of the role."
-          }
-        }
-      },
-      "users" : {
-        "type" : "object",
-        "properties" : {
-          "itemsPerPage" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "Number of results per page."
-          },
-          "startIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The start index."
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of pages."
-          },
-          "totalResults" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of results."
-          },
-          "users" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BlueConicUserBean"
-            }
-          }
-        }
       }
     },
     "securitySchemes" : {

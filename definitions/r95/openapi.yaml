@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "96.0"
+  version: "95.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -354,14 +354,6 @@ tags:
     \ tracker tab, but can also be created as a separate object (not visible in the\
     \ UI) via this REST API directly. You can use external trackers to track customer\
     \ or visitor activity outside domains in your BlueConic tenant. [Read more](https://support.blueconic.com/hc/en-us/articles/202531862-External-Trackers)."
-- name: Roles
-  description: "A role contains a collection of data privacy and feature access permissions\
-    \ that you can assign to a user. Every BlueConic user is assigned to at least\
-    \ one role. A user can only access the features their role grants to them. [Read\
-    \ more](https://support.blueconic.com/hc/en-us/articles/202607121-BlueConic-Roles?utm_source=BlueConic_User)"
-- name: Users
-  description: "Users are the people who have access to the BlueConic environment.\
-    \ [Read more](https://support.blueconic.com/hc/en-us/articles/360000013785-Users)"
 paths:
   /auditEvents:
     get:
@@ -621,6 +613,7 @@ paths:
                   value: |-
                     {
                       "aliases" : [ "blueconic.com" ],
+                      "canDelete" : true,
                       "creationDate" : "2024-01-24T12:30:50.000Z",
                       "creator" : {
                         "fullName" : "user@blueconic.com",
@@ -631,6 +624,7 @@ paths:
                         "id" : "6398b714-45fd-4c28-ab08-80d8fea50757",
                         "name" : "www.blueconic.com"
                       },
+                      "favorite" : false,
                       "hostname" : "www.blueconic.com",
                       "id" : "6b44d80c-73c8-485b-ad76-b53a103751af",
                       "lastModifiedDate" : "2024-02-01T12:30:50.000Z",
@@ -640,6 +634,7 @@ paths:
                       },
                       "logo" : "https://bc.blueconic.net/rest/v2/channels/6b44d80c-73c8-485b-ad76-b53a103751af/logo?etag=3082b317eba5029e0aea03b42e3f3ca1",
                       "name" : "www.blueconic.com",
+                      "readOnly" : false,
                       "tags" : [ "Marketing", "Data", "Privacy" ],
                       "type" : "WEBSITE",
                       "visitorCount" : 10
@@ -1451,7 +1446,7 @@ paths:
         schema:
           type: integer
           format: int32
-          default: "0"
+          default: 0
         example: 0
       - name: count
         in: query
@@ -1459,7 +1454,7 @@ paths:
         schema:
           type: integer
           format: int32
-          default: "20"
+          default: 20
         example: 20
       responses:
         "200":
@@ -1719,6 +1714,7 @@ paths:
                       },
                       "dataSensitivity" : "NON_PII",
                       "description" : "Test description.",
+                      "favorite" : false,
                       "filterType" : "RANGE",
                       "id" : "test_property",
                       "indexed" : false,
@@ -1738,6 +1734,7 @@ paths:
                       "permissionLevel" : "ANONYMOUS",
                       "precision" : 0,
                       "profileCount" : 0,
+                      "readOnly" : false,
                       "showInUI" : true,
                       "tags" : [ "Tech", "Metrics" ],
                       "totalProfileCount" : 130300,
@@ -1816,6 +1813,7 @@ paths:
                   value: |-
                     {
                       "availableForSegmentation" : true,
+                      "canDelete" : true,
                       "canRead" : true,
                       "canWrite" : true,
                       "createNewProfile" : false,
@@ -1832,6 +1830,7 @@ paths:
                       },
                       "dataSensitivity" : "NON_PII",
                       "description" : "The description for the currency",
+                      "favorite" : false,
                       "filterType" : "CURRENCY",
                       "id" : "test_currency",
                       "indexed" : false,
@@ -1851,6 +1850,7 @@ paths:
                       "permissionLevel" : "ANONYMOUS",
                       "precision" : 2,
                       "profileCount" : 0,
+                      "readOnly" : false,
                       "showInUI" : true,
                       "tags" : [ "Metrics" ],
                       "totalProfileCount" : 130300,
@@ -1968,6 +1968,7 @@ paths:
                       },
                       "dataSensitivity" : "NON_PII",
                       "description" : "Test description.",
+                      "favorite" : false,
                       "filterType" : "RANGE",
                       "id" : "test_property",
                       "indexed" : false,
@@ -1987,6 +1988,7 @@ paths:
                       "permissionLevel" : "ANONYMOUS",
                       "precision" : 0,
                       "profileCount" : 0,
+                      "readOnly" : false,
                       "showInUI" : true,
                       "tags" : [ "Tech", "Metrics" ],
                       "totalProfileCount" : 130300,
@@ -2088,6 +2090,7 @@ paths:
                         "creationDate": "2023-03-20T13:53:34.687Z",
                         "dataSensitivity": "NON_PII",
                         "description": "The unique Facebook Ads custom audience IDs to which a user has been added by BlueConic.",
+                        "favorite": false,
                         "filterType": "SELECT",
                         "id": "_facebookAdsAudiences",
                         "indexed": false,
@@ -2103,6 +2106,7 @@ paths:
                         "permissionLevel": "ANONYMOUS",
                         "precision": 0,
                         "profileCount": 0,
+                        "readOnly": false,
                         "showInUI": false,
                         "tags": ["Identifier"],
                         "totalProfileCount": 130300,
@@ -2117,6 +2121,7 @@ paths:
                         "creationDate" : "2023-03-20T13:53:35.046Z",
                         "dataSensitivity" : "NON_PII",
                         "description" : "Indicates whether an ad blocker was detected for the visitor. Will contain the value \"yes\" if one was detected.",
+                        "favorite" : false,
                         "filterType" : "SELECT",
                         "id" : "adblock_detected",
                         "indexed" : false,
@@ -2136,6 +2141,7 @@ paths:
                         "permissionLevel" : "ANONYMOUS",
                         "precision" : 0,
                         "profileCount" : 0,
+                        "readOnly" : false,
                         "showInUI" : true,
                         "tags" : [ "Address", "Process" ],
                         "totalProfileCount" : 130300,
@@ -2311,29 +2317,12 @@ paths:
           \   | A profile is governed by NHPA in the State of New Hampshire. |\n|\
           \ NJDPA                   | A profile is governed by NJDPA in the State\
           \ of New Jersey. |\n| NEDPA                   | A profile is governed by\
-          \ NEDPA in the State of Nebraska. |\n| HAITI_APD               | A profile\
-          \ is governed by the Haiti Arrêté de Protection des Données (APD). |\n|\
-          \ JAMAICA_DPA             | A profile is governed by the Jamaica Data Protection\
-          \ Act (DPA). |\n| TRINIDAD_TOBAGO_DPA     | A profile is governed by the\
-          \ Trinidad & Tobago Data Protection Act (DPA). |\n| COSTA_RICA_L8968   \
-          \     | A profile is governed by the Costa Rica Law No. 8968 on Protection\
-          \ of Individuals Against the Processing of Personal Data. |\n| GUATEMALA_LAIP\
-          \          | A profile is governed by the Guatemala Ley de Acceso a la Informació\
-          n Pública, Decree 57-2008. |\n| PANAMA_L81              | A profile is governed\
-          \ by the Panama Data Protection Law No. 81. |\n| HONDURAS_LPDCP        \
-          \  | A profile is governed by the Honduras LPDCP. |\n| EL_SALVADOR     \
-          \        | A profile is governed by the El Salvador Privacy Statutes. |\n\
-          | COLOMBIA_L1581_D1377    | A profile is governed by the Colombia Law 1581,\
-          \ 2012; Decree 1377, 2013. |\n| NICARAGUA_L787          | A profile is governed\
-          \ by the Nicaragua Law No. 787. |\n| CHILE_L19_628           | A profile\
-          \ is governed by the Chile Law No. 19.628 on Protection of Privacy. |\n\
-          | BELIZE_DPA              | A profile is governed by the Belieze Data Protection\
-          \ Act (DPA). |\n| NONE                    | The profile is not governed\
-          \ by a known privacy legislation zone; profile will just be created. NONE\
-          \ legislations are also targeted when 'Rest of World' is selected in an\
-          \ objective. |\n\n**Profile strategy**\n\nThe following values are valid\
-          \ strategies for profile operations. These can be used to create, update\
-          \ or delete profiles.\n\n| Name         | Description |\n| :-----------\
+          \ NEDPA in the State of Nebraska. |\n| NONE                    | The profile\
+          \ is not governed by a known privacy legislation zone; profile will just\
+          \ be created. NONE legislations are also targeted when 'Rest of World' is\
+          \ selected in an objective. |\n\n**Profile strategy**\n\nThe following values\
+          \ are valid strategies for profile operations. These can be used to create,\
+          \ update or delete profiles.\n\n| Name         | Description |\n| :-----------\
           \ | :---------- |\n| UPSERT   | Will update (and insert if not found) the\
           \ profile based on the rules passed along. |\n| UPDATE   | Will update (but\
           \ doesn’t insert if not found) the profile based on the rules passed along.\
@@ -2620,19 +2609,17 @@ paths:
         "200":
           description: "Bulk response \n\n**JSON Response**\n\nEvery bulk operation\
             \ is returned in the response as well.\nThe state can be one of the following\
-            \ values: `CREATED`, `CONSENT_MISMATCH`, `SKIPPED`, `MODIFIED`, `DELETED`,\
-            \ `UNCHANGED`, `NOTFOUND`, `RESTRICTION_MISMATCH`, `UNAUTHORIZED`. \n\
-            `UNAUTHORIZED` is returned in case the user performing the request has\
-            \ invalid (PII) permissions. Please check your OAuth Application configuration.\n\
-            \n\n```json\n[{\n    \"state\": \"CREATED\",\n    \"profileId\": \"profile-UUID\
-            \ of the created profile\",\n    \"identifier\": \" my-external-identifier\"\
-            \n}]\n```\n\nWhen the profile operation contains timeline events, the\
-            \ response will also contain a response per timeline event supplied. The\
-            \ state can be one of the following values: `CREATED`, `SET`, `MODIFIED`,\
-            \ `REJECTED`, `NOTFOUND` or `DELETED`.\n\n```json\n[{\n    \"state\":\
-            \ \"CREATED\",\n    \"profileId\": \"profile-UUID of the created profile\"\
-            ,\n    \"identifier\": \" my-external-identifier\",\n    \"timeline\"\
-            : [{\n        \"id\": \"order_1\",\n        \"identifier\": \"my-external-order-identifier\"\
+            \ values: `CREATED`, `SKIPPED`, `MODIFIED`, `DELETED`, `UNCHANGED`, `NOTFOUND`,\
+            \ `RESTRICTION_MISMATCH` or `CONSENT_MISMATCH`.\n\n```json\n[{\n    \"\
+            state\": \"CREATED\",\n    \"profileId\": \"profile-UUID of the created\
+            \ profile\",\n    \"identifier\": \" my-external-identifier\"\n}]\n```\n\
+            \nWhen the profile operation contains timeline events, the response will\
+            \ also contain a response per timeline event supplied. The state can be\
+            \ one of the following values: `CREATED`, `SET`, `MODIFIED`, `REJECTED`,\
+            \ `NOTFOUND` or `DELETED`.\n\n```json\n[{\n    \"state\": \"CREATED\"\
+            ,\n    \"profileId\": \"profile-UUID of the created profile\",\n    \"\
+            identifier\": \" my-external-identifier\",\n    \"timeline\": [{\n   \
+            \     \"id\": \"order_1\",\n        \"identifier\": \"my-external-order-identifier\"\
             ,\n        \"state\": \"REJECTED\",\n        \"validationErrors\": [\"\
             #/total_revenue/0: expected type: Number, found: String\"]\n    }]\n}]\
             \      \n```"
@@ -2657,10 +2644,6 @@ paths:
                         "state": "DELETED"
                       },
                       {
-                        "profileId": "324fe9e8-ee83-4c1c-8a32-9132f958f743",
-                        "state": "UNAUTHORIZED"
-                      },
-                      {
                         "profileId": "e4c45d3b-f59b-4391-ad46-7413961e8cbd",
                         "state": "CREATED",
                         "timeline": [
@@ -2680,8 +2663,8 @@ paths:
         "401":
           description: Authentication failed (unauthorized).
         "403":
-          description: "Forbidden, invalid permissions to perform the request. Please\
-            \ check your OAuth Application configuration."
+          description: "Forbidden, invalid (PII) permissions to perform the request.\
+            \ Please check your OAuth Application configuration."
         "413":
           description: More than the allowed 1000 entries are sent in the request.
             The entries that are processed are returned in the response.
@@ -2704,10 +2687,6 @@ paths:
                       {
                         "profileId": "a84fe9e8-ee83-4c1c-8a32-9132f958fe13",
                         "state": "DELETED"
-                      },
-                      {
-                        "profileId": "324fe9e8-ee83-4c1c-8a32-9132f958f743",
-                        "state": "UNAUTHORIZED"
                       },
                       {
                         "profileId": "e4c45d3b-f59b-4391-ad46-7413961e8cbd",
@@ -2812,7 +2791,7 @@ paths:
         schema:
           type: integer
           format: int32
-          default: "20"
+          default: 20
         example: 10
       - name: fromDate
         in: query
@@ -2834,9 +2813,9 @@ paths:
           to exclude segment information.
         schema:
           type: array
-          default: ""
           items:
             type: string
+            default: ""
         example: profile.segments
       responses:
         "200":
@@ -3177,46 +3156,6 @@ paths:
         schema:
           type: string
         example: 2023-02-22T11:21:33.872Z
-      - name: audienceId
-        in: query
-        description: This is used to track if a profile has already been exported
-          to an audience. If a profile has already been exported to this audience
-          then it is only included in the result when there are recent modifications
-          to the given trackProperties.
-        schema:
-          type: string
-        example: 2f7dfdec-35c4-4f6e-b56d-7ccacc4a3311
-      - name: autoCommit
-        in: query
-        description: If the exported profiles should be auto-committed to the given
-          audience.
-        schema:
-          type: boolean
-          default: "true"
-        example: true
-      - name: trackPropertiesModifiedSince
-        in: query
-        description: The date since which the provided trackProperties should have
-          changed.
-        schema:
-          type: string
-        example: 2023-04-15T11:24:01.183Z
-      - name: trackProperties
-        in: query
-        description: The tracked properties that should be checked for changes since
-          the given trackPropertiesModifiedSince date.
-        schema:
-          type: array
-          items:
-            type: string
-        example: geo_city_name
-      - name: trackPropertyChangesInNumberOfDays
-        in: query
-        description: The number of days to track property changes.
-        schema:
-          type: integer
-          format: int32
-        example: 32
       responses:
         "200":
           description: "Returns the profiles of the given segment in a streaming fashion\
@@ -3430,6 +3369,7 @@ paths:
                           "userName" : "BlueConic"
                         },
                         "description" : "The segment description",
+                        "favorite" : false,
                         "id" : "aa9c3c86-edec-4ac5-8521-a1be602eb7c6",
                         "inverseOf" : "",
                         "inversedBy" : "",
@@ -3439,6 +3379,7 @@ paths:
                           "userName" : "BlueConic"
                         },
                         "name" : "All Visitors",
+                        "readOnly" : true,
                         "tags" : ["a tag"]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.843Z",
@@ -3447,6 +3388,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "description" : "",
+                        "favorite" : false,
                         "id" : "dcd46509-0c5f-40a5-8b91-e9b9315466ef",
                         "inverseOf" : "",
                         "inversedBy" : "",
@@ -3456,6 +3398,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour: Afternoon",
+                        "readOnly" : false,
                         "tags" : [ ]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.848Z",
@@ -3464,6 +3407,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "description" : "",
+                        "favorite" : false,
                         "id" : "6c2785b1-66fd-4504-9b26-20c8b24b1c46",
                         "inverseOf" : "",
                         "inversedBy" : "",
@@ -3473,6 +3417,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour: Evening",
+                        "readOnly" : false,
                         "tags" : [ ]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.839Z",
@@ -3481,6 +3426,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "description" : "",
+                        "favorite" : true,
                         "id" : "194b246b-26c5-4e9a-bc3a-f3896c8dc96e",
                         "inverseOf" : "",
                         "inversedBy" : "",
@@ -3490,6 +3436,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour: Morning",
+                        "readOnly" : false,
                         "tags" : [ ]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.837Z",
@@ -3498,6 +3445,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "description" : "",
+                        "favorite" : false,
                         "id" : "1e557d7c-e655-415a-a0bd-256009af183a",
                         "inverseOf" : "",
                         "inversedBy" : "",
@@ -3507,6 +3455,7 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour : Night",
+                        "readOnly" : false,
                         "tags" : [ ]
                       } ],
                       "startIndex" : 0,
@@ -3581,7 +3530,7 @@ paths:
           the profile.
         schema:
           type: boolean
-          default: "false"
+          default: false
         example: true
       requestBody:
         description: "The body of a recommendations request consists of a JSON array\
@@ -4124,373 +4073,6 @@ paths:
       security:
       - oauth2:
         - write:url-mappings
-  /roles:
-    get:
-      tags:
-      - Roles
-      summary: Get all roles
-      description: Retrieves all roles.
-      operationId: getAllRoles
-      parameters:
-      - name: count
-        in: query
-        description: Specifies the number of results to return.
-        schema:
-          type: integer
-          format: int64
-          default: 20
-          example: 10
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first item to include in the result.
-        schema:
-          type: integer
-          format: int64
-          default: 0
-          example: 0
-      responses:
-        "200":
-          description: Returns the roles.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/roles"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "itemsPerPage" : 10,
-                      "roles" : [ {
-                        "creationDate" : "2024-01-24T14:06:19.100Z",
-                        "creator" : {
-                          "fullName" : "BlueConic",
-                          "userName" : "BlueConic"
-                        },
-                        "description" : "description here",
-                        "id" : "35718e9a-f8d3-4d2d-8501-a020c563cc25",
-                        "lastModifiedDate" : "2024-01-24T14:06:19.100Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "BlueConic",
-                          "userName" : "BlueConic"
-                        },
-                        "name" : "Application Manager",
-                        "permissions" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "PERSONAL", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_TIMEOUT_SETTINGS", "MANAGE_TIMEOUT_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS" ],
-                        "tags" : [ "a tag here" ]
-                      } ],
-                      "startIndex" : 0,
-                      "totalPages" : 14,
-                      "totalResults" : 14
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:roles
-  /roles/{role}:
-    get:
-      tags:
-      - Roles
-      summary: Get one role
-      description: Retrieves a single role.
-      operationId: getRole
-      parameters:
-      - name: role
-        in: path
-        description: The id of the role to retrieve.
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Returns the role.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RoleBean"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |
-                    {
-                      "creationDate" : "2024-03-27T12:14:02.651Z",
-                      "creator" : {
-                        "fullName" : "admin@blueconic.com",
-                        "userName" : "admin@blueconic.com"
-                      },
-                      "description" : "Role description here",
-                      "id" : "0d8a5b63-a2c8-4cbd-b5de-415c1743d67c",
-                      "lastModifiedDate" : "2024-03-27T12:26:31.300Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "admin@blueconic.com",
-                        "userName" : "admin@blueconic.com"
-                      },
-                      "name" : "Marketeers",
-                      "permissions" : [ "MANAGE_USERS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS" ],
-                      "tags" : [ "a tag here" ]
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The role doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:roles
-  /users:
-    get:
-      tags:
-      - Users
-      summary: Get all users
-      description: Retrieves all users.
-      operationId: getAllUsers
-      parameters:
-      - name: count
-        in: query
-        description: Specifies the number of results to return.
-        schema:
-          type: integer
-          format: int64
-          default: 20
-          example: 10
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first item to include in the result.
-        schema:
-          type: integer
-          format: int64
-          default: 0
-          example: 0
-      responses:
-        "200":
-          description: Returns the users.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/users"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "itemsPerPage": 1,
-                      "startIndex": 0,
-                      "totalPages": 37,
-                      "totalResults": 74,
-                      "users": [
-                        {
-                          "creationDate": "2024-02-29T15:50:20.489Z",
-                          "creator": {
-                            "fullName": "example_user1@blueconic.com",
-                            "userName": "example_user1@blueconic.com"
-                          },
-                          "description": "",
-                          "domains": [
-                            {
-                              "id": "6748f4a6-cf42-42f0-bbae-05ce936dfc7f",
-                              "name": "www.blueconic.test"
-                            }
-                          ],
-                          "id": "admin@blueconic.com",
-                          "hasAllDomains": false,
-                          "lastLoginDate": "2024-09-27T18:30:35.663Z",
-                          "lastModifiedDate": "2024-02-29T15:50:20.489Z",
-                          "lastModifiedUser": {
-                            "fullName": "admin@blueconic.com",
-                            "userName": "admin@blueconic.com"
-                          },
-                          "name": "",
-                          "permissions": [
-                            "CREATE_POSITIONS",
-                            "MANAGE_APPLICATIONS",
-                            "READ_AUDIT_EVENTS",
-                            "AUTHORIZE_APPLICATIONS",
-                            "MANAGE_SUPPORT_ACCESS_SETTINGS",
-                            "APPLY_BULK_OPERATIONS",
-                            "MANAGE_PROFILE_COMPOSITION_RULES",
-                            "MANAGE_API_V1_ACCESS_KEYS",
-                            "MANAGE_CONNECTIONS",
-                            "MANAGE_DIALOGUES",
-                            "MANAGE_GROUPS",
-                            "MANAGE_PROFILES",
-                            "MANAGE_EMAIL_NOTIFICATIONS",
-                            "READ_EXACT_PROFILE_STATISTICS",
-                            "MANAGE_GENERAL_SETTINGS",
-                            "READ_GROUPS",
-                            "MANAGE_INSIGHTS",
-                            "MANAGE_IP_BASED_ACCESS_SETTINGS",
-                            "MANAGE_LIFECYCLES",
-                            "MANAGE_LISTENERS",
-                            "MANAGE_PROFILE_MERGE_RULES",
-                            "MANAGE_NOTEBOOKS",
-                            "USE_NOTEBOOK_EDITOR",
-                            "MANAGE_OBJECTIVES",
-                            "PERSONAL",
-                            "MANAGE_PII_VALUES",
-                            "MANAGE_PLUGINS",
-                            "MANAGE_PRIVACY_SETTINGS",
-                            "MANAGE_PROPERTIES",
-                            "READ_PROFILES",
-                            "MANAGE_ROLES",
-                            "READ_SECURITY_SETTINGS",
-                            "MANAGE_SECURITY_SETTINGS",
-                            "MANAGE_SEGMENTS",
-                            "USE_SIMULATOR",
-                            "MANAGE_SINGLE_SIGN_ON_SETTINGS",
-                            "MANAGE_TEMPLATES",
-                            "MANAGE_TIMELINE_EVENT_ROLLUPS",
-                            "MANAGE_TIMELINE_EVENT_TYPES",
-                            "READ_TIMEOUT_SETTINGS",
-                            "MANAGE_TIMEOUT_SETTINGS",
-                            "MANAGE_TRACKERS",
-                            "MANAGE_CHANNELS",
-                            "MANAGE_USERS"
-                          ],
-                          "roles": [
-                            {
-                              "id": "35718e9a-f8d3-4d2d-8501-a020c563cc25",
-                              "name": "Application Manager"
-                            }
-                          ],
-                          "tags": []
-                        }
-                      ]
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:users
-  /users/{user}:
-    get:
-      tags:
-      - Users
-      summary: Get one user
-      description: Retrieves a single user.
-      operationId: getUser
-      parameters:
-      - name: user
-        in: path
-        description: The ID of the user.
-        required: true
-        schema:
-          type: string
-        examples:
-          Email address:
-            description: Email address
-            value: user.name@domain.com
-      responses:
-        "200":
-          description: Returns the user.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BlueConicUserBean"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "creationDate": "2024-11-20T14:35:49.480Z",
-                      "creator": {
-                        "fullName": "Admin",
-                        "userName": "admin@blueconic.com"
-                      },
-                      "description": "a description",
-                      "domains": [
-                        {
-                          "id": "6748f4a6-cf42-42f0-bbae-05ce936dfc7f",
-                          "name": "www.blueconic.test"
-                        }
-                      ],
-                      "id": "john@blueconic.com",
-                      "hasAllDomains": false,
-                      "lastModifiedDate": "2024-11-29T12:37:30.145Z",
-                      "lastModifiedUser": {
-                        "fullName": "Admin",
-                        "userName": "admin@blueconic.com"
-                      },
-                      "name": "John Doe",
-                      "permissions": [
-                        "CREATE_POSITIONS",
-                        "MANAGE_APPLICATIONS",
-                        "READ_AUDIT_EVENTS",
-                        "AUTHORIZE_APPLICATIONS",
-                        "MANAGE_SUPPORT_ACCESS_SETTINGS",
-                        "APPLY_BULK_OPERATIONS",
-                        "MANAGE_PROFILE_COMPOSITION_RULES",
-                        "MANAGE_API_V1_ACCESS_KEYS",
-                        "MANAGE_CONNECTIONS",
-                        "MANAGE_DIALOGUES",
-                        "MANAGE_GROUPS",
-                        "MANAGE_PROFILES",
-                        "MANAGE_EMAIL_NOTIFICATIONS",
-                        "READ_EXACT_PROFILE_STATISTICS",
-                        "MANAGE_GENERAL_SETTINGS",
-                        "READ_GROUPS",
-                        "MANAGE_INSIGHTS",
-                        "MANAGE_IP_BASED_ACCESS_SETTINGS",
-                        "MANAGE_LIFECYCLES",
-                        "MANAGE_LISTENERS",
-                        "MANAGE_PROFILE_MERGE_RULES",
-                        "MANAGE_NOTEBOOKS",
-                        "USE_NOTEBOOK_EDITOR",
-                        "MANAGE_OBJECTIVES",
-                        "PERSONAL",
-                        "MANAGE_PII_VALUES",
-                        "MANAGE_PLUGINS",
-                        "MANAGE_PRIVACY_SETTINGS",
-                        "MANAGE_PROPERTIES",
-                        "READ_PROFILES",
-                        "MANAGE_ROLES",
-                        "READ_SECURITY_SETTINGS",
-                        "MANAGE_SECURITY_SETTINGS",
-                        "MANAGE_SEGMENTS",
-                        "USE_SIMULATOR",
-                        "MANAGE_SINGLE_SIGN_ON_SETTINGS",
-                        "MANAGE_TEMPLATES",
-                        "MANAGE_TIMELINE_EVENT_ROLLUPS",
-                        "MANAGE_TIMELINE_EVENT_TYPES",
-                        "READ_TIMEOUT_SETTINGS",
-                        "MANAGE_TIMEOUT_SETTINGS",
-                        "MANAGE_TRACKERS",
-                        "MANAGE_CHANNELS",
-                        "MANAGE_USERS"
-                      ],
-                      "roles": [
-                        {
-                          "id": "3b694f5b-7a9e-497d-9b4b-fab9a7620216",
-                          "name": "Application Manager"
-                        },
-                        {
-                          "id": "3d7c5aa2-2fe1-4bfe-af41-fb914dfb94b3",
-                          "name": "Content Manager"
-                        }
-                      ],
-                      "tags": []
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The user doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:users
 components:
   schemas:
     AuditEntryBean:
@@ -4610,7 +4192,7 @@ components:
           type: string
           description: "The hostname of the channel. For web channels, the hostname\
             \ of the website, excluding the protocol (e.g. `https://`) and path (e.g.\
-            \ `/`). For mobile/ctv channels, the App ID. For email channels, the hostname\
+            \ `/`). For mobile channels, the App ID. For email channels, the hostname\
             \ is empty."
         id:
           type: string
@@ -4631,7 +4213,6 @@ components:
           - EMAIL
           - MOBILE
           - WEBSITE
-          - CTV
         visitorCount:
           type: integer
           format: int32
@@ -4670,7 +4251,6 @@ components:
         name:
           type: string
           description: Name of this object.
-      readOnly: true
     UserBean:
       type: object
       description: BlueConic user.
@@ -4735,11 +4315,11 @@ components:
           description: The object name.
         tags:
           type: array
-          description: The tags (i.e. labels).
+          description: The tags (e.g. labels).
           example: Address
           items:
             type: string
-            description: The tags (i.e. labels).
+            description: The tags (e.g. labels).
             example: Address
         type:
           type: string
@@ -5100,7 +4680,6 @@ components:
           - RESTRICTION_MISMATCH
           - CONSENT_MISMATCH
           - DELETED
-          - UNAUTHORIZED
         timeline:
           type: array
           description: The feedback on the given timeline events.
@@ -5353,11 +4932,11 @@ components:
             applicable when "isAvailableForSegmentation" is "true."
         tags:
           type: array
-          description: The tags (i.e. labels).
+          description: The tags (e.g. labels).
           example: Address
           items:
             type: string
-            description: The tags (i.e. labels).
+            description: The tags (e.g. labels).
             example: Address
         totalProfileCount:
           type: integer
@@ -5730,18 +5309,6 @@ components:
           - NHPA
           - NJDPA
           - NEDPA
-          - HAITI_APD
-          - JAMAICA_DPA
-          - TRINIDAD_TOBAGO_DPA
-          - COSTA_RICA_L8968
-          - GUATEMALA_LAIP
-          - PANAMA_L81
-          - HONDURAS_LPDCP
-          - EL_SALVADOR
-          - COLOMBIA_L1581_D1377
-          - NICARAGUA_L787
-          - CHILE_L19_628
-          - BELIZE_DPA
         profileId:
           type: string
           description: "The BlueConic profile ID to search for. When specified, it\
@@ -5914,11 +5481,11 @@ components:
           description: The object name.
         tags:
           type: array
-          description: The tags (i.e. labels).
+          description: The tags (e.g. labels).
           example: Address
           items:
             type: string
-            description: The tags (i.e. labels).
+            description: The tags (e.g. labels).
             example: Address
     segments:
       type: object
@@ -6113,216 +5680,6 @@ components:
       - id
       - properties
       - url
-    RoleBean:
-      type: object
-      properties:
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-          readOnly: true
-        creator:
-          $ref: "#/components/schemas/UserBean"
-        description:
-          type: string
-          description: The description.
-        id:
-          type: string
-          description: The object ID.
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-          readOnly: true
-        lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
-        name:
-          type: string
-          description: The object name.
-        permissions:
-          type: array
-          items:
-            type: string
-            enum:
-            - MANAGE_PROPERTIES
-            - READ_PROFILES
-            - MANAGE_PROFILES
-            - MANAGE_LISTENERS
-            - MANAGE_TRACKERS
-            - MANAGE_SEGMENTS
-            - MANAGE_PROFILE_MERGE_RULES
-            - MANAGE_PROFILE_COMPOSITION_RULES
-            - MANAGE_DIALOGUES
-            - CREATE_POSITIONS
-            - MANAGE_INSIGHTS
-            - MANAGE_EMAIL_NOTIFICATIONS
-            - MANAGE_LIFECYCLES
-            - USE_SIMULATOR
-            - MANAGE_CHANNELS
-            - MANAGE_PLUGINS
-            - MANAGE_CONNECTIONS
-            - MANAGE_API_V1_ACCESS_KEYS
-            - MANAGE_USERS
-            - MANAGE_ROLES
-            - MANAGE_PRIVACY_SETTINGS
-            - MANAGE_GENERAL_SETTINGS
-            - MANAGE_TEMPLATES
-            - MANAGE_NOTEBOOKS
-            - USE_NOTEBOOK_EDITOR
-            - APPLY_BULK_OPERATIONS
-            - MANAGE_OBJECTIVES
-            - MANAGE_TIMELINE_EVENT_TYPES
-            - READ_GROUPS
-            - MANAGE_GROUPS
-            - MANAGE_PII_VALUES
-            - READ_AUDIT_EVENTS
-            - READ_EXACT_PROFILE_STATISTICS
-            - MANAGE_APPLICATIONS
-            - AUTHORIZE_APPLICATIONS
-            - MANAGE_SINGLE_SIGN_ON_SETTINGS
-            - MANAGE_IP_BASED_ACCESS_SETTINGS
-            - MANAGE_SUPPORT_ACCESS_SETTINGS
-            - MANAGE_TIMELINE_EVENT_ROLLUPS
-            - READ_TIMEOUT_SETTINGS
-            - MANAGE_TIMEOUT_SETTINGS
-            - READ_SECURITY_SETTINGS
-            - MANAGE_SECURITY_SETTINGS
-        tags:
-          type: array
-          description: The tags (i.e. labels).
-          example: Address
-          items:
-            type: string
-            description: The tags (i.e. labels).
-            example: Address
-      required:
-      - permissions
-    roles:
-      type: object
-      properties:
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        roles:
-          type: array
-          items:
-            $ref: "#/components/schemas/RoleBean"
-        startIndex:
-          type: integer
-          format: int32
-          description: The start index.
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
-    BlueConicUserBean:
-      type: object
-      description: The user.
-      properties:
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-          readOnly: true
-        creator:
-          $ref: "#/components/schemas/UserBean"
-        description:
-          type: string
-          description: The description.
-        domains:
-          type: array
-          description: The domains the user has access to. Only available if `hasAllDomains`
-            is false.
-          items:
-            $ref: "#/components/schemas/simpleDomain"
-          readOnly: true
-          uniqueItems: true
-        hasAllDomains:
-          type: boolean
-          description: "Indicates if the user has access to all domains. If false,\
-            \ the configured domains are returned in the `domains` property."
-          readOnly: true
-        id:
-          type: string
-          description: The object ID.
-        lastLoginDate:
-          type: string
-          format: date-time
-          description: The last login date.
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-          readOnly: true
-        lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
-        name:
-          type: string
-          description: The object name.
-        permissions:
-          type: array
-          description: The permissions assigned to this user.
-          items:
-            type: string
-            description: The permissions assigned to this user.
-        roles:
-          type: array
-          description: The roles assigned to this user.
-          items:
-            $ref: "#/components/schemas/SimpleRoleBean"
-          uniqueItems: true
-        tags:
-          type: array
-          description: The tags (i.e. labels).
-          example: Address
-          items:
-            type: string
-            description: The tags (i.e. labels).
-            example: Address
-    SimpleRoleBean:
-      type: object
-      description: The roles assigned to this user.
-      properties:
-        id:
-          type: string
-          description: The ID of the role.
-        name:
-          type: string
-          description: The name of the role.
-    users:
-      type: object
-      properties:
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        startIndex:
-          type: integer
-          format: int32
-          description: The start index.
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
-        users:
-          type: array
-          items:
-            $ref: "#/components/schemas/BlueConicUserBean"
   securitySchemes:
     oauth2:
       type: oauth2
