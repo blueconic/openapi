@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "97.0"
+  version: "96.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -146,49 +146,46 @@ tags:
     | Lifecycle                  | Create, Update, Delete                        \
     \                                                 |\n| Merge rule            \
     \     | Create, Update, Delete                                               \
-    \                          |\n| Models                     | Create, Update, Delete\
-    \                                                                         |\n\
-    | Notebook                   | Create, Update, Delete, Manual run, Scheduled run,\
-    \ Editor run                                  |\n| OAuth application         \
-    \ | Create, Update, Delete                                                   \
-    \                      |\n| OAuth token                | Create, Update, Delete\
-    \                                                                         |\n\
-    | Objective                  | Create, Update, Delete                        \
-    \                                                 |\n| Plugin                \
+    \                          |\n| Notebook                   | Create, Update, Delete,\
+    \ Manual run, Scheduled run, Editor run                                  |\n|\
+    \ OAuth application          | Create, Update, Delete                        \
+    \                                                 |\n| OAuth token           \
     \     | Create, Update, Delete                                               \
-    \                          |\n| Privacy setting            | Update (for each\
-    \ change)                                                                    \
-    \   |\n| Profile                    | Read, Update, Delete                   \
-    \                                                        |\n| Profile property\
-    \           | Create, Update, Delete                                         \
-    \                                |\n| Role                       | Create, Update,\
-    \ Delete                                                                     \
-    \    |\n| Segment                    | Create, Update, Delete                \
-    \                                                         |\n| Single Sign On\
-    \ Setting     | Update (for each change)                                     \
-    \                                  |\n| Supported Legislation Zone | Create, Delete,\
-    \ Update                                                                     \
-    \    |\n| Timeline Event Rollup      | Create, Update, Delete                \
-    \                                                         |\n| Timeline Event\
-    \ Type        | Create, Update, Delete                                       \
-    \                                  |\n| Tracker                    | Create, Update,\
-    \ Delete                                                                     \
-    \    |\n| User                       | Login, Login failed, Logout, Create, Update,\
-    \ Delete, Password reset requested, Password change |\n\n\nOnly Profile and Group\
-    \ viewed, updated, or deleted by a user from the Profile and Groups tab are logged.\n\
-    \nThe following events are not considered as human actions, and therefore not\
-    \ covered in the Platform\nAudit Event API:\n\n- Connections that import or export\
-    \ profiles.\n- Profile and group creation (Profiles can only be created by a visitor\
-    \ or an import connection).\n\n**Event data**\n\nThe following event data is available:\n\
-    \n| Field                  | Description      | Example values               \
+    \                          |\n| Objective                  | Create, Update, Delete\
+    \                                                                         |\n\
+    | Plugin                     | Create, Update, Delete                        \
+    \                                                 |\n| Privacy setting       \
+    \     | Update (for each change)                                             \
+    \                          |\n| Profile                    | Read, Update, Delete\
+    \                                                                           |\n\
+    | Profile property           | Create, Update, Delete                        \
+    \                                                 |\n| Role                  \
+    \     | Create, Update, Delete                                               \
+    \                          |\n| Segment                    | Create, Update, Delete\
+    \                                                                         |\n\
+    | Single Sign On Setting     | Update (for each change)                      \
+    \                                                 |\n| Supported Legislation Zone\
+    \ | Create, Delete, Update                                                   \
+    \                      |\n| Timeline Event Rollup      | Create, Update, Delete\
+    \                                                                         |\n\
+    | Tracker                    | Create, Update, Delete                        \
+    \                                                 |\n| User                  \
+    \     | Login, Login failed, Logout, Create, Update, Delete, Password reset requested,\
+    \ Password change |\n\n\nOnly Profile and Group viewed, updated, or deleted by\
+    \ a user from the Profile and Groups tab are logged.\n\nThe following events are\
+    \ not considered as human actions, and therefore not covered in the Platform\n\
+    Audit Event API:\n\n- Connections that import or export profiles.\n- Profile and\
+    \ group creation (Profiles can only be created by a visitor or an import connection).\n\
+    \n**Event data**\n\nThe following event data is available:\n\n| Field        \
+    \          | Description      | Example values                               \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                                                  |\n| :--- \
-    \                  | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+    \                                                  |\n| :---                 \
+    \  | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
     |date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt\
     \ format.| 2023-04-15T11:24:01.183Z                                          \
     \                                                                            \
@@ -327,9 +324,6 @@ tags:
 - name: Pageview events
   description: "Pageview events are used to track page views by profiles. This is\
     \ used by BlueConic Listeners. See [Listeners and Trackers](https://support.blueconic.com/hc/en-us/sections/200913331-Listeners-and-Trackers)."
-- name: Models
-  description: "The following methods allow you to create, modify, retrieve, and delete\
-    \ machine learning Models in ONNX format. See [Models](https://support.blueconic.com/en/articles/307965-real-time-models). "
 - name: OAuth 2.0
   description: "The OAuth 2.0 API allows external applications to be authenticated\
     \ and authorized to access the public BlueConic API. The OAuth 2.0 specification\
@@ -781,561 +775,6 @@ paths:
           description: One or more required parameters are missing or invalid.
         "503":
           description: The server is too busy to handle the request.
-  /models:
-    get:
-      tags:
-      - Models
-      summary: Get all models
-      description: Retrieves all models (without the model binaries).
-      operationId: getAllModels
-      parameters:
-      - name: count
-        in: query
-        description: Specifies the number of results to return.
-        schema:
-          type: integer
-          format: int64
-          default: 20
-          example: 10
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first item to include in the result.
-        schema:
-          type: integer
-          format: int64
-          default: 0
-          example: 0
-      responses:
-        "200":
-          description: Returns the models.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/models"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "itemsPerPage": 20,
-                      "models": [
-                        {
-                          "creationDate": "2025-04-17T14:00:46.920Z",
-                          "creator": {
-                            "fullName": "ondemand@blueconic.com",
-                            "userName": "ondemand@blueconic.com"
-                          },
-                          "description": "somedescription",
-                          "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                          "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                          "lastModifiedUser": {
-                            "fullName": "ondemand@blueconic.com",
-                            "userName": "ondemand@blueconic.com"
-                          },
-                          "modelHash": "9a9887d8676976851423ac44de8a97d4",
-                          "modelUrl": "/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model",
-                          "name": "mymodel",
-                          "parameters": [
-                            {
-                              "id": "abc",
-                              "values": [
-                                "123"
-                              ]
-                            }
-                          ],
-                          "tags": [],
-                          "type": "GENERAL"
-                        }
-                      ],
-                      "startIndex": 0,
-                      "totalPages": 1,
-                      "totalResults": 1
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Create model
-      description: Create a model.
-      operationId: createWithParts
-      requestBody:
-        description: |-
-          To create a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `POST` method. <br/>
-          The request body can contain multiple parts, named as follows: <br/><br/>
-
-          - `metadata`: The metadata for the model. This is a JSON object that contains the model's metadata properties.
-          - `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).
-
-          The `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>
-          The `metadata` part is required and must be included in the request.
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/CreateModelBean"
-        required: true
-      responses:
-        "200":
-          description: Returns the created model.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/model"
-              examples:
-                Response body with ONNX model:
-                  description: Response body with ONNX model
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "modelHash": "9a9887d8676976851423ac44de8a97d4",
-                      "modelUrl": "/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model",
-                      "name": "mymodel with onnx model set",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-                Response body without ONNX model:
-                  description: Response body without ONNX model
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "name": "mymodel without onnx model set",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-        "400":
-          description: The metadata JSON is invalid or the ONNX model is invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequestBean"
-              examples:
-                Response body with error in metadata:
-                  description: Response body with error in metadata
-                  value: |-
-                    {
-                      "code": 400,
-                      "errors": [
-                        {
-                          "message": "Unrecognized field \"non_existing_field\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable"
-                        }
-                      ],
-                      "message": "Bad Request"
-                    }
-                Response body with error in ONNX model:
-                  description: Response body with error in ONNX model
-                  value: |-
-                    {
-                      "code": 400,
-                      "errors": [
-                        {
-                          "message": "Invalid model: Error code - ORT_INVALID_GRAPH - message: This is an invalid model. Type Error: Type 'seq(map(string,tensor(float)))' of input parameter (output_probability) of operator (Cast) in node (Cast1) is invalid."
-                        }
-                      ],
-                      "message": "Bad Request"
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "413":
-          description: "Model is too large, cannot exceed 10MB."
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:models
-  /models/{model}:
-    get:
-      tags:
-      - Models
-      summary: Get one model
-      description: Retrieves a single model (without the model binary).
-      operationId: getModel
-      parameters:
-      - name: model
-        in: path
-        description: The ID of the model.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the model:
-            description: UUID of the model
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      responses:
-        "200":
-          description: Returns the model.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/model"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "modelHash": "9a9887d8676976851423ac44de8a97d4",
-                      "modelUrl": "/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model",
-                      "name": "mymodel",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The model doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:models
-    put:
-      tags:
-      - Models
-      summary: Update model
-      description: Update a model by id.
-      operationId: updateWithParts
-      parameters:
-      - name: model
-        in: path
-        description: The ID of the model to update.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the model:
-            description: UUID of the model
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      requestBody:
-        description: |-
-          To update a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `PUT` method. <br/>
-          The request body can contain multiple parts, named as follows: <br/><br/>
-
-          - `metadata`: The updated metadata for the model. This is a JSON object that contains the model's metadata properties.
-          - `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).
-
-          Both parts are optional, meaning that you can update the metadata without providing a new model, or you can provide a new model without updating the metadata.<br/>
-          For the `metadata` part, no partial updates are supported. The entire metadata object must be provided in the request.<br/>
-          At least one part needs to be supplied, otherwise a HTTP 400 is returned.
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/UpdateModelBean"
-        required: true
-      responses:
-        "200":
-          description: Returns the updated model.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/model"
-              examples:
-                Response body with ONNX model:
-                  description: Response body with ONNX model
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "modelHash": "9a9887d8676976851423ac44de8a97d4",
-                      "modelUrl": "/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model",
-                      "name": "mymodel with onnx model set",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-                Response body without ONNX model:
-                  description: Response body without ONNX model
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "name": "mymodel without onnx model set",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-        "400":
-          description: The metadata JSON is invalid or the ONNX model is invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequestBean"
-              examples:
-                Response body with error in metadata:
-                  description: Response body with error in metadata
-                  value: |-
-                    {
-                      "code": 400,
-                      "errors": [
-                        {
-                          "message": "Unrecognized field \"non_existing_field\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable"
-                        }
-                      ],
-                      "message": "Bad Request"
-                    }
-                Response body with error in ONNX model:
-                  description: Response body with error in ONNX model
-                  value: |-
-                    {
-                      "code": 400,
-                      "errors": [
-                        {
-                          "message": "Invalid model: Error code - ORT_INVALID_GRAPH - message: This is an invalid model. Type Error: Type 'seq(map(string,tensor(float)))' of input parameter (output_probability) of operator (Cast) in node (Cast1) is invalid."
-                        }
-                      ],
-                      "message": "Bad Request"
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "413":
-          description: "Model is too large, cannot exceed 10MB."
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:models
-    delete:
-      tags:
-      - Models
-      summary: Delete model
-      description: Delete a model by id.
-      operationId: deleteModel
-      parameters:
-      - name: model
-        in: path
-        description: The ID of the model to delete.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the model:
-            description: UUID of the model
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      responses:
-        "200":
-          description: Returns the deleted model.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/model"
-              examples:
-                Response body with ONNX model:
-                  description: Response body with ONNX model
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "modelHash": "9a9887d8676976851423ac44de8a97d4",
-                      "modelUrl": "/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model",
-                      "name": "mymodel with onnx model set",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-                Response body without ONNX model:
-                  description: Response body without ONNX model
-                  value: |-
-                    {
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "description": "somedescription",
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "name": "mymodel without onnx model set",
-                      "parameters": [
-                        {
-                          "id": "abc",
-                          "values": [
-                            "123"
-                          ]
-                        }
-                      ],
-                      "tags": [],
-                      "type": "GENERAL"
-                    }
-        "400":
-          description: The model cannot be deleted because it's still in use by other
-            related objects.
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:models
-  /models/{model}/model:
-    get:
-      tags:
-      - Models
-      summary: Get model binary
-      description: "Retrieves the model binary if set, HTTP 404 otherwise. The response\
-        \ will contain an `Etag` header with the hash of the model, which can be used\
-        \ to perform a conditional request."
-      operationId: getModelBinary
-      parameters:
-      - name: model
-        in: path
-        description: The ID of the model.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the model:
-            description: UUID of the model
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      - name: etag
-        in: query
-        description: "The etag of the model. Can be used to do a conditional request,\
-          \ as alternative to using the `If-None-Match` header."
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Returns the model binary.
-          content:
-            application/octet-stream: {}
-        "304":
-          description: Model is not modified (based on `etag` or `If-None-Match` header).
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The model doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:models
   /oauth/authorize:
     get:
       tags:
@@ -3131,7 +2570,7 @@ paths:
                       "timeline": [
                           {
                               "id": "eb20c911-4d23-4791-a3e7-d113e7a326d9",
-                              "date": "2023-01-01T00:00:00Z",
+                              "date": "2023-01-01T00:00Z",
                               "eventTypeId": "order",
                               "data": [{
                                       "id": "product",
@@ -5111,7 +4550,6 @@ components:
           - OAUTH_TOKEN
           - TIMELINE_EVENT_ROLLUP
           - INACTIVITY_TIMEOUT_SETTING
-          - MODEL
         objects:
           type: array
           items:
@@ -5310,7 +4748,6 @@ components:
           - EMAIL
           - MOBILE
           - WEBSITE
-          - CTV
         visitorCount:
           type: integer
           format: int32
@@ -5391,313 +4828,6 @@ components:
           example: https://www.example.com/
       required:
       - url
-    CreateModelBean:
-      type: object
-      description: Multipart form data bean for creating a model.
-      properties:
-        metadata:
-          type: object
-          format: application/json
-          description: The model metadata in JSON format (required)
-          example: |-
-            {
-              "name": "my new model",
-              "description": "A model description",
-              "parameters": [
-                {
-                  "id": "parameterForModel",
-                  "values": [
-                    "parameter value 1"
-                  ]
-                }
-              ],
-              "type": "GENERAL"
-            }
-          properties:
-            creationDate:
-              type: string
-              format: date-time
-              description: "The creation date of the object. Datetime in UTC in the\
-                \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-                ."
-              readOnly: true
-            creator:
-              $ref: "#/components/schemas/UserBean"
-            description:
-              type: string
-              description: The description.
-            id:
-              type: string
-              description: The object ID.
-            lastModifiedDate:
-              type: string
-              format: date-time
-              description: "The last modified date of the object. Datetime in UTC\
-                \ in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"\
-                2023-01-22T11:21:33.872Z\"."
-              readOnly: true
-            lastModifiedUser:
-              $ref: "#/components/schemas/UserBean"
-            modelHash:
-              type: string
-              description: The model hash which can be used to do conditional requests
-                for retrieving the model binary. Either via the `etag` querystring
-                parameter or the `If-None-Match` header.
-              readOnly: true
-            modelUrl:
-              type: string
-              description: "The model url of the binary model. If not set, the model\
-                \ has no binary yet."
-              readOnly: true
-            name:
-              type: string
-              description: The object name.
-            parameters:
-              type: array
-              description: "The parameters of the object, containing optional key/values\
-                \ pairs."
-              items:
-                $ref: "#/components/schemas/parameter"
-            tags:
-              type: array
-              description: The tags (i.e. labels).
-              example: Address
-              items:
-                type: string
-                description: The tags (i.e. labels).
-                example: Address
-            type:
-              type: string
-              description: "The type of the model. Must be one of the allowed model\
-                \ types. For now, only 'GENERAL' is supported."
-              enum:
-              - GENERAL
-          required:
-          - type
-        model:
-          type: string
-          format: binary
-          description: The ONNX model to store (optional). This should be a valid
-            ONNX model serialized as specified <a href='https://onnx.ai/onnx/api/serialization.html'
-            target='_blank'>here</a>.
-          writeOnly: true
-      required:
-      - metadata
-    link:
-      type: object
-      properties:
-        href:
-          type: string
-        rel:
-          type: string
-        type:
-          type: string
-    parameter:
-      type: object
-      description: "The parameters of the object, containing optional key/values pairs."
-      properties:
-        id:
-          type: string
-        relation:
-          type: string
-        type:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
-    model:
-      type: object
-      properties:
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-          readOnly: true
-        creator:
-          $ref: "#/components/schemas/UserBean"
-        description:
-          type: string
-          description: The description.
-        id:
-          type: string
-          description: The object ID.
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-          readOnly: true
-        lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
-        modelHash:
-          type: string
-          description: The model hash which can be used to do conditional requests
-            for retrieving the model binary. Either via the `etag` querystring parameter
-            or the `If-None-Match` header.
-          readOnly: true
-        modelUrl:
-          type: string
-          description: "The model url of the binary model. If not set, the model has\
-            \ no binary yet."
-          readOnly: true
-        name:
-          type: string
-          description: The object name.
-        parameters:
-          type: array
-          description: "The parameters of the object, containing optional key/values\
-            \ pairs."
-          items:
-            $ref: "#/components/schemas/parameter"
-        tags:
-          type: array
-          description: The tags (i.e. labels).
-          example: Address
-          items:
-            type: string
-            description: The tags (i.e. labels).
-            example: Address
-        type:
-          type: string
-          description: "The type of the model. Must be one of the allowed model types.\
-            \ For now, only 'GENERAL' is supported."
-          enum:
-          - GENERAL
-      required:
-      - type
-    BadRequestBean:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        errors:
-          type: array
-          items:
-            $ref: "#/components/schemas/ErrorBean"
-        message:
-          type: string
-    ErrorBean:
-      type: object
-      properties:
-        message:
-          type: string
-    models:
-      type: object
-      properties:
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        models:
-          type: array
-          items:
-            $ref: "#/components/schemas/model"
-        startIndex:
-          type: integer
-          format: int32
-          description: The start index.
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
-    UpdateModelBean:
-      type: object
-      description: Multipart form data bean for updating a model.
-      properties:
-        metadata:
-          type: object
-          format: application/json
-          description: The model metadata in JSON format (optional)
-          example: |-
-            {
-              "name": "my updated name",
-              "description": "An updated model description",
-              "parameters": [
-                {
-                  "id": "parameterForModel",
-                  "values": [
-                    "updated parameter value 1"
-                  ]
-                }
-              ],
-              "type": "GENERAL"
-            }
-          properties:
-            creationDate:
-              type: string
-              format: date-time
-              description: "The creation date of the object. Datetime in UTC in the\
-                \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-                ."
-              readOnly: true
-            creator:
-              $ref: "#/components/schemas/UserBean"
-            description:
-              type: string
-              description: The description.
-            id:
-              type: string
-              description: The object ID.
-            lastModifiedDate:
-              type: string
-              format: date-time
-              description: "The last modified date of the object. Datetime in UTC\
-                \ in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"\
-                2023-01-22T11:21:33.872Z\"."
-              readOnly: true
-            lastModifiedUser:
-              $ref: "#/components/schemas/UserBean"
-            modelHash:
-              type: string
-              description: The model hash which can be used to do conditional requests
-                for retrieving the model binary. Either via the `etag` querystring
-                parameter or the `If-None-Match` header.
-              readOnly: true
-            modelUrl:
-              type: string
-              description: "The model url of the binary model. If not set, the model\
-                \ has no binary yet."
-              readOnly: true
-            name:
-              type: string
-              description: The object name.
-            parameters:
-              type: array
-              description: "The parameters of the object, containing optional key/values\
-                \ pairs."
-              items:
-                $ref: "#/components/schemas/parameter"
-            tags:
-              type: array
-              description: The tags (i.e. labels).
-              example: Address
-              items:
-                type: string
-                description: The tags (i.e. labels).
-                example: Address
-            type:
-              type: string
-              description: "The type of the model. Must be one of the allowed model\
-                \ types. For now, only 'GENERAL' is supported."
-              enum:
-              - GENERAL
-          required:
-          - type
-        model:
-          type: string
-          format: binary
-          description: The ONNX model to update (optional). This should be a valid
-            ONNX model serialized as specified <a href='https://onnx.ai/onnx/api/serialization.html'
-            target='_blank'>here</a>.
-          writeOnly: true
     TokenErrorResponse:
       type: object
       properties:
@@ -5793,6 +4923,15 @@ components:
           type: integer
           format: int32
           description: The total number of results.
+    link:
+      type: object
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+        type:
+          type: string
     RefinementBean:
       type: object
       properties:
@@ -5921,6 +5060,23 @@ components:
               type: string
               description: The errors found for the given group changes (if any).
           description: The errors found for the given group changes (if any).
+    BadRequestBean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorBean"
+        message:
+          type: string
+    ErrorBean:
+      type: object
+      properties:
+        message:
+          type: string
     BulkResultBean:
       type: object
       properties:
@@ -7034,7 +6190,6 @@ components:
             - MANAGE_TIMEOUT_SETTINGS
             - READ_SECURITY_SETTINGS
             - MANAGE_SECURITY_SETTINGS
-            - MANAGE_MODELS
         tags:
           type: array
           description: The tags (i.e. labels).

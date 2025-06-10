@@ -12,7 +12,7 @@
       "name" : "BlueConic",
       "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
-    "version" : "97.0"
+    "version" : "96.0"
   },
   "servers" : [ {
     "url" : "https://{blueconicHostname}/rest/v2",
@@ -26,7 +26,7 @@
   } ],
   "tags" : [ {
     "name" : "Audit Events",
-    "description" : "The Audit Event API allows users to connect BlueConic to a SIEM system. We recommend using this API to periodically receive security-related activities based on a rolling window. The API has a 30-day retention period.\n\nThe API logs the following audit events:\n\n| Object                     | Events                                                                                         |\n|:---------------------------|:-----------------------------------------------------------------------------------------------|\n| BlueConic hostname         | Create, Update, Delete                                                                         |\n| BlueConic Support Access   | Update (for each change)                                                                       |\n| Channel                    | Create, Update, Delete                                                                         |\n| Clean up rule              | Create, Update, Delete                                                                         |\n| Connection                 | Create, Update, Delete, Manual run, Scheduled run                                              |\n| Dashboard                  | Create, Update, Delete                                                                         |\n| Dialogue                   | Create, Update, Delete                                                                         |\n| Domain Group               | Create, Update, Delete                                                                         |\n| Group                      | Read, Update, Delete                                                                           |\n| Group type                 | Create, Update, Delete                                                                         |\n| Ip range                   | Create, Update, Delete                                                                         |\n| Language                   | Create, Update, Delete                                                                         |\n| Lifecycle                  | Create, Update, Delete                                                                         |\n| Merge rule                 | Create, Update, Delete                                                                         |\n| Models                     | Create, Update, Delete                                                                         |\n| Notebook                   | Create, Update, Delete, Manual run, Scheduled run, Editor run                                  |\n| OAuth application          | Create, Update, Delete                                                                         |\n| OAuth token                | Create, Update, Delete                                                                         |\n| Objective                  | Create, Update, Delete                                                                         |\n| Plugin                     | Create, Update, Delete                                                                         |\n| Privacy setting            | Update (for each change)                                                                       |\n| Profile                    | Read, Update, Delete                                                                           |\n| Profile property           | Create, Update, Delete                                                                         |\n| Role                       | Create, Update, Delete                                                                         |\n| Segment                    | Create, Update, Delete                                                                         |\n| Single Sign On Setting     | Update (for each change)                                                                       |\n| Supported Legislation Zone | Create, Delete, Update                                                                         |\n| Timeline Event Rollup      | Create, Update, Delete                                                                         |\n| Timeline Event Type        | Create, Update, Delete                                                                         |\n| Tracker                    | Create, Update, Delete                                                                         |\n| User                       | Login, Login failed, Logout, Create, Update, Delete, Password reset requested, Password change |\n\n\nOnly Profile and Group viewed, updated, or deleted by a user from the Profile and Groups tab are logged.\n\nThe following events are not considered as human actions, and therefore not covered in the Platform\nAudit Event API:\n\n- Connections that import or export profiles.\n- Profile and group creation (Profiles can only be created by a visitor or an import connection).\n\n**Event data**\n\nThe following event data is available:\n\n| Field                  | Description      | Example values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :---                   | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n|date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt format.| 2023-04-15T11:24:01.183Z                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |\n|username|(BlueConic) Identifier (email address) of the user who did the action.<br /><br />Value is empty for failed login attempts.| test@blueconic.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul> |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case the objectId is empty</li></ul></li><li>Grouptype_GroupID in case of a group</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectId is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li> For BLUECONIC_SUPPORT_ACCESS_SETTING the objectID contains the new settings.<ul><li> `\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or </li><li>`\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }], (contains the new list)` or</li><li>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</li></ul></li><li>UUID or identifier in case of other object types.</li></ul>| <ul><li>1b1e50a5-c46a-4309-a95c-d4e19985fbbb</li><li>test@blueconic.com</li><li>test_objective</li><li>test_profile_property</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                 |\n|objectName|<p>Human readable name of the object.</p><p>For Profiles, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic ID (UUID)</li></ol><p>For Users, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case, the objectName is empty.</li></ul><p>For groups, the name is the group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }],` (contains the new list) or</p></li><li><p>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</p></li></ul>| <ul><li>SFTP connection</li><li>test@blueconic.om</li><li>Keyword Interest Ranking</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n|operation| Action performed on the object.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>                                                                                                                                                                                                                                                                                                                             \n|ipAddress| The source IP address from which the event was triggered.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 192.168.1.100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |\n|application| The application that performed the audit event operation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | blueconic                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |\n\n"
+    "description" : "The Audit Event API allows users to connect BlueConic to a SIEM system. We recommend using this API to periodically receive security-related activities based on a rolling window. The API has a 30-day retention period.\n\nThe API logs the following audit events:\n\n| Object                     | Events                                                                                         |\n|:---------------------------|:-----------------------------------------------------------------------------------------------|\n| BlueConic hostname         | Create, Update, Delete                                                                         |\n| BlueConic Support Access   | Update (for each change)                                                                       |\n| Channel                    | Create, Update, Delete                                                                         |\n| Clean up rule              | Create, Update, Delete                                                                         |\n| Connection                 | Create, Update, Delete, Manual run, Scheduled run                                              |\n| Dashboard                  | Create, Update, Delete                                                                         |\n| Dialogue                   | Create, Update, Delete                                                                         |\n| Domain Group               | Create, Update, Delete                                                                         |\n| Group                      | Read, Update, Delete                                                                           |\n| Group type                 | Create, Update, Delete                                                                         |\n| Ip range                   | Create, Update, Delete                                                                         |\n| Language                   | Create, Update, Delete                                                                         |\n| Lifecycle                  | Create, Update, Delete                                                                         |\n| Merge rule                 | Create, Update, Delete                                                                         |\n| Notebook                   | Create, Update, Delete, Manual run, Scheduled run, Editor run                                  |\n| OAuth application          | Create, Update, Delete                                                                         |\n| OAuth token                | Create, Update, Delete                                                                         |\n| Objective                  | Create, Update, Delete                                                                         |\n| Plugin                     | Create, Update, Delete                                                                         |\n| Privacy setting            | Update (for each change)                                                                       |\n| Profile                    | Read, Update, Delete                                                                           |\n| Profile property           | Create, Update, Delete                                                                         |\n| Role                       | Create, Update, Delete                                                                         |\n| Segment                    | Create, Update, Delete                                                                         |\n| Single Sign On Setting     | Update (for each change)                                                                       |\n| Supported Legislation Zone | Create, Delete, Update                                                                         |\n| Timeline Event Rollup      | Create, Update, Delete                                                                         |\n| Tracker                    | Create, Update, Delete                                                                         |\n| User                       | Login, Login failed, Logout, Create, Update, Delete, Password reset requested, Password change |\n\n\nOnly Profile and Group viewed, updated, or deleted by a user from the Profile and Groups tab are logged.\n\nThe following events are not considered as human actions, and therefore not covered in the Platform\nAudit Event API:\n\n- Connections that import or export profiles.\n- Profile and group creation (Profiles can only be created by a visitor or an import connection).\n\n**Event data**\n\nThe following event data is available:\n\n| Field                  | Description      | Example values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :---                   | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n|date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt format.| 2023-04-15T11:24:01.183Z                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |\n|username|(BlueConic) Identifier (email address) of the user who did the action.<br /><br />Value is empty for failed login attempts.| test@blueconic.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul> |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case the objectId is empty</li></ul></li><li>Grouptype_GroupID in case of a group</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectId is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li> For BLUECONIC_SUPPORT_ACCESS_SETTING the objectID contains the new settings.<ul><li> `\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or </li><li>`\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }], (contains the new list)` or</li><li>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</li></ul></li><li>UUID or identifier in case of other object types.</li></ul>| <ul><li>1b1e50a5-c46a-4309-a95c-d4e19985fbbb</li><li>test@blueconic.com</li><li>test_objective</li><li>test_profile_property</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                 |\n|objectName|<p>Human readable name of the object.</p><p>For Profiles, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li><li>BlueConic ID (UUID)</li></ol><p>For Users, the name is determined by the first value that is not empty:</p><ol><li>fullname</li><li>email</li></ol><ul><li>In the case of LOGIN_FAILED and a user tried to login with an invalid format email address, it could be that the user filled the password in the email address field. In that case, the objectName is empty.</li></ul><p>For groups, the name is the group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\" },{\"name\" : \"User name 2 here\", \"id\" : \"user2@blueconic.com\" }],` (contains the new list) or</p></li><li><p>`\"objects\" : [ {\"name\" : \"All BlueConic support employees\", \"id\" : \"all\" } ],`</p></li></ul>| <ul><li>SFTP connection</li><li>test@blueconic.om</li><li>Keyword Interest Ranking</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n|operation| Action performed on the object.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>                                                                                                                                                                                                                                                                                                                             \n|ipAddress| The source IP address from which the event was triggered.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 192.168.1.100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |\n|application| The application that performed the audit event operation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | blueconic                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |\n\n"
   }, {
     "name" : "Channels",
     "description" : "The Channel API allows you to retrieve information about [channels in BlueConic](https://support.blueconic.com/hc/en-us/articles/200472632-Overview-What-are-channels-in-BlueConic)."
@@ -39,9 +39,6 @@
   }, {
     "name" : "Pageview events",
     "description" : "Pageview events are used to track page views by profiles. This is used by BlueConic Listeners. See [Listeners and Trackers](https://support.blueconic.com/hc/en-us/sections/200913331-Listeners-and-Trackers)."
-  }, {
-    "name" : "Models",
-    "description" : "The following methods allow you to create, modify, retrieve, and delete machine learning Models in ONNX format. See [Models](https://support.blueconic.com/en/articles/307965-real-time-models). "
   }, {
     "name" : "OAuth 2.0",
     "description" : "The OAuth 2.0 API allows external applications to be authenticated and authorized to access the public BlueConic API. The OAuth 2.0 specification is implemented according to [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)."
@@ -343,398 +340,6 @@
             "description" : "The server is too busy to handle the request."
           }
         }
-      }
-    },
-    "/models" : {
-      "get" : {
-        "tags" : [ "Models" ],
-        "summary" : "Get all models",
-        "description" : "Retrieves all models (without the model binaries).",
-        "operationId" : "getAllModels",
-        "parameters" : [ {
-          "name" : "count",
-          "in" : "query",
-          "description" : "Specifies the number of results to return.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 20,
-            "example" : 10
-          }
-        }, {
-          "name" : "startIndex",
-          "in" : "query",
-          "description" : "Specifies the index of the first item to include in the result.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "default" : 0,
-            "example" : 0
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the models.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/models"
-                },
-                "examples" : {
-                  "Response body" : {
-                    "description" : "Response body",
-                    "value" : "{\n  \"itemsPerPage\": 20,\n  \"models\": [\n    {\n      \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n      \"creator\": {\n        \"fullName\": \"ondemand@blueconic.com\",\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n      \"description\": \"somedescription\",\n      \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n      \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n      \"lastModifiedUser\": {\n        \"fullName\": \"ondemand@blueconic.com\",\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n      \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n      \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n      \"name\": \"mymodel\",\n      \"parameters\": [\n        {\n          \"id\": \"abc\",\n          \"values\": [\n            \"123\"\n          ]\n        }\n      ],\n      \"tags\": [],\n      \"type\": \"GENERAL\"\n    }\n  ],\n  \"startIndex\": 0,\n  \"totalPages\": 1,\n  \"totalResults\": 1\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:models" ]
-        } ]
-      },
-      "post" : {
-        "tags" : [ "Models" ],
-        "summary" : "Create model",
-        "description" : "Create a model.",
-        "operationId" : "createWithParts",
-        "requestBody" : {
-          "description" : "To create a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `POST` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nThe `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>\nThe `metadata` part is required and must be included in the request.",
-          "content" : {
-            "multipart/form-data" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CreateModelBean"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Returns the created model.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/model"
-                },
-                "examples" : {
-                  "Response body with ONNX model" : {
-                    "description" : "Response body with ONNX model",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n  \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n  \"name\": \"mymodel with onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  },
-                  "Response body without ONNX model" : {
-                    "description" : "Response body without ONNX model",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"name\": \"mymodel without onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "The metadata JSON is invalid or the ONNX model is invalid.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/BadRequestBean"
-                },
-                "examples" : {
-                  "Response body with error in metadata" : {
-                    "description" : "Response body with error in metadata",
-                    "value" : "{\n  \"code\": 400,\n  \"errors\": [\n    {\n      \"message\": \"Unrecognized field \\\"non_existing_field\\\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable\"\n    }\n  ],\n  \"message\": \"Bad Request\"\n}"
-                  },
-                  "Response body with error in ONNX model" : {
-                    "description" : "Response body with error in ONNX model",
-                    "value" : "{\n  \"code\": 400,\n  \"errors\": [\n    {\n      \"message\": \"Invalid model: Error code - ORT_INVALID_GRAPH - message: This is an invalid model. Type Error: Type 'seq(map(string,tensor(float)))' of input parameter (output_probability) of operator (Cast) in node (Cast1) is invalid.\"\n    }\n  ],\n  \"message\": \"Bad Request\"\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "413" : {
-            "description" : "Model is too large, cannot exceed 10MB."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "write:models" ]
-        } ]
-      }
-    },
-    "/models/{model}" : {
-      "get" : {
-        "tags" : [ "Models" ],
-        "summary" : "Get one model",
-        "description" : "Retrieves a single model (without the model binary).",
-        "operationId" : "getModel",
-        "parameters" : [ {
-          "name" : "model",
-          "in" : "path",
-          "description" : "The ID of the model.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "examples" : {
-            "UUID of the model" : {
-              "description" : "UUID of the model",
-              "value" : "2613c9d6-a179-4c79-b6d2-1618a53fbc64"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the model.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/model"
-                },
-                "examples" : {
-                  "Response body" : {
-                    "description" : "Response body",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n  \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n  \"name\": \"mymodel\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "404" : {
-            "description" : "The model doesn't exist."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:models" ]
-        } ]
-      },
-      "put" : {
-        "tags" : [ "Models" ],
-        "summary" : "Update model",
-        "description" : "Update a model by id.",
-        "operationId" : "updateWithParts",
-        "parameters" : [ {
-          "name" : "model",
-          "in" : "path",
-          "description" : "The ID of the model to update.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "examples" : {
-            "UUID of the model" : {
-              "description" : "UUID of the model",
-              "value" : "2613c9d6-a179-4c79-b6d2-1618a53fbc64"
-            }
-          }
-        } ],
-        "requestBody" : {
-          "description" : "To update a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `PUT` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The updated metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nBoth parts are optional, meaning that you can update the metadata without providing a new model, or you can provide a new model without updating the metadata.<br/>\nFor the `metadata` part, no partial updates are supported. The entire metadata object must be provided in the request.<br/>\nAt least one part needs to be supplied, otherwise a HTTP 400 is returned.",
-          "content" : {
-            "multipart/form-data" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/UpdateModelBean"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Returns the updated model.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/model"
-                },
-                "examples" : {
-                  "Response body with ONNX model" : {
-                    "description" : "Response body with ONNX model",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n  \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n  \"name\": \"mymodel with onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  },
-                  "Response body without ONNX model" : {
-                    "description" : "Response body without ONNX model",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"name\": \"mymodel without onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "The metadata JSON is invalid or the ONNX model is invalid.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/BadRequestBean"
-                },
-                "examples" : {
-                  "Response body with error in metadata" : {
-                    "description" : "Response body with error in metadata",
-                    "value" : "{\n  \"code\": 400,\n  \"errors\": [\n    {\n      \"message\": \"Unrecognized field \\\"non_existing_field\\\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable\"\n    }\n  ],\n  \"message\": \"Bad Request\"\n}"
-                  },
-                  "Response body with error in ONNX model" : {
-                    "description" : "Response body with error in ONNX model",
-                    "value" : "{\n  \"code\": 400,\n  \"errors\": [\n    {\n      \"message\": \"Invalid model: Error code - ORT_INVALID_GRAPH - message: This is an invalid model. Type Error: Type 'seq(map(string,tensor(float)))' of input parameter (output_probability) of operator (Cast) in node (Cast1) is invalid.\"\n    }\n  ],\n  \"message\": \"Bad Request\"\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "413" : {
-            "description" : "Model is too large, cannot exceed 10MB."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "write:models" ]
-        } ]
-      },
-      "delete" : {
-        "tags" : [ "Models" ],
-        "summary" : "Delete model",
-        "description" : "Delete a model by id.",
-        "operationId" : "deleteModel",
-        "parameters" : [ {
-          "name" : "model",
-          "in" : "path",
-          "description" : "The ID of the model to delete.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "examples" : {
-            "UUID of the model" : {
-              "description" : "UUID of the model",
-              "value" : "2613c9d6-a179-4c79-b6d2-1618a53fbc64"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the deleted model.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/model"
-                },
-                "examples" : {
-                  "Response body with ONNX model" : {
-                    "description" : "Response body with ONNX model",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n  \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n  \"name\": \"mymodel with onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  },
-                  "Response body without ONNX model" : {
-                    "description" : "Response body without ONNX model",
-                    "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"name\": \"mymodel without onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "The model cannot be deleted because it's still in use by other related objects."
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "write:models" ]
-        } ]
-      }
-    },
-    "/models/{model}/model" : {
-      "get" : {
-        "tags" : [ "Models" ],
-        "summary" : "Get model binary",
-        "description" : "Retrieves the model binary if set, HTTP 404 otherwise. The response will contain an `Etag` header with the hash of the model, which can be used to perform a conditional request.",
-        "operationId" : "getModelBinary",
-        "parameters" : [ {
-          "name" : "model",
-          "in" : "path",
-          "description" : "The ID of the model.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "examples" : {
-            "UUID of the model" : {
-              "description" : "UUID of the model",
-              "value" : "2613c9d6-a179-4c79-b6d2-1618a53fbc64"
-            }
-          }
-        }, {
-          "name" : "etag",
-          "in" : "query",
-          "description" : "The etag of the model. Can be used to do a conditional request, as alternative to using the `If-None-Match` header.",
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Returns the model binary.",
-            "content" : {
-              "application/octet-stream" : { }
-            }
-          },
-          "304" : {
-            "description" : "Model is not modified (based on `etag` or `If-None-Match` header)."
-          },
-          "401" : {
-            "description" : "Authentication failed (unauthorized)."
-          },
-          "403" : {
-            "description" : "Authorization failed (incorrect permissions)."
-          },
-          "404" : {
-            "description" : "The model doesn't exist."
-          },
-          "503" : {
-            "description" : "The server is too busy to handle the request."
-          }
-        },
-        "security" : [ {
-          "oauth2" : [ "read:models" ]
-        } ]
       }
     },
     "/oauth/authorize" : {
@@ -1710,7 +1315,7 @@
                 },
                 "Partial updates for timeline events" : {
                   "description" : "An example for partially updating a timeline event:\n\n\n* Will update (or insert if not exists) the order event with the given ID.\n    * `date` is optional and may be omitted, causing all events with the given ID to be updated.\n* Will add (or update if it exists) a product with id:PRODUCT-5469878987 to product.\n     * Note that the `strategy` can be left empty when the `identifier` is specified.\n* Will set `quantity` to 2 if the product does not have `quantity` set yet.\n* Will add `FREETV-CHRISTMAS-SPECIAL` to `coupon` for the product.\n* Will set `quantity` to 1 for this `order`.\n\nNotes on using an `identifier` for nested timeline event properties:\n\n* A timeline event type property marked as `identifier` can only contain one value; more values will be ignored (first value is used).\n* When sending an `identifier` in the bulk API, it cannot be empty.",
-                  "value" : "[{\n    \"matching\": [\n        [{\n            \"id\": \"email\",\n            \"value\": \"jane@example.com\"\n        }]\n    ],\n    \"properties\": [{\n            \"id\": \"zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"timeline\": [\n        {\n            \"id\": \"eb20c911-4d23-4791-a3e7-d113e7a326d9\",\n            \"date\": \"2023-01-01T00:00:00Z\",\n            \"eventTypeId\": \"order\",\n            \"data\": [{\n                    \"id\": \"product\",\n                    \"values\": [\n                        [\n                            {\n                                \"id\": \"id\",\n                                \"values\": [\"PRODUCT-5469878987\"]\n                            },\n                            {\n                                \"id\": \"quantity\",\n                                \"values\": [2],\n                                \"strategy\": \"SET_IF_EMPTY\"\n                            },\n                            {\n                                \"id\": \"coupon\",\n                                \"values\": [\"FREETV-CHRISTMAS-SPECIAL\"],\n                                \"strategy\": \"ADD\"\n                            }\n                        ]\n                    ],\n                    \"strategy\": \"UPSERT\"\n                },\n                {\n                    \"id\": \"quantity\",\n                    \"values\": [1],\n                    \"strategy\": \"SET\"\n                }\n            ],\n            \"strategy\": \"UPSERT\"\n        }\n\n    ],\n    \"strategy\": \"UPSERT\"\n}]"
+                  "value" : "[{\n    \"matching\": [\n        [{\n            \"id\": \"email\",\n            \"value\": \"jane@example.com\"\n        }]\n    ],\n    \"properties\": [{\n            \"id\": \"zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"timeline\": [\n        {\n            \"id\": \"eb20c911-4d23-4791-a3e7-d113e7a326d9\",\n            \"date\": \"2023-01-01T00:00Z\",\n            \"eventTypeId\": \"order\",\n            \"data\": [{\n                    \"id\": \"product\",\n                    \"values\": [\n                        [\n                            {\n                                \"id\": \"id\",\n                                \"values\": [\"PRODUCT-5469878987\"]\n                            },\n                            {\n                                \"id\": \"quantity\",\n                                \"values\": [2],\n                                \"strategy\": \"SET_IF_EMPTY\"\n                            },\n                            {\n                                \"id\": \"coupon\",\n                                \"values\": [\"FREETV-CHRISTMAS-SPECIAL\"],\n                                \"strategy\": \"ADD\"\n                            }\n                        ]\n                    ],\n                    \"strategy\": \"UPSERT\"\n                },\n                {\n                    \"id\": \"quantity\",\n                    \"values\": [1],\n                    \"strategy\": \"SET\"\n                }\n            ],\n            \"strategy\": \"UPSERT\"\n        }\n\n    ],\n    \"strategy\": \"UPSERT\"\n}]"
                 },
                 "Basic delete profile example" : {
                   "description" : "Delete a single profile",
@@ -2739,7 +2344,7 @@
           },
           "objectType" : {
             "type" : "string",
-            "enum" : [ "DIALOGUE", "LISTENER", "CONNECTION", "VARIANT", "SEGMENT", "PROFILE_PROPERTY", "GROUP_PROPERTY", "TRACKER", "DASHBOARD", "LIFECYCLE", "PLUGIN", "USER", "ROLE", "CHANNEL", "BLUECONIC_HOSTNAME", "LANGUAGE", "CONTENTSTORE", "STATISTICS", "FAVORITE", "TEMPLATE", "NOTEBOOK", "PRIORITY", "GROUP_TYPE", "CLEANUP_RULE", "MERGE_RULE", "COMPOSITION_RULE", "OBJECTIVE", "TIMELINE_EVENT_TYPE", "PROFILE", "IP_RANGE", "GROUP", "SUPPORTED_LEGISLATION_ZONE", "DOMAIN_GROUP", "DOMAIN", "PRIVACY_SETTING", "SINGLE_SIGN_ON_SETTING", "BLUECONIC_SUPPORT_ACCESS_SETTING", "OAUTH_APPLICATION", "OAUTH_TOKEN", "TIMELINE_EVENT_ROLLUP", "INACTIVITY_TIMEOUT_SETTING", "MODEL" ]
+            "enum" : [ "DIALOGUE", "LISTENER", "CONNECTION", "VARIANT", "SEGMENT", "PROFILE_PROPERTY", "GROUP_PROPERTY", "TRACKER", "DASHBOARD", "LIFECYCLE", "PLUGIN", "USER", "ROLE", "CHANNEL", "BLUECONIC_HOSTNAME", "LANGUAGE", "CONTENTSTORE", "STATISTICS", "FAVORITE", "TEMPLATE", "NOTEBOOK", "PRIORITY", "GROUP_TYPE", "CLEANUP_RULE", "MERGE_RULE", "COMPOSITION_RULE", "OBJECTIVE", "TIMELINE_EVENT_TYPE", "PROFILE", "IP_RANGE", "GROUP", "SUPPORTED_LEGISLATION_ZONE", "DOMAIN_GROUP", "DOMAIN", "PRIVACY_SETTING", "SINGLE_SIGN_ON_SETTING", "BLUECONIC_SUPPORT_ACCESS_SETTING", "OAUTH_APPLICATION", "OAUTH_TOKEN", "TIMELINE_EVENT_ROLLUP", "INACTIVITY_TIMEOUT_SETTING" ]
           },
           "objects" : {
             "type" : "array",
@@ -2954,7 +2559,7 @@
           "type" : {
             "type" : "string",
             "description" : "The type of the channel.",
-            "enum" : [ "EMAIL", "MOBILE", "WEBSITE", "CTV" ]
+            "enum" : [ "EMAIL", "MOBILE", "WEBSITE" ]
           },
           "visitorCount" : {
             "type" : "integer",
@@ -3055,333 +2660,6 @@
           }
         },
         "required" : [ "url" ]
-      },
-      "CreateModelBean" : {
-        "type" : "object",
-        "description" : "Multipart form data bean for creating a model.",
-        "properties" : {
-          "metadata" : {
-            "type" : "object",
-            "format" : "application/json",
-            "description" : "The model metadata in JSON format (required)",
-            "example" : "{\n  \"name\": \"my new model\",\n  \"description\": \"A model description\",\n  \"parameters\": [\n    {\n      \"id\": \"parameterForModel\",\n      \"values\": [\n        \"parameter value 1\"\n      ]\n    }\n  ],\n  \"type\": \"GENERAL\"\n}",
-            "properties" : {
-              "creationDate" : {
-                "type" : "string",
-                "format" : "date-time",
-                "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-                "readOnly" : true
-              },
-              "creator" : {
-                "$ref" : "#/components/schemas/UserBean"
-              },
-              "description" : {
-                "type" : "string",
-                "description" : "The description."
-              },
-              "id" : {
-                "type" : "string",
-                "description" : "The object ID."
-              },
-              "lastModifiedDate" : {
-                "type" : "string",
-                "format" : "date-time",
-                "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-                "readOnly" : true
-              },
-              "lastModifiedUser" : {
-                "$ref" : "#/components/schemas/UserBean"
-              },
-              "modelHash" : {
-                "type" : "string",
-                "description" : "The model hash which can be used to do conditional requests for retrieving the model binary. Either via the `etag` querystring parameter or the `If-None-Match` header.",
-                "readOnly" : true
-              },
-              "modelUrl" : {
-                "type" : "string",
-                "description" : "The model url of the binary model. If not set, the model has no binary yet.",
-                "readOnly" : true
-              },
-              "name" : {
-                "type" : "string",
-                "description" : "The object name."
-              },
-              "parameters" : {
-                "type" : "array",
-                "description" : "The parameters of the object, containing optional key/values pairs.",
-                "items" : {
-                  "$ref" : "#/components/schemas/parameter"
-                }
-              },
-              "tags" : {
-                "type" : "array",
-                "description" : "The tags (i.e. labels).",
-                "example" : "Address",
-                "items" : {
-                  "type" : "string",
-                  "description" : "The tags (i.e. labels).",
-                  "example" : "Address"
-                }
-              },
-              "type" : {
-                "type" : "string",
-                "description" : "The type of the model. Must be one of the allowed model types. For now, only 'GENERAL' is supported.",
-                "enum" : [ "GENERAL" ]
-              }
-            },
-            "required" : [ "type" ]
-          },
-          "model" : {
-            "type" : "string",
-            "format" : "binary",
-            "description" : "The ONNX model to store (optional). This should be a valid ONNX model serialized as specified <a href='https://onnx.ai/onnx/api/serialization.html' target='_blank'>here</a>.",
-            "writeOnly" : true
-          }
-        },
-        "required" : [ "metadata" ]
-      },
-      "link" : {
-        "type" : "object",
-        "properties" : {
-          "href" : {
-            "type" : "string"
-          },
-          "rel" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string"
-          }
-        }
-      },
-      "parameter" : {
-        "type" : "object",
-        "description" : "The parameters of the object, containing optional key/values pairs.",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "relation" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string"
-          },
-          "values" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }
-      },
-      "model" : {
-        "type" : "object",
-        "properties" : {
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "creator" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "description" : {
-            "type" : "string",
-            "description" : "The description."
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "The object ID."
-          },
-          "lastModifiedDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-            "readOnly" : true
-          },
-          "lastModifiedUser" : {
-            "$ref" : "#/components/schemas/UserBean"
-          },
-          "modelHash" : {
-            "type" : "string",
-            "description" : "The model hash which can be used to do conditional requests for retrieving the model binary. Either via the `etag` querystring parameter or the `If-None-Match` header.",
-            "readOnly" : true
-          },
-          "modelUrl" : {
-            "type" : "string",
-            "description" : "The model url of the binary model. If not set, the model has no binary yet.",
-            "readOnly" : true
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The object name."
-          },
-          "parameters" : {
-            "type" : "array",
-            "description" : "The parameters of the object, containing optional key/values pairs.",
-            "items" : {
-              "$ref" : "#/components/schemas/parameter"
-            }
-          },
-          "tags" : {
-            "type" : "array",
-            "description" : "The tags (i.e. labels).",
-            "example" : "Address",
-            "items" : {
-              "type" : "string",
-              "description" : "The tags (i.e. labels).",
-              "example" : "Address"
-            }
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "The type of the model. Must be one of the allowed model types. For now, only 'GENERAL' is supported.",
-            "enum" : [ "GENERAL" ]
-          }
-        },
-        "required" : [ "type" ]
-      },
-      "BadRequestBean" : {
-        "type" : "object",
-        "properties" : {
-          "code" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "errors" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ErrorBean"
-            }
-          },
-          "message" : {
-            "type" : "string"
-          }
-        }
-      },
-      "ErrorBean" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string"
-          }
-        }
-      },
-      "models" : {
-        "type" : "object",
-        "properties" : {
-          "itemsPerPage" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "Number of results per page."
-          },
-          "models" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/model"
-            }
-          },
-          "startIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The start index."
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of pages."
-          },
-          "totalResults" : {
-            "type" : "integer",
-            "format" : "int32",
-            "description" : "The total number of results."
-          }
-        }
-      },
-      "UpdateModelBean" : {
-        "type" : "object",
-        "description" : "Multipart form data bean for updating a model.",
-        "properties" : {
-          "metadata" : {
-            "type" : "object",
-            "format" : "application/json",
-            "description" : "The model metadata in JSON format (optional)",
-            "example" : "{\n  \"name\": \"my updated name\",\n  \"description\": \"An updated model description\",\n  \"parameters\": [\n    {\n      \"id\": \"parameterForModel\",\n      \"values\": [\n        \"updated parameter value 1\"\n      ]\n    }\n  ],\n  \"type\": \"GENERAL\"\n}",
-            "properties" : {
-              "creationDate" : {
-                "type" : "string",
-                "format" : "date-time",
-                "description" : "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-                "readOnly" : true
-              },
-              "creator" : {
-                "$ref" : "#/components/schemas/UserBean"
-              },
-              "description" : {
-                "type" : "string",
-                "description" : "The description."
-              },
-              "id" : {
-                "type" : "string",
-                "description" : "The object ID."
-              },
-              "lastModifiedDate" : {
-                "type" : "string",
-                "format" : "date-time",
-                "description" : "The last modified date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\".",
-                "readOnly" : true
-              },
-              "lastModifiedUser" : {
-                "$ref" : "#/components/schemas/UserBean"
-              },
-              "modelHash" : {
-                "type" : "string",
-                "description" : "The model hash which can be used to do conditional requests for retrieving the model binary. Either via the `etag` querystring parameter or the `If-None-Match` header.",
-                "readOnly" : true
-              },
-              "modelUrl" : {
-                "type" : "string",
-                "description" : "The model url of the binary model. If not set, the model has no binary yet.",
-                "readOnly" : true
-              },
-              "name" : {
-                "type" : "string",
-                "description" : "The object name."
-              },
-              "parameters" : {
-                "type" : "array",
-                "description" : "The parameters of the object, containing optional key/values pairs.",
-                "items" : {
-                  "$ref" : "#/components/schemas/parameter"
-                }
-              },
-              "tags" : {
-                "type" : "array",
-                "description" : "The tags (i.e. labels).",
-                "example" : "Address",
-                "items" : {
-                  "type" : "string",
-                  "description" : "The tags (i.e. labels).",
-                  "example" : "Address"
-                }
-              },
-              "type" : {
-                "type" : "string",
-                "description" : "The type of the model. Must be one of the allowed model types. For now, only 'GENERAL' is supported.",
-                "enum" : [ "GENERAL" ]
-              }
-            },
-            "required" : [ "type" ]
-          },
-          "model" : {
-            "type" : "string",
-            "format" : "binary",
-            "description" : "The ONNX model to update (optional). This should be a valid ONNX model serialized as specified <a href='https://onnx.ai/onnx/api/serialization.html' target='_blank'>here</a>.",
-            "writeOnly" : true
-          }
-        }
       },
       "TokenErrorResponse" : {
         "type" : "object",
@@ -3505,6 +2783,20 @@
             "type" : "integer",
             "format" : "int32",
             "description" : "The total number of results."
+          }
+        }
+      },
+      "link" : {
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string"
+          },
+          "rel" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
           }
         }
       },
@@ -3652,6 +2944,32 @@
               }
             },
             "description" : "The errors found for the given group changes (if any)."
+          }
+        }
+      },
+      "BadRequestBean" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ErrorBean"
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ErrorBean" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
           }
         }
       },
@@ -4773,7 +4091,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "enum" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_TIMEOUT_SETTINGS", "MANAGE_TIMEOUT_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS", "MANAGE_MODELS" ]
+              "enum" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_TIMEOUT_SETTINGS", "MANAGE_TIMEOUT_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS" ]
             }
           },
           "tags" : {
