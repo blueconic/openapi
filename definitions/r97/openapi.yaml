@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "98.0"
+  version: "97.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -136,52 +136,50 @@ tags:
     | Dialogue                   | Create, Update, Delete                        \
     \                                                 |\n| Domain Group          \
     \     | Create, Update, Delete                                               \
-    \                          |\n| Gen AI Setting             | Update (for each\
+    \                          |\n| Group                      | Read, Update, Delete\
+    \                                                                           |\n\
+    | Group type                 | Create, Update, Delete                        \
+    \                                                 |\n| Ip range              \
+    \     | Create, Update, Delete                                               \
+    \                          |\n| Language                   | Create, Update, Delete\
+    \                                                                         |\n\
+    | Lifecycle                  | Create, Update, Delete                        \
+    \                                                 |\n| Merge rule            \
+    \     | Create, Update, Delete                                               \
+    \                          |\n| Models                     | Create, Update, Delete\
+    \                                                                         |\n\
+    | Notebook                   | Create, Update, Delete, Manual run, Scheduled run,\
+    \ Editor run                                  |\n| OAuth application         \
+    \ | Create, Update, Delete                                                   \
+    \                      |\n| OAuth token                | Create, Update, Delete\
+    \                                                                         |\n\
+    | Objective                  | Create, Update, Delete                        \
+    \                                                 |\n| Plugin                \
+    \     | Create, Update, Delete                                               \
+    \                          |\n| Privacy setting            | Update (for each\
     \ change)                                                                    \
-    \   |\n| Group                      | Read, Update, Delete                   \
-    \                                                        |\n| Group type     \
-    \            | Create, Update, Delete                                        \
-    \                                 |\n| Ip range                   | Create, Update,\
+    \   |\n| Profile                    | Read, Update, Delete                   \
+    \                                                        |\n| Profile property\
+    \           | Create, Update, Delete                                         \
+    \                                |\n| Role                       | Create, Update,\
     \ Delete                                                                     \
-    \    |\n| Language                   | Create, Update, Delete                \
-    \                                                         |\n| Lifecycle     \
-    \             | Create, Update, Delete                                       \
-    \                                  |\n| Merge rule                 | Create, Update,\
+    \    |\n| Segment                    | Create, Update, Delete                \
+    \                                                         |\n| Single Sign On\
+    \ Setting     | Update (for each change)                                     \
+    \                                  |\n| Supported Legislation Zone | Create, Delete,\
+    \ Update                                                                     \
+    \    |\n| Timeline Event Rollup      | Create, Update, Delete                \
+    \                                                         |\n| Timeline Event\
+    \ Type        | Create, Update, Delete                                       \
+    \                                  |\n| Tracker                    | Create, Update,\
     \ Delete                                                                     \
-    \    |\n| Models                     | Create, Update, Delete                \
-    \                                                         |\n| Notebook      \
-    \             | Create, Update, Delete, Manual run, Scheduled run, Editor run\
-    \                                  |\n| OAuth application          | Create, Update,\
-    \ Delete                                                                     \
-    \    |\n| OAuth token                | Create, Update, Delete                \
-    \                                                         |\n| Objective     \
-    \             | Create, Update, Delete                                       \
-    \                                  |\n| Plugin                     | Create, Update,\
-    \ Delete                                                                     \
-    \    |\n| Privacy setting            | Update (for each change)              \
-    \                                                         |\n| Profile       \
-    \             | Read, Update, Delete                                         \
-    \                                  |\n| Profile property           | Create, Update,\
-    \ Delete                                                                     \
-    \    |\n| Role                       | Create, Update, Delete                \
-    \                                                         |\n| Segment       \
-    \             | Create, Update, Delete                                       \
-    \                                  |\n| Single Sign On Setting     | Update (for\
-    \ each change)                                                               \
-    \        |\n| Supported Legislation Zone | Create, Delete, Update            \
-    \                                                             |\n| Timeline Event\
-    \ Rollup      | Create, Update, Delete                                       \
-    \                                  |\n| Timeline Event Type        | Create, Update,\
-    \ Delete                                                                     \
-    \    |\n| Tracker                    | Create, Update, Delete                \
-    \                                                         |\n| User          \
-    \             | Login, Login failed, Logout, Create, Update, Delete, Password\
-    \ reset requested, Password change |\n\n\nOnly Profile and Group viewed, updated,\
-    \ or deleted by a user from the Profile and Groups tab are logged.\n\nThe following\
-    \ events are not considered as human actions, and therefore not covered in the\
-    \ Platform\nAudit Event API:\n\n- Connections that import or export profiles.\n\
-    - Profile and group creation (Profiles can only be created by a visitor or an\
-    \ import connection).\n\n**Event data**\n\nThe following event data is available:\n\
+    \    |\n| User                       | Login, Login failed, Logout, Create, Update,\
+    \ Delete, Password reset requested, Password change |\n\n\nOnly Profile and Group\
+    \ viewed, updated, or deleted by a user from the Profile and Groups tab are logged.\n\
+    \nThe following events are not considered as human actions, and therefore not\
+    \ covered in the Platform\nAudit Event API:\n\n- Connections that import or export\
+    \ profiles.\n- Profile and group creation (Profiles can only be created by a visitor\
+    \ or an import connection).\n\n**Event data**\n\nThe following event data is available:\n\
     \n| Field                  | Description      | Example values               \
     \                                                                            \
     \                                                                            \
@@ -208,7 +206,7 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                    |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GEN_AI_SETTING</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
+    \                    |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
     \ |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of\
     \ LOGIN_FAILED and a user tried to login with an invalid format email address,\
     \ it could be that the user filled the password in the email address field. In\
@@ -316,9 +314,6 @@ tags:
     \                                                                            \
     \                                                                            \
     \          |\n\n"
-- name: Content stores
-  description: "The following methods allow you to create, modify, retrieve, and delete\
-    \ content store and content items. See [Content Stores](https://support.blueconic.com/en/articles/247526-data-storage-in-blueconic#h_588a2cba-7c4d-4bb4-a155-2cf6ee87db76)."
 - name: Channels
   description: "The Channel API allows you to retrieve information about [channels\
     \ in BlueConic](https://support.blueconic.com/hc/en-us/articles/200472632-Overview-What-are-channels-in-BlueConic)."
@@ -327,9 +322,7 @@ tags:
     \ Dialogue. See [Tracking metrics for views, clicks, and conversions](https://support.blueconic.com/hc/en-us/articles/360020105614-Tracking-metrics-for-views-clicks-and-conversions)."
 - name: Interactions
   description: "Get the interactions (i.e. listeners and/or dialogues) that must be\
-    \ executed for a given profile that visits a certain web page (for web channels),\
-    \ a screen (on mobile or CTV channels) or a campaign ID (for email channels).\
-    \ Read more about [Dialogues](https://support.blueconic.com/hc/en-us/articles/202425271-Dialogues-Overview)\
+    \ executed for a given profile that visits a certain page. Read more about [Dialogues](https://support.blueconic.com/hc/en-us/articles/202425271-Dialogues-Overview)\
     \ or [Listeners](https://support.blueconic.com/hc/en-us/articles/202531942-Listeners-Overview)."
 - name: Pageview events
   description: "Pageview events are used to track page views by profiles. This is\
@@ -519,512 +512,6 @@ paths:
       security:
       - oauth2:
         - read:audit-events
-  /contentStores/{contentStore}/items:
-    get:
-      tags:
-      - Content stores
-      summary: Get content items
-      description: "To retrieve items from a content store, a `GET` request can be\
-        \ sent to the `/contentStores/{contentStoreId}/items` endpoint.\nYou can use\
-        \ the `ids` query parameter to retrieve specific items by their IDs. The `ids`\
-        \ parameter accepts a comma-separated list of item IDs.\nIf the `ids` parameter\
-        \ is not provided, all items in the content store will be returned. "
-      operationId: getItems
-      parameters:
-      - name: contentStore
-        in: path
-        description: The ID of the content store.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the content store:
-            description: UUID of the content store
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first item to include in the result.
-        schema:
-          type: integer
-          format: int64
-          default: 0
-          example: 0
-      - name: count
-        in: query
-        description: Specifies the number of results to return.
-        schema:
-          type: integer
-          format: int64
-          default: 20
-          example: 10
-      responses:
-        "200":
-          description: Returns the content items.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/items"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "items": [
-                        {
-                          "URL": "https://www.economist.com/business/2025/03/27/how-safe-is-your-dna-in-a-bankruptcy",
-                          "creationDate": "2025-08-19T13:24:31.943Z",
-                          "description": "23andMe’s demise raises thorny legal questions",
-                          "hash": "98f33be71f927141ca5a12e74985f0bc",
-                          "id": "article-1-id",
-                          "image": "https://www.economist.com/content-assets/images/20250329_WBD002.jpg",
-                          "imageURL": "https://localhost/rest/v2/contentStores/673498c7-6340-4735-8c48-cc3e1d4b7279/items/https:%252F%252Fwww.economist.com%252Fbusiness%252F2025%252F03%252F27%252Fhow-safe-is-your-dna-in-a-bankruptcy/image?etag=1755609871943",
-                          "inStock": true,
-                          "intValue": 1,
-                          "lastModifiedDate": "2025-08-19T13:24:31.943Z",
-                          "name": "How safe is your DNA in a bankruptcy?",
-                          "properties": [
-                            {
-                              "id": "category",
-                              "values": [
-                                "Business"
-                              ]
-                            },
-                            {
-                              "id": "creator",
-                              "values": [
-                                "The Economist"
-                              ]
-                            }
-                          ],
-                          "publicationDate": "2025-03-27T15:46:32.000Z",
-                          "statistics": {},
-                          "text": "Spit in a tube and, for about 100 USD, discover secrets held by your DNA. That was the promise of 23andMe, a direct-to-consumer genetic-testing company. It proved popular—more than 15m customers coughed up to receive tailored reports. Insights ranged from the banal (there is a 48% chance you have freckles) to the potentially helpful (you have an increased risk of type-2 diabetes). Ultimately, though, the venture was unprofitable. On March 23rd the firm filed for bankruptcy."
-                        },
-                        {
-                          "URL": "https://www.economist.com/technology-quarterly/2025/02/21/editing-pigs-mice-and-mosquitoes-may-save-lives",
-                          "creationDate": "2025-08-19T13:24:31.943Z",
-                          "description": "But there are possible pitfalls",
-                          "hash": "7c0419a5660ada4663a2959070a88973",
-                          "id": "article-2-id",
-                          "image": "https://www.economist.com/content-assets/images/20250301_TQD006.jpg",
-                          "imageURL": "https://localhost/rest/v2/contentStores/673498c7-6340-4735-8c48-cc3e1d4b7279/items/https:%252F%252Fwww.economist.com%252Ftechnology-quarterly%252F2025%252F02%252F21%252Fediting-pigs-mice-and-mosquitoes-may-save-lives/image?etag=1755609871943",
-                          "inStock": true,
-                          "intValue": 2,
-                          "lastModifiedDate": "2025-08-19T13:24:31.943Z",
-                          "name": "Editing pigs, mice and mosquitoes may save lives",
-                          "properties": [
-                            {
-                              "id": "category",
-                              "values": []
-                            },
-                            {
-                              "id": "creator",
-                              "values": [
-                                "The Economist"
-                              ]
-                            }
-                          ],
-                          "publicationDate": "2025-02-21T17:47:17.000Z",
-                          "statistics": {},
-                          "text": "ON MARCH 15th 2024, a dark brown, gene-edited pig was driven from its home in the Midwest to a medical facility on the outskirts of Boston, Massachusetts. It had never before been outside the clean room in which it had spent its year-long life. The next day the pig had its kidneys removed. One was for research; the other was transplanted into a man called Richard Slayman. It was the first pig-to-human kidney transplant with a living patient. In the operating theatre at Mass General Hospital, after the surgical team were finished, invited attendees spontaneously clapped."
-                        }
-                      ],
-                      "itemsPerPage": 2,
-                      "startIndex": 0,
-                      "totalPages": 1,
-                      "totalResults": 2
-                    }
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The content store doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:content_stores
-    put:
-      tags:
-      - Content stores
-      summary: Add content items
-      description: "To add items to a content store, a `POST` request can be sent\
-        \ to the `/contentStores/{contentStoreId}/items` endpoint.\nThe request body\
-        \ must be a JSON array of items to be added. Each item in the array should\
-        \ be a JSON object with an `id` and a `properties` object.\nThe `properties`\
-        \ object contains key-value pairs representing the properties of the item. "
-      operationId: addItems
-      parameters:
-      - name: contentStore
-        in: path
-        description: The ID of the content store to add items to.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the content store:
-            description: UUID of the content store
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/items"
-            examples:
-              Request body:
-                description: Request body
-                value: |-
-                  {
-                    "items": [
-                      {
-                        "URL": "https://www.economist.com/business/2025/03/27/how-safe-is-your-dna-in-a-bankruptcy",
-                        "creationDate": "2025-03-31T12:45:17.748Z",
-                        "description": "23andMe’s demise raises thorny legal questions",
-                        "hash": "98f33be71f927141ca5a12e74985f0bc",
-                        "id": "article-1-id",
-                        "image": "https://www.economist.com/content-assets/images/20250329_WBD002.jpg",
-                        "inStock": true,
-                        "lastModifiedDate": "2025-03-31T12:45:17.748Z",
-                        "name": "How safe is your DNA in a bankruptcy?",
-                        "properties": [
-                          {
-                            "id": "category",
-                            "values": [
-                              "Business"
-                            ]
-                          },
-                          {
-                            "id": "creator",
-                            "values": [
-                              "The Economist"
-                            ]
-                          }
-                        ],
-                        "publicationDate": "2025-03-27T15:46:32.000Z",
-                        "text": "Spit in a tube and, for about 100 USD, discover secrets held by your DNA. That was the promise of 23andMe, a direct-to-consumer genetic-testing company. It proved popular—more than 15m customers coughed up to receive tailored reports. Insights ranged from the banal (there is a 48% chance you have freckles) to the potentially helpful (you have an increased risk of type-2 diabetes). Ultimately, though, the venture was unprofitable. On March 23rd the firm filed for bankruptcy."
-                      },
-                      {
-                        "URL": "https://www.economist.com/technology-quarterly/2025/02/21/editing-pigs-mice-and-mosquitoes-may-save-lives",
-                        "creationDate": "2025-03-31T12:45:17.748Z",
-                        "description": "But there are possible pitfalls",
-                        "hash": "7c0419a5660ada4663a2959070a88973",
-                        "id": "article-2-id",
-                        "image": "https://www.economist.com/content-assets/images/20250301_TQD006.jpg",
-                        "inStock": true,
-                        "lastModifiedDate": "2025-03-31T12:45:17.748Z",
-                        "name": "Editing pigs, mice and mosquitoes may save lives",
-                        "properties": [
-                          {
-                            "id": "category",
-                            "values": []
-                          },
-                          {
-                            "id": "creator",
-                            "values": [
-                              "The Economist"
-                            ]
-                          }
-                        ],
-                        "publicationDate": "2025-02-21T17:47:17.000Z",
-                        "text": "ON MARCH 15th 2024, a dark brown, gene-edited pig was driven from its home in the Midwest to a medical facility on the outskirts of Boston, Massachusetts. It had never before been outside the clean room in which it had spent its year-long life. The next day the pig had its kidneys removed. One was for research; the other was transplanted into a man called Richard Slayman. It was the first pig-to-human kidney transplant with a living patient. In the operating theatre at Mass General Hospital, after the surgical team were finished, invited attendees spontaneously clapped."
-                      }
-                    ]
-                  }
-        required: true
-      responses:
-        "204":
-          description: The content items were added successfully.
-        "400":
-          description: One or more required parameters are missing or invalid.
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The content store doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:content_stores
-  /contentStores:
-    get:
-      tags:
-      - Content stores
-      summary: Get all content stores
-      description: Retrieves all content stores.
-      operationId: getAllContentStores
-      parameters:
-      - name: count
-        in: query
-        description: Specifies the number of results to return.
-        schema:
-          type: integer
-          format: int64
-          default: 20
-          example: 10
-      - name: startIndex
-        in: query
-        description: Specifies the index of the first item to include in the result.
-        schema:
-          type: integer
-          format: int64
-          default: 0
-          example: 0
-      responses:
-        "200":
-          description: Returns the content stores.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/contentStores"
-              examples:
-                Response body:
-                  description: Response body
-                  value: "{\n  \"itemsPerPage\": 20,\n  \"contentStores\": [\n   \
-                    \ {\n      \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n\
-                    \      \"name\": \"my content store\",\n      \"description\"\
-                    : \"somedescription\",\n      \"creationDate\": \"2025-04-17T14:00:46.920Z\"\
-                    ,\n      \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n\
-                    \      \"creator\": {\n        \"fullName\": \"ondemand@blueconic.com\"\
-                    ,\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n\
-                    \      \"lastModifiedUser\": {\n        \"fullName\": \"ondemand@blueconic.com\"\
-                    ,\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n\
-                    \t  \"storeType\" : \"CONTENT\",\t  \n      \"tags\": []\n   \
-                    \ }\n  ],\n  \"startIndex\": 0,\n  \"totalPages\": 1,\n  \"totalResults\"\
-                    : 1\n} "
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - read:content_stores
-    post:
-      tags:
-      - Content stores
-      summary: Create content store
-      description: |-
-        To create a content store, a request with a JSON object can be sent to the `/contentStores` endpoint via the `POST` method.
-        The JSON object must contain all the properties that are required for a content store.
-        You can check the schema of the response of a `GET` request to see which properties are available.
-      operationId: createWithBean
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/contentStore"
-            examples:
-              Request body:
-                description: Request body
-                value: |-
-                  {
-                    "name": "my new content store",
-                    "description": "A content store description",
-                    "properties": [
-                      {
-                        "id": "RECENT_HOURS",
-                        "values": [
-                          "5"
-                        ]
-                      }
-                    ],
-                    "storeType": "CONTENT",
-                    "tags": []
-                  }
-        required: true
-      responses:
-        "200":
-          description: Returns the created content store.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/contentStore"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "name": "my new content store",
-                      "description": "A content store description",
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "properties": [
-                        {
-                          "id": "RECENT_HOURS",
-                          "values": [
-                            "5"
-                          ]
-                        }
-                      ],
-                      "readOnly": false,
-                      "storeType": "CONTENT",
-                      "tags": []
-                    }
-        "400":
-          description: The metadata JSON is invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequestBean"
-              examples:
-                Error response body:
-                  description: Error response body
-                  value: "{\n  \"error\": {\n    \"status\": 400,\n    \"message\"\
-                    : \"A more specific error message.\"\n  }\n} "
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:content_stores
-  /contentStores/{contentStore}/items/bulk:
-    delete:
-      tags:
-      - Content stores
-      summary: Bulk delete content items
-      description: Deletes multiple items from a content store.
-      operationId: deleteAll
-      parameters:
-      - name: contentStore
-        in: path
-        description: The ID of the content store.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the content store:
-            description: UUID of the content store
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ids"
-            examples:
-              Request body:
-                description: Request body
-                value: |-
-                  {
-                    "ids": ["article-1-id", "article-2-id"]
-                  }
-        required: true
-      responses:
-        "200":
-          description: The content items were deleted successfully.
-        "400":
-          description: The request is invalid.
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "404":
-          description: The content store doesn't exist.
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:content_stores
-  /contentStores/{contentStore}:
-    put:
-      tags:
-      - Content stores
-      summary: Update content store
-      description: |-
-        To update a content store, a request with a JSON object can be sent to the `/contentStores` endpoint via the `PUT` method.
-        The JSON object can contain any of the properties that are part of the content store. <br/>
-        Partial updates are supported. You only need to supply the properties that you want to change.<br/>
-        At least one property needs to be supplied, otherwise a HTTP 400 is returned.
-      operationId: updateWithBean
-      parameters:
-      - name: contentStore
-        in: path
-        description: The ID of the content store to update.
-        required: true
-        schema:
-          type: string
-        examples:
-          UUID of the content store:
-            description: UUID of the content store
-            value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/contentStore"
-            examples:
-              Request body:
-                description: Request body
-                value: |-
-                  {
-                    "name": "my updated name",
-                    "description": "An updated content store description",
-                    "storeType": "CONTENT"
-                  }
-        required: true
-      responses:
-        "200":
-          description: Returns the updated content store.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/contentStore"
-              examples:
-                Response body:
-                  description: Response body
-                  value: |-
-                    {
-                      "id": "2613c9d6-a179-4c79-b6d2-1618a53fbc64",
-                      "name": "my content store",
-                      "description": "A content store description",
-                      "creationDate": "2025-04-17T14:00:46.920Z",
-                      "lastModifiedDate": "2025-04-17T14:00:46.920Z",
-                      "creator": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "lastModifiedUser": {
-                        "fullName": "ondemand@blueconic.com",
-                        "userName": "ondemand@blueconic.com"
-                      },
-                      "storeType": "CONTENT",
-                      "tags": []
-                    }
-        "400":
-          description: The metadata JSON is invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequestBean"
-              examples:
-                Error response body:
-                  description: Error response body
-                  value: "{\n  \"error\": {\n    \"status\": 400,\n    \"message\"\
-                    : \"A more specific error message.\"\n  }\n} "
-        "401":
-          description: Authentication failed (unauthorized).
-        "403":
-          description: Authorization failed (incorrect permissions).
-        "503":
-          description: The server is too busy to handle the request.
-      security:
-      - oauth2:
-        - write:content_stores
   /channels:
     get:
       tags:
@@ -1217,38 +704,11 @@ paths:
             value: f448c035-92c1-44d9-810e-40dbf869285f
       - name: url
         in: query
-        description: The URL of the current page. Either this one or `referer` must
-          be provided in order to get interactions returned.
+        description: The URL of the current page.
+        required: true
         schema:
           type: string
-        examples:
-          Url:
-            description: Url
-            value: https://www.example.com
-      - name: referer
-        in: query
-        description: "The referer of the current target to retrieve the interactions,\
-          \ which can be an URL for web channels, a screen name for mobile or CTV\
-          \ channels, or a campaign ID for email channels."
-        schema:
-          type: string
-        examples:
-          Url (web channel):
-            description: Url (web channel)
-            value: https://www.example.com/subpage/index.htm
-          Screen name (mobile or CTV channel):
-            description: Screen name (mobile or CTV channel)
-            value: screen1-homepage
-          Campaign ID (email channel):
-            description: Campaign ID (email channel)
-            value: new-product-campaign
-      - name: channelId
-        in: query
-        description: "The channel ID of the channel to retrieve the interactions for.\
-          \ If not passed, it's derived from the `url` or `referer` parameter."
-        schema:
-          type: string
-        example: 00fdd1a5-486f-41d4-bfb2-57f969177266
+        example: https://www.example.com
       responses:
         "200":
           description: Returns the interactions.
@@ -1299,10 +759,6 @@ paths:
                     }
         "400":
           description: One or more required parameters are missing or invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequestBean"
         "503":
           description: The server is too busy to handle the request.
   /pageviewEvents:
@@ -1389,32 +845,11 @@ paths:
                           ],
                           "tags": [],
                           "type": "GENERAL"
-                        },
-                        {
-                          "creationDate" : "2025-05-01T08:16:00.458Z",
-                          "creator" : {
-                            "fullName" : "ondemand@blueconic.com",
-                            "userName" : "ondemand@blueconic.com"
-                          },
-                          "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                          "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                          "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                          "lastModifiedUser" : {
-                            "fullName" : "ondemand@blueconic.com",
-                            "userName" : "ondemand@blueconic.com"
-                          },
-                          "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                          "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                          "name" : "Dialogue model with onnx model set",
-                          "parameters" : [],
-                          "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                          "tags" : [],
-                          "type" : "DIALOGUE"
                         }
                       ],
                       "startIndex": 0,
                       "totalPages": 1,
-                      "totalResults": 2
+                      "totalResults": 1
                     }
         "401":
           description: Authentication failed (unauthorized).
@@ -1441,32 +876,6 @@ paths:
 
           The `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>
           The `metadata` part is required and must be included in the request.
-
-          ### DIALOGUE models
-
-          When creating a model of type `DIALOGUE`, the `metadata` part must contain the following additional property:
-          - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).
-
-          Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
-          The `featureNames` must be defined in the following format and is only required when an ONNX model is provided:
-          ```json
-          {
-            "featureNames": [
-              "browsername=chrome",
-              "browsername=edge",
-              "lastvisitdate",
-              "interactions_clicked"
-            ]
-          }
-          ```
-
-          #### ONNX model requirements
-          The ONNX model must have the following input names:
-          * `variant_ids`: the list of variant IDs to consider in the ONNX model
-          * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-
-          The ONNX model must have the following output names:
-          * `variant_id`: the variant ID that should be served based on the ONNX model outcome
         content:
           multipart/form-data:
             schema:
@@ -1480,8 +889,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/model"
               examples:
-                Response body with ONNX model (GENERAL):
-                  description: Response body with ONNX model (GENERAL)
+                Response body with ONNX model:
+                  description: Response body with ONNX model
                   value: |-
                     {
                       "creationDate": "2025-04-17T14:00:46.920Z",
@@ -1510,32 +919,8 @@ paths:
                       "tags": [],
                       "type": "GENERAL"
                     }
-                Response body with ONNX model (DIALOGUE):
-                  description: Response body with ONNX model (DIALOGUE)
-                  value: |-
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                      "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                      "name" : "Dialogue model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                      "tags" : [ ],
-                      "type" : "DIALOGUE"
-                    }
-                Response body without ONNX model (GENERAL):
-                  description: Response body without ONNX model (GENERAL)
+                Response body without ONNX model:
+                  description: Response body without ONNX model
                   value: |-
                     {
                       "creationDate": "2025-04-17T14:00:46.920Z",
@@ -1576,7 +961,7 @@ paths:
                       "code": 400,
                       "errors": [
                         {
-                          "message": "Unrecognized field \\"non_existing_field\\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable"
+                          "message": "Unrecognized field \"non_existing_field\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable"
                         }
                       ],
                       "message": "Bad Request"
@@ -1630,8 +1015,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/model"
               examples:
-                Response body (GENERAL):
-                  description: Response body (GENERAL)
+                Response body:
+                  description: Response body
                   value: |-
                     {
                       "creationDate": "2025-04-17T14:00:46.920Z",
@@ -1659,30 +1044,6 @@ paths:
                       ],
                       "tags": [],
                       "type": "GENERAL"
-                    }
-                Response body (DIALOGUE):
-                  description: Response body (DIALOGUE)
-                  value: |-
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                      "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                      "name" : "Dialogue model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                      "tags" : [ ],
-                      "type" : "DIALOGUE"
                     }
         "401":
           description: Authentication failed (unauthorized).
@@ -1723,32 +1084,6 @@ paths:
           Both parts are optional, meaning that you can update the metadata without providing a new model, or you can provide a new model without updating the metadata.<br/>
           For the `metadata` part, no partial updates are supported. The entire metadata object must be provided in the request.<br/>
           At least one part needs to be supplied, otherwise a HTTP 400 is returned.
-
-          ### DIALOGUE models
-
-          When updating a model of type `DIALOGUE`, the `metadata` part must contain the following additional property:
-          - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).
-
-          Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
-          The `featureNames` must be defined in the following format and is only required when an ONNX model is provided:
-          ```json
-          {
-            "featureNames": [
-              "browsername=chrome",
-              "browsername=edge",
-              "lastvisitdate",
-              "interactions_clicked"
-            ]
-          }
-          ```
-
-          #### ONNX model requirements
-          The ONNX model must have the following input names:
-          * `variant_ids`: the list of variant IDs to consider in the ONNX model
-          * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-
-          The ONNX model must have the following output names:
-          * `variant_id`: the variant ID that should be served based on the ONNX model outcome
         content:
           multipart/form-data:
             schema:
@@ -1762,8 +1097,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/model"
               examples:
-                Response body with ONNX model (GENERAL):
-                  description: Response body with ONNX model (GENERAL)
+                Response body with ONNX model:
+                  description: Response body with ONNX model
                   value: |-
                     {
                       "creationDate": "2025-04-17T14:00:46.920Z",
@@ -1792,32 +1127,8 @@ paths:
                       "tags": [],
                       "type": "GENERAL"
                     }
-                Response body with ONNX model (DIALOGUE):
-                  description: Response body with ONNX model (DIALOGUE)
-                  value: |-
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                      "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                      "name" : "Dialogue model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                      "tags" : [ ],
-                      "type" : "DIALOGUE"
-                    }
-                Response body without ONNX model (GENERAL):
-                  description: Response body without ONNX model (GENERAL)
+                Response body without ONNX model:
+                  description: Response body without ONNX model
                   value: |-
                     {
                       "creationDate": "2025-04-17T14:00:46.920Z",
@@ -1858,7 +1169,7 @@ paths:
                       "code": 400,
                       "errors": [
                         {
-                          "message": "Unrecognized field \\"non_existing_field\\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable"
+                          "message": "Unrecognized field \"non_existing_field\" (class com.blueconic.services.model.rest.ModelBean), not marked as ignorable"
                         }
                       ],
                       "message": "Bad Request"
@@ -3078,7 +2389,7 @@ paths:
                         "isoCode" : "USD",
                         "name" : "United States dollar",
                         "precision" : 2,
-                        "symbol" : "\$"
+                        "symbol" : "$"
                       },
                       "dataSensitivity" : "NON_PII",
                       "description" : "The description for the currency",
@@ -3366,7 +2677,7 @@ paths:
                         "createNewProfile" : false,
                         "creationDate" : "2023-03-20T13:53:35.046Z",
                         "dataSensitivity" : "NON_PII",
-                        "description" : "Indicates whether an ad blocker was detected for the visitor. Will contain the value \\"yes\\" if one was detected.",
+                        "description" : "Indicates whether an ad blocker was detected for the visitor. Will contain the value \"yes\" if one was detected.",
                         "filterType" : "SELECT",
                         "id" : "adblock_detected",
                         "indexed" : false,
@@ -4577,7 +3888,7 @@ paths:
                         "values" : [ "1679922388115" ]
                       }, {
                         "id" : "hostentrypage",
-                        "values" : [ "{\\"www.blueconic.com\\":{\\"entrypage\\":\\"http://www.blueconic.com/\\"}}" ]
+                        "values" : [ "{\"www.blueconic.com\":{\"entrypage\":\"http://www.blueconic.com/\"}}" ]
                       }, {
                         "id" : "browsername",
                         "values" : [ "Default Browser" ]
@@ -4598,7 +3909,7 @@ paths:
                         "values" : [ "1679913371926" ]
                       }, {
                         "id" : "hostaveragetime",
-                        "values" : [ "{\\"www.blueconic.test\\":{\\"startdate\\":1679913372011,\\"enddate\\":1679913372011,\\"averageTime\\":0,\\"visits\\":0}}" ]
+                        "values" : [ "{\"www.blueconic.test\":{\"startdate\":1679913372011,\"enddate\":1679913372011,\"averageTime\":0,\"visits\":0}}" ]
                       }, {
                         "id" : "visiteddomain",
                         "values" : [ "75d78fab-bc93-4398-adbf-b8d04fc1889b" ]
@@ -5799,10 +5110,8 @@ components:
           - OAUTH_APPLICATION
           - OAUTH_TOKEN
           - TIMELINE_EVENT_ROLLUP
-          - AI_CANVAS
           - INACTIVITY_TIMEOUT_SETTING
           - MODEL
-          - GEN_AI_SETTING
         objects:
           type: array
           items:
@@ -5843,226 +5152,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AuditEntryBean"
-    item:
-      type: object
-      properties:
-        URL:
-          type: string
-          description: The URL of the item.
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-          readOnly: true
-        description:
-          type: string
-          description: The description of the item.
-        hash:
-          type: string
-          description: The hash of the item.
-        id:
-          type: string
-          description: The ID of the item.
-        image:
-          type: string
-          description: The image of the item.
-        imageURL:
-          type: string
-          description: The image URL of the item.
-        inStock:
-          type: boolean
-          description: Whether the item is in stock
-        intValue:
-          type: integer
-          format: int32
-          description: The integer value of this item
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-          readOnly: true
-        name:
-          type: string
-          description: The name of the item.
-        properties:
-          type: array
-          items:
-            $ref: "#/components/schemas/property"
-        publicationDate:
-          type: string
-          format: date-time
-          description: "The publication date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-        statistics:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
-        text:
-          type: string
-          description: The text of the item.
-    items:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/item"
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        startIndex:
-          type: integer
-          format: int32
-          description: The start index.
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
-      required:
-      - items
-    property:
-      type: object
-      description: List of profile properties to be set.
-      properties:
-        id:
-          type: string
-          description: The ID of the property.
-        values:
-          type: array
-          description: Values for this property.
-          items:
-            type: string
-            description: Values for this property.
-    UserBean:
-      type: object
-      description: BlueConic user.
-      properties:
-        fullName:
-          type: string
-          description: The full name of the user.
-        userName:
-          type: string
-          description: The username.
-      readOnly: true
-    contentStore:
-      type: object
-      properties:
-        creationDate:
-          type: string
-          format: date-time
-          description: "The creation date of the object. Datetime in UTC in the https://www.ietf.org/rfc/rfc3339.txt\
-            \ format, example = \"2023-01-22T11:21:33.872Z\"."
-          readOnly: true
-        creator:
-          $ref: "#/components/schemas/UserBean"
-        description:
-          type: string
-          description: The description.
-        id:
-          type: string
-          description: The object ID.
-        itemCount:
-          type: integer
-          format: int32
-          description: The number of items in the store.
-        lastModifiedDate:
-          type: string
-          format: date-time
-          description: "The last modified date of the object. Datetime in UTC in the\
-            \ https://www.ietf.org/rfc/rfc3339.txt format, example = \"2023-01-22T11:21:33.872Z\"\
-            ."
-          readOnly: true
-        lastModifiedUser:
-          $ref: "#/components/schemas/UserBean"
-        name:
-          type: string
-          description: The object name.
-        properties:
-          type: array
-          items:
-            $ref: "#/components/schemas/property"
-        storeType:
-          type: string
-          description: The store type.
-          enum:
-          - CONTENT
-          - PRODUCT
-        tags:
-          type: array
-          description: The tags (i.e. labels).
-          example: Address
-          items:
-            type: string
-            description: The tags (i.e. labels).
-            example: Address
-    link:
-      type: object
-      properties:
-        href:
-          type: string
-        rel:
-          type: string
-        type:
-          type: string
-    BadRequestBean:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        errors:
-          type: array
-          items:
-            $ref: "#/components/schemas/ErrorBean"
-        message:
-          type: string
-    ErrorBean:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-    ids:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-    contentStores:
-      type: object
-      properties:
-        contentStores:
-          type: array
-          items:
-            $ref: "#/components/schemas/contentStore"
-        itemsPerPage:
-          type: integer
-          format: int32
-          description: Number of results per page.
-        startIndex:
-          type: integer
-          format: int32
-          description: The start index.
-        totalPages:
-          type: integer
-          format: int32
-          description: The total number of pages.
-        totalResults:
-          type: integer
-          format: int32
-          description: The total number of results.
     ChannelBeanV2SchemaForChannelsV2:
       type: object
       description: The channels.
@@ -6143,6 +5232,17 @@ components:
         name:
           type: string
           description: Name of this object.
+      readOnly: true
+    UserBean:
+      type: object
+      description: BlueConic user.
+      properties:
+        fullName:
+          type: string
+          description: The full name of the user.
+        userName:
+          type: string
+          description: The username.
       readOnly: true
     channel:
       type: object
@@ -6311,9 +5411,7 @@ components:
                   ]
                 }
               ],
-              "type": "DIALOGUE",
-              "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-              "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ]
+              "type": "GENERAL"
             }
           properties:
             creationDate:
@@ -6328,14 +5426,6 @@ components:
             description:
               type: string
               description: The description.
-            featureNames:
-              type: array
-              description: The features that are used in the model. Only required
-                for models of type `DIALOGUE` and an ONNX model is provided.
-              items:
-                type: string
-                description: The features that are used in the model. Only required
-                  for models of type `DIALOGUE` and an ONNX model is provided.
             id:
               type: string
               description: The object ID.
@@ -6368,14 +5458,6 @@ components:
                 \ pairs."
               items:
                 $ref: "#/components/schemas/parameter"
-            profilePropertyIds:
-              type: array
-              description: The profile properties that are used in the model. Only
-                required for models of type `DIALOGUE`.
-              items:
-                type: string
-                description: The profile properties that are used in the model. Only
-                  required for models of type `DIALOGUE`.
             tags:
               type: array
               description: The tags (i.e. labels).
@@ -6386,11 +5468,10 @@ components:
                 example: Address
             type:
               type: string
-              description: The type of the model. Must be one of the allowed model
-                types `GENERAL` or `DIALOGUE`.
+              description: "The type of the model. Must be one of the allowed model\
+                \ types. For now, only 'GENERAL' is supported."
               enum:
               - GENERAL
-              - DIALOGUE
           required:
           - type
         model:
@@ -6402,6 +5483,15 @@ components:
           writeOnly: true
       required:
       - metadata
+    link:
+      type: object
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+        type:
+          type: string
     parameter:
       type: object
       description: "The parameters of the object, containing optional key/values pairs."
@@ -6430,14 +5520,6 @@ components:
         description:
           type: string
           description: The description.
-        featureNames:
-          type: array
-          description: The features that are used in the model. Only required for
-            models of type `DIALOGUE` and an ONNX model is provided.
-          items:
-            type: string
-            description: The features that are used in the model. Only required for
-              models of type `DIALOGUE` and an ONNX model is provided.
         id:
           type: string
           description: The object ID.
@@ -6470,14 +5552,6 @@ components:
             \ pairs."
           items:
             $ref: "#/components/schemas/parameter"
-        profilePropertyIds:
-          type: array
-          description: The profile properties that are used in the model. Only required
-            for models of type `DIALOGUE`.
-          items:
-            type: string
-            description: The profile properties that are used in the model. Only required
-              for models of type `DIALOGUE`.
         tags:
           type: array
           description: The tags (i.e. labels).
@@ -6488,13 +5562,29 @@ components:
             example: Address
         type:
           type: string
-          description: The type of the model. Must be one of the allowed model types
-            `GENERAL` or `DIALOGUE`.
+          description: "The type of the model. Must be one of the allowed model types.\
+            \ For now, only 'GENERAL' is supported."
           enum:
           - GENERAL
-          - DIALOGUE
       required:
       - type
+    BadRequestBean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorBean"
+        message:
+          type: string
+    ErrorBean:
+      type: object
+      properties:
+        message:
+          type: string
     models:
       type: object
       properties:
@@ -6526,7 +5616,7 @@ components:
           type: object
           format: application/json
           description: The model metadata in JSON format (optional)
-          example: |
+          example: |-
             {
               "name": "my updated name",
               "description": "An updated model description",
@@ -6538,9 +5628,7 @@ components:
                   ]
                 }
               ],
-              "type": "DIALOGUE",
-              "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-              "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ]
+              "type": "GENERAL"
             }
           properties:
             creationDate:
@@ -6555,14 +5643,6 @@ components:
             description:
               type: string
               description: The description.
-            featureNames:
-              type: array
-              description: The features that are used in the model. Only required
-                for models of type `DIALOGUE` and an ONNX model is provided.
-              items:
-                type: string
-                description: The features that are used in the model. Only required
-                  for models of type `DIALOGUE` and an ONNX model is provided.
             id:
               type: string
               description: The object ID.
@@ -6595,14 +5675,6 @@ components:
                 \ pairs."
               items:
                 $ref: "#/components/schemas/parameter"
-            profilePropertyIds:
-              type: array
-              description: The profile properties that are used in the model. Only
-                required for models of type `DIALOGUE`.
-              items:
-                type: string
-                description: The profile properties that are used in the model. Only
-                  required for models of type `DIALOGUE`.
             tags:
               type: array
               description: The tags (i.e. labels).
@@ -6613,11 +5685,10 @@ components:
                 example: Address
             type:
               type: string
-              description: The type of the model. Must be one of the allowed model
-                types `GENERAL` or `DIALOGUE`.
+              description: "The type of the model. Must be one of the allowed model\
+                \ types. For now, only 'GENERAL' is supported."
               enum:
               - GENERAL
-              - DIALOGUE
           required:
           - type
         model:
@@ -6678,6 +5749,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/property"
+    property:
+      type: object
+      description: List of profile properties to be set.
+      properties:
+        id:
+          type: string
+          description: The ID of the property.
+        values:
+          type: array
+          description: Values for this property.
+          items:
+            type: string
+            description: Values for this property.
     GroupsAPIGroups:
       type: object
       properties:
@@ -7935,7 +7019,6 @@ components:
             - APPLY_BULK_OPERATIONS
             - MANAGE_OBJECTIVES
             - MANAGE_TIMELINE_EVENT_TYPES
-            - MANAGE_AI_CANVAS
             - READ_GROUPS
             - MANAGE_GROUPS
             - MANAGE_PII_VALUES
@@ -7952,7 +7035,6 @@ components:
             - READ_SECURITY_SETTINGS
             - MANAGE_SECURITY_SETTINGS
             - MANAGE_MODELS
-            - TRANSFER_CONFIGURATION
         tags:
           type: array
           description: The tags (i.e. labels).
