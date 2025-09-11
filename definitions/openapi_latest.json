@@ -82,7 +82,7 @@
         "tags" : [ "Audit Events" ],
         "summary" : "Get audit events",
         "description" : "Retrieves the audit events.",
-        "operationId" : "query",
+        "operationId" : "getAuditEvents",
         "parameters" : [ {
           "name" : "fromDate",
           "in" : "query",
@@ -135,7 +135,7 @@
         "tags" : [ "Content stores" ],
         "summary" : "Get content items",
         "description" : "To retrieve items from a content store, a `GET` request can be sent to the `/contentStores/{contentStoreId}/items` endpoint.\nYou can use the `ids` query parameter to retrieve specific items by their IDs. The `ids` parameter accepts a comma-separated list of item IDs.\nIf the `ids` parameter is not provided, all items in the content store will be returned. ",
-        "operationId" : "getItems",
+        "operationId" : "getContentItemsFromStore",
         "parameters" : [ {
           "name" : "contentStore",
           "in" : "path",
@@ -209,7 +209,7 @@
         "tags" : [ "Content stores" ],
         "summary" : "Add content items",
         "description" : "To add items to a content store, a `POST` request can be sent to the `/contentStores/{contentStoreId}/items` endpoint.\nThe request body must be a JSON array of items to be added. Each item in the array should be a JSON object with an `id` and a `properties` object.\nThe `properties` object contains key-value pairs representing the properties of the item. ",
-        "operationId" : "addItems",
+        "operationId" : "addContentItemsToStore",
         "parameters" : [ {
           "name" : "contentStore",
           "in" : "path",
@@ -328,7 +328,7 @@
         "tags" : [ "Content stores" ],
         "summary" : "Create content store",
         "description" : "To create a content store, a request with a JSON object can be sent to the `/contentStores` endpoint via the `POST` method.\nThe JSON object must contain all the properties that are required for a content store.\nYou can check the schema of the response of a `GET` request to see which properties are available.",
-        "operationId" : "createWithBean",
+        "operationId" : "createContentStore",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -398,7 +398,7 @@
         "tags" : [ "Content stores" ],
         "summary" : "Bulk delete content items",
         "description" : "Deletes multiple items from a content store.",
-        "operationId" : "deleteAll",
+        "operationId" : "deleteContentItemsFromStore",
         "parameters" : [ {
           "name" : "contentStore",
           "in" : "path",
@@ -460,7 +460,7 @@
         "tags" : [ "Content stores" ],
         "summary" : "Update content store",
         "description" : "To update a content store, a request with a JSON object can be sent to the `/contentStores` endpoint via the `PUT` method.\nThe JSON object can contain any of the properties that are part of the content store. <br/>\nPartial updates are supported. You only need to supply the properties that you want to change.<br/>\nAt least one property needs to be supplied, otherwise a HTTP 400 is returned.",
-        "operationId" : "updateWithBean",
+        "operationId" : "updateContentStore",
         "parameters" : [ {
           "name" : "contentStore",
           "in" : "path",
@@ -545,7 +545,7 @@
         "tags" : [ "Channels" ],
         "summary" : "Get all channels",
         "description" : "Retrieves all channels.",
-        "operationId" : "getAll",
+        "operationId" : "getAllChannels",
         "parameters" : [ {
           "name" : "startIndex",
           "in" : "query",
@@ -599,7 +599,7 @@
         "tags" : [ "Channels" ],
         "summary" : "Get one channel",
         "description" : "Retrieves a single channel.",
-        "operationId" : "getChannel",
+        "operationId" : "getOneChannel",
         "parameters" : [ {
           "name" : "channelId",
           "in" : "path",
@@ -860,7 +860,7 @@
         "tags" : [ "Models" ],
         "summary" : "Create model",
         "description" : "Create a model.",
-        "operationId" : "createWithParts",
+        "operationId" : "createModel",
         "requestBody" : {
           "description" : "To create a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `POST` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nThe `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>\nThe `metadata` part is required and must be included in the request.\n\n### DIALOGUE models\n\nWhen creating a model of type `DIALOGUE`, the `metadata` part must contain the following additional property:\n- `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when an ONNX model is provided:\n```json\n{\n  \"featureNames\": [\n    \"browsername=chrome\",\n    \"browsername=edge\",\n    \"lastvisitdate\",\n    \"interactions_clicked\"\n  ]\n}\n```\n\n#### ONNX model requirements\nThe ONNX model must have the following input names:\n* `variant_ids`: the list of variant IDs to consider in the ONNX model\n* If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model must have the following output names:\n* `variant_id`: the variant ID that should be served based on the ONNX model outcome",
           "content" : {
@@ -940,7 +940,7 @@
         "tags" : [ "Models" ],
         "summary" : "Get one model",
         "description" : "Retrieves a single model (without the model binary).",
-        "operationId" : "getModel",
+        "operationId" : "getOneModelMetadata",
         "parameters" : [ {
           "name" : "model",
           "in" : "path",
@@ -998,7 +998,7 @@
         "tags" : [ "Models" ],
         "summary" : "Update model",
         "description" : "Update a model by id.",
-        "operationId" : "updateWithParts",
+        "operationId" : "updateModel",
         "parameters" : [ {
           "name" : "model",
           "in" : "path",
@@ -1151,7 +1151,7 @@
         "tags" : [ "Models" ],
         "summary" : "Get model binary",
         "description" : "Retrieves the model binary if set, HTTP 404 otherwise. The response will contain an `Etag` header with the hash of the model, which can be used to perform a conditional request.",
-        "operationId" : "getModelBinary",
+        "operationId" : "getModelONNXBinary",
         "parameters" : [ {
           "name" : "model",
           "in" : "path",
@@ -1207,7 +1207,7 @@
         "tags" : [ "OAuth 2.0" ],
         "summary" : "Start Authorization Code Flow",
         "description" : "Starts the Authorization Code Flow. The user will be redirected to the authorization server where the user can grant or deny the external application access. The Proof Key for Code Exchange ([PKCE](https://www.rfc-editor.org/rfc/rfc7636)) extension is enforced for the Authorization Code Flow.",
-        "operationId" : "authorize",
+        "operationId" : "startAuthorizationCodeFlow",
         "parameters" : [ {
           "name" : "response_type",
           "in" : "query",
@@ -1285,7 +1285,7 @@
         "tags" : [ "OAuth 2.0" ],
         "summary" : "Revoke token",
         "description" : "Revokes access and/or refresh tokens.",
-        "operationId" : "revoke",
+        "operationId" : "revokeToken",
         "requestBody" : {
           "content" : {
             "application/x-www-form-urlencoded" : {
@@ -1362,7 +1362,7 @@
         "tags" : [ "OAuth 2.0" ],
         "summary" : "Get token",
         "description" : "Obtains an access token and optional refresh token by presenting an authorization grant or refresh token. [Refresh Token Rotation](https://www.rfc-editor.org/rfc/rfc6819#section-5.2.2.3) is supported by default for the Authorization Code Flow.",
-        "operationId" : "token",
+        "operationId" : "getToken",
         "requestBody" : {
           "content" : {
             "application/x-www-form-urlencoded" : {
@@ -1464,7 +1464,7 @@
         "tags" : [ "Groups" ],
         "summary" : "Get one group",
         "description" : "Retrieves the properties of the specified group.",
-        "operationId" : "get",
+        "operationId" : "getOneGroupOfGroupType",
         "parameters" : [ {
           "name" : "grouptype",
           "in" : "path",
@@ -1533,7 +1533,7 @@
         "tags" : [ "Groups" ],
         "summary" : "Get groups for group type",
         "description" : "Retrieves the groups for the given group type",
-        "operationId" : "getAll_1",
+        "operationId" : "getAllGroupsByGroupType",
         "parameters" : [ {
           "name" : "grouptype",
           "in" : "path",
@@ -1629,7 +1629,7 @@
         "tags" : [ "Groups" ],
         "summary" : "Create, update, or delete one or more groups",
         "description" : "Create, update, or delete one or more groups in a single request. This is the recommended way of creating, updating and deleting groups.",
-        "operationId" : "updateGroupAsync",
+        "operationId" : "createUpdateDeleteGroups",
         "requestBody" : {
           "description" : "**Group strategy**\n\nThe following values are valid strategies for group operations. These can be used to create, update or delete groups.\n\n| Name         | Description                                                                                |\n| :----------- |:-------------------------------------------------------------------------------------------|\n| UPSERT   | Will update (and insert if not found) the group based on the rules passed along.           |\n| UPDATE   | Will update (but doesn’t insert if not found) the group based on the rules passed along. |\n| DELETE   | Will delete the group with the given ID.                                                 |\n\n**Limits**\n\n* Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).\n* When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.",
           "content" : {
@@ -1726,7 +1726,7 @@
         "tags" : [ "Profile events" ],
         "summary" : "Get profile events",
         "description" : "Retrieves the consent management events for a profile; consent changed or permission level changed.",
-        "operationId" : "get_1",
+        "operationId" : "getProfileEvents",
         "parameters" : [ {
           "name" : "profileId",
           "in" : "path",
@@ -1799,7 +1799,7 @@
         "tags" : [ "Profile properties" ],
         "summary" : "Get one profile property",
         "description" : "Retrieves a single profile property.",
-        "operationId" : "getProfileProperty",
+        "operationId" : "getOneProfileProperty",
         "parameters" : [ {
           "name" : "profilePropertyId",
           "in" : "path",
@@ -1853,7 +1853,7 @@
       "put" : {
         "tags" : [ "Profile properties" ],
         "summary" : "Create/update profile property",
-        "operationId" : "createOrUpdateProfileProperty",
+        "operationId" : "createUpdateProfileProperty",
         "parameters" : [ {
           "name" : "profilePropertyId",
           "in" : "path",
@@ -1982,7 +1982,7 @@
         "tags" : [ "Profile properties" ],
         "summary" : "Get all profile properties",
         "description" : "Retrieves the profile properties.",
-        "operationId" : "getProfileProperties",
+        "operationId" : "getAllProfileProperties",
         "parameters" : [ {
           "name" : "count",
           "in" : "query",
@@ -2059,7 +2059,7 @@
         "tags" : [ "Profiles" ],
         "summary" : "Search profiles",
         "description" : "Search for BlueConic profiles based on a specific value for an indexed (unique) property. Multiple name/value pairs can be used to refine the search.",
-        "operationId" : "get_2",
+        "operationId" : "searchProfiles",
         "parameters" : [ {
           "name" : "property",
           "in" : "query",
@@ -2133,7 +2133,7 @@
         "tags" : [ "Profiles" ],
         "summary" : "Create, update, or delete one or more profiles",
         "description" : "Create, update, or delete one or more profiles in a single request. This is the recommended way of creating, updating and deleting profiles.",
-        "operationId" : "updateProfileAsync",
+        "operationId" : "createUpdateDeleteProfiles",
         "parameters" : [ {
           "name" : "objectiveIds",
           "in" : "query",
@@ -2258,7 +2258,7 @@
         "tags" : [ "Profiles" ],
         "summary" : "Get one profile",
         "description" : "Retrieves the properties of the specified profile, including the IDs of the matching dynamic segments.",
-        "operationId" : "getProfileAsync",
+        "operationId" : "getOneProfile",
         "parameters" : [ {
           "name" : "profileId",
           "in" : "path",
@@ -2411,7 +2411,7 @@
         "tags" : [ "Segments" ],
         "summary" : "Get profiles in segment",
         "description" : "Retrieves the profiles of the segment.",
-        "operationId" : "getSegmentExportNormal",
+        "operationId" : "getProfilesInSegment",
         "parameters" : [ {
           "name" : "segment",
           "in" : "path",
@@ -2637,7 +2637,7 @@
         "tags" : [ "Segments" ],
         "summary" : "Get all segments",
         "description" : "Retrieves all segments.",
-        "operationId" : "getSegments",
+        "operationId" : "getAllSegments",
         "parameters" : [ {
           "name" : "startIndex",
           "in" : "query",
@@ -2804,7 +2804,7 @@
         "tags" : [ "URL mappings" ],
         "summary" : "Create URL mapping",
         "description" : "Create a new URL mapping (separate from an external tracker).",
-        "operationId" : "createURL",
+        "operationId" : "createURLMapping",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -2857,7 +2857,7 @@
       "get" : {
         "tags" : [ "URL mappings" ],
         "summary" : "Get URL mapping",
-        "operationId" : "getShortenedURL",
+        "operationId" : "getOneURLMapping",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -2902,7 +2902,7 @@
       "put" : {
         "tags" : [ "URL mappings" ],
         "summary" : "Update URL mapping",
-        "operationId" : "updateShortenedURL",
+        "operationId" : "updateURLMapping",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -3025,7 +3025,7 @@
         "tags" : [ "Roles" ],
         "summary" : "Get one role",
         "description" : "Retrieves a single role.",
-        "operationId" : "getRole",
+        "operationId" : "getOneRole",
         "parameters" : [ {
           "name" : "role",
           "in" : "path",
@@ -3134,7 +3134,7 @@
         "tags" : [ "Users" ],
         "summary" : "Get one user",
         "description" : "Retrieves a single user.",
-        "operationId" : "getUser",
+        "operationId" : "getOneUser",
         "parameters" : [ {
           "name" : "user",
           "in" : "path",

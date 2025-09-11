@@ -382,7 +382,7 @@ paths:
       - Audit Events
       summary: Get audit events
       description: Retrieves the audit events.
-      operationId: query
+      operationId: getAuditEvents
       parameters:
       - name: fromDate
         in: query
@@ -529,7 +529,7 @@ paths:
         \ the `ids` query parameter to retrieve specific items by their IDs. The `ids`\
         \ parameter accepts a comma-separated list of item IDs.\nIf the `ids` parameter\
         \ is not provided, all items in the content store will be returned. "
-      operationId: getItems
+      operationId: getContentItemsFromStore
       parameters:
       - name: contentStore
         in: path
@@ -654,7 +654,7 @@ paths:
         \ must be a JSON array of items to be added. Each item in the array should\
         \ be a JSON object with an `id` and a `properties` object.\nThe `properties`\
         \ object contains key-value pairs representing the properties of the item. "
-      operationId: addItems
+      operationId: addContentItemsToStore
       parameters:
       - name: contentStore
         in: path
@@ -811,7 +811,7 @@ paths:
         To create a content store, a request with a JSON object can be sent to the `/contentStores` endpoint via the `POST` method.
         The JSON object must contain all the properties that are required for a content store.
         You can check the schema of the response of a `GET` request to see which properties are available.
-      operationId: createWithBean
+      operationId: createContentStore
       requestBody:
         content:
           application/json:
@@ -899,7 +899,7 @@ paths:
       - Content stores
       summary: Bulk delete content items
       description: Deletes multiple items from a content store.
-      operationId: deleteAll
+      operationId: deleteContentItemsFromStore
       parameters:
       - name: contentStore
         in: path
@@ -950,7 +950,7 @@ paths:
         The JSON object can contain any of the properties that are part of the content store. <br/>
         Partial updates are supported. You only need to supply the properties that you want to change.<br/>
         At least one property needs to be supplied, otherwise a HTTP 400 is returned.
-      operationId: updateWithBean
+      operationId: updateContentStore
       parameters:
       - name: contentStore
         in: path
@@ -1031,7 +1031,7 @@ paths:
       - Channels
       summary: Get all channels
       description: Retrieves all channels.
-      operationId: getAll
+      operationId: getAllChannels
       parameters:
       - name: startIndex
         in: query
@@ -1118,7 +1118,7 @@ paths:
       - Channels
       summary: Get one channel
       description: Retrieves a single channel.
-      operationId: getChannel
+      operationId: getOneChannel
       parameters:
       - name: channelId
         in: path
@@ -1430,7 +1430,7 @@ paths:
       - Models
       summary: Create model
       description: Create a model.
-      operationId: createWithParts
+      operationId: createModel
       requestBody:
         description: |-
           To create a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `POST` method. <br/>
@@ -1610,7 +1610,7 @@ paths:
       - Models
       summary: Get one model
       description: Retrieves a single model (without the model binary).
-      operationId: getModel
+      operationId: getOneModelMetadata
       parameters:
       - name: model
         in: path
@@ -1700,7 +1700,7 @@ paths:
       - Models
       summary: Update model
       description: Update a model by id.
-      operationId: updateWithParts
+      operationId: updateModel
       parameters:
       - name: model
         in: path
@@ -1989,7 +1989,7 @@ paths:
       description: "Retrieves the model binary if set, HTTP 404 otherwise. The response\
         \ will contain an `Etag` header with the hash of the model, which can be used\
         \ to perform a conditional request."
-      operationId: getModelBinary
+      operationId: getModelONNXBinary
       parameters:
       - name: model
         in: path
@@ -2034,7 +2034,7 @@ paths:
         \ to the authorization server where the user can grant or deny the external\
         \ application access. The Proof Key for Code Exchange ([PKCE](https://www.rfc-editor.org/rfc/rfc7636))\
         \ extension is enforced for the Authorization Code Flow."
-      operationId: authorize
+      operationId: startAuthorizationCodeFlow
       parameters:
       - name: response_type
         in: query
@@ -2104,7 +2104,7 @@ paths:
       - OAuth 2.0
       summary: Revoke token
       description: Revokes access and/or refresh tokens.
-      operationId: revoke
+      operationId: revokeToken
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -2175,7 +2175,7 @@ paths:
       description: "Obtains an access token and optional refresh token by presenting\
         \ an authorization grant or refresh token. [Refresh Token Rotation](https://www.rfc-editor.org/rfc/rfc6819#section-5.2.2.3)\
         \ is supported by default for the Authorization Code Flow."
-      operationId: token
+      operationId: getToken
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -2269,7 +2269,7 @@ paths:
       - Groups
       summary: Get one group
       description: Retrieves the properties of the specified group.
-      operationId: get
+      operationId: getOneGroupOfGroupType
       parameters:
       - name: grouptype
         in: path
@@ -2339,7 +2339,7 @@ paths:
       - Groups
       summary: Get groups for group type
       description: Retrieves the groups for the given group type
-      operationId: getAll_1
+      operationId: getAllGroupsByGroupType
       parameters:
       - name: grouptype
         in: path
@@ -2503,7 +2503,7 @@ paths:
       summary: "Create, update, or delete one or more groups"
       description: "Create, update, or delete one or more groups in a single request.\
         \ This is the recommended way of creating, updating and deleting groups."
-      operationId: updateGroupAsync
+      operationId: createUpdateDeleteGroups
       requestBody:
         description: |-
           **Group strategy**
@@ -2683,7 +2683,7 @@ paths:
       summary: Get profile events
       description: Retrieves the consent management events for a profile; consent
         changed or permission level changed.
-      operationId: get_1
+      operationId: getProfileEvents
       parameters:
       - name: profileId
         in: path
@@ -2930,7 +2930,7 @@ paths:
       - Profile properties
       summary: Get one profile property
       description: Retrieves a single profile property.
-      operationId: getProfileProperty
+      operationId: getOneProfileProperty
       parameters:
       - name: profilePropertyId
         in: path
@@ -3007,7 +3007,7 @@ paths:
       tags:
       - Profile properties
       summary: Create/update profile property
-      operationId: createOrUpdateProfileProperty
+      operationId: createUpdateProfileProperty
       parameters:
       - name: profilePropertyId
         in: path
@@ -3258,7 +3258,7 @@ paths:
       - Profile properties
       summary: Get all profile properties
       description: Retrieves the profile properties.
-      operationId: getProfileProperties
+      operationId: getAllProfileProperties
       parameters:
       - name: count
         in: query
@@ -3408,7 +3408,7 @@ paths:
       description: Search for BlueConic profiles based on a specific value for an
         indexed (unique) property. Multiple name/value pairs can be used to refine
         the search.
-      operationId: get_2
+      operationId: searchProfiles
       parameters:
       - name: property
         in: query
@@ -3479,7 +3479,7 @@ paths:
       summary: "Create, update, or delete one or more profiles"
       description: "Create, update, or delete one or more profiles in a single request.\
         \ This is the recommended way of creating, updating and deleting profiles."
-      operationId: updateProfileAsync
+      operationId: createUpdateDeleteProfiles
       parameters:
       - name: objectiveIds
         in: query
@@ -3986,7 +3986,7 @@ paths:
       summary: Get one profile
       description: "Retrieves the properties of the specified profile, including the\
         \ IDs of the matching dynamic segments."
-      operationId: getProfileAsync
+      operationId: getOneProfile
       parameters:
       - name: profileId
         in: path
@@ -4235,7 +4235,7 @@ paths:
       - Segments
       summary: Get profiles in segment
       description: Retrieves the profiles of the segment.
-      operationId: getSegmentExportNormal
+      operationId: getProfilesInSegment
       parameters:
       - name: segment
         in: path
@@ -4644,7 +4644,7 @@ paths:
       - Segments
       summary: Get all segments
       description: Retrieves all segments.
-      operationId: getSegments
+      operationId: getAllSegments
       parameters:
       - name: startIndex
         in: query
@@ -5105,7 +5105,7 @@ paths:
       - URL mappings
       summary: Create URL mapping
       description: Create a new URL mapping (separate from an external tracker).
-      operationId: createURL
+      operationId: createURLMapping
       requestBody:
         content:
           application/json:
@@ -5215,7 +5215,7 @@ paths:
       tags:
       - URL mappings
       summary: Get URL mapping
-      operationId: getShortenedURL
+      operationId: getOneURLMapping
       parameters:
       - name: id
         in: path
@@ -5285,7 +5285,7 @@ paths:
       tags:
       - URL mappings
       summary: Update URL mapping
-      operationId: updateShortenedURL
+      operationId: updateURLMapping
       parameters:
       - name: id
         in: path
@@ -5447,7 +5447,7 @@ paths:
       - Roles
       summary: Get one role
       description: Retrieves a single role.
-      operationId: getRole
+      operationId: getOneRole
       parameters:
       - name: role
         in: path
@@ -5628,7 +5628,7 @@ paths:
       - Users
       summary: Get one user
       description: Retrieves a single user.
-      operationId: getUser
+      operationId: getOneUser
       parameters:
       - name: user
         in: path
