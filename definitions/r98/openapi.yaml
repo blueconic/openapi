@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "99.0"
+  version: "98.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -168,31 +168,29 @@ tags:
     \             | Create, Update, Delete                                       \
     \                                  |\n| Single Sign On Setting     | Update (for\
     \ each change)                                                               \
-    \        |\n| Inactvity Setting          | Update (for each change)          \
-    \                                                             |\n| Supported Legislation\
-    \ Zone | Create, Delete, Update                                              \
-    \                           |\n| Timeline Event Rollup      | Create, Update,\
+    \        |\n| Supported Legislation Zone | Create, Delete, Update            \
+    \                                                             |\n| Timeline Event\
+    \ Rollup      | Create, Update, Delete                                       \
+    \                                  |\n| Timeline Event Type        | Create, Update,\
     \ Delete                                                                     \
-    \    |\n| Timeline Event Type        | Create, Update, Delete                \
-    \                                                         |\n| Tracker       \
-    \             | Create, Update, Delete                                       \
-    \                                  |\n| User                       | Login, Login\
-    \ failed, Logout, Create, Update, Delete, Password reset requested, Password change\
-    \ |\n\n\nOnly Profile and Group viewed, updated, or deleted by a user from the\
-    \ Profile and Groups tab are logged.\n\nThe following events are not considered\
-    \ as human actions, and therefore not covered in the Platform\nAudit Event API:\n\
-    \n- Connections that import or export profiles.\n- Profile and group creation\
-    \ (Profiles can only be created by a visitor or an import connection).\n\n**Event\
-    \ data**\n\nThe following event data is available:\n\n| Field                \
-    \  | Description      | Example values                                       \
+    \    |\n| Tracker                    | Create, Update, Delete                \
+    \                                                         |\n| User          \
+    \             | Login, Login failed, Logout, Create, Update, Delete, Password\
+    \ reset requested, Password change |\n\n\nOnly Profile and Group viewed, updated,\
+    \ or deleted by a user from the Profile and Groups tab are logged.\n\nThe following\
+    \ events are not considered as human actions, and therefore not covered in the\
+    \ Platform\nAudit Event API:\n\n- Connections that import or export profiles.\n\
+    - Profile and group creation (Profiles can only be created by a visitor or an\
+    \ import connection).\n\n**Event data**\n\nThe following event data is available:\n\
+    \n| Field                  | Description      | Example values               \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                                          |\n| :---                   | :---\
-    \             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+    \                                                                  |\n| :--- \
+    \                  | :---             |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n\
     |date|Datetime in UTC when the event occurred. The date is in the https://www.ietf.org/rfc/rfc3339.txt\
     \ format.| 2025-04-15T11:24:01.183Z                                          \
     \                                                                            \
@@ -1501,7 +1499,6 @@ paths:
                             "fullName": "",
                             "userName": "ondemand@blueconic.com"
                           },
-                          "lastViewDate": "2025-11-27T10:35:43.033Z",
                           "name": "example dialogue",
                           "optimizerSettings": {
                             "controlGroupDistribution": 5,
@@ -1607,7 +1604,6 @@ paths:
                         "fullName": "",
                         "userName": "ondemand@blueconic.com"
                       },
-                      "lastViewDate": "2025-11-27T10:35:43.033Z",
                       "name": "example dialogue",
                       "optimizerSettings": {
                         "controlGroupDistribution": 5,
@@ -1724,7 +1720,6 @@ paths:
                             "fullName": "ondemand@blueconic.com",
                             "userName": "ondemand@blueconic.com"
                           },
-                          "lastActivationDate": "2025-11-27T10:35:43.034Z",
                           "name": "AdBlock Detection",
                           "pluginId": "listener_adblock",
                           "tags": [],
@@ -1969,7 +1964,6 @@ paths:
                         "fullName": "ondemand@blueconic.com",
                         "userName": "ondemand@blueconic.com"
                       },
-                      "lastActivationDate": "2025-11-27T10:35:43.034Z",
                       "name": "AdBlock Detection",
                       "pluginId": "listener_adblock",
                       "tags": [],
@@ -2411,10 +2405,9 @@ paths:
       summary: Create interaction event
       description: "Register an interaction event for a profile. When optional parameter\
         \ `profile` is set, the interaction ID will be added to the profile property\
-        \ `interactions_viewed` (in case of `VIEW`), `interactions_clicked` (in case\
-        \ of `CLICK`), or `interactions_converted` (in case of `CONVERSION`) of that\
-        \ profile. A `CONVERSION` event can also include a `conversionValue` that\
-        \ will be attributed to the given interaction."
+        \ \"interactions_viewed\" (in case of \"VIEW\"), \"interactions_clicked\"\
+        \ (in case of \"CLICK\"), or \"interactions_converted\" (in case of \"CONVERSION\"\
+        ) of that profile."
       operationId: createEvent
       requestBody:
         content:
@@ -2892,10 +2885,10 @@ paths:
           The `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>
           The `metadata` part is required and must be included in the request.
 
-          ### DIALOGUE and RECOMMENDATION models
+          ### DIALOGUE models
 
-          When creating a model of type `DIALOGUE` or `RECOMMENDATION`, the following property is optional in the `metadata` part:
-          - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`). This is only relevant for models that have a `profile` input.
+          When creating a model of type `DIALOGUE`, the `metadata` part must contain the following additional property:
+          - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).
 
           Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
           The `featureNames` must be defined in the following format and is only required when an ONNX model is provided:
@@ -2912,36 +2905,11 @@ paths:
 
           #### ONNX model requirements
           The ONNX model must have the following input names:
-          * `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model
+          * `variant_ids`: the list of variant IDs to consider in the ONNX model
           * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
 
           The ONNX model must have the following output names:
-          * `variant_id` (str): the variant ID that should be served based on the ONNX model outcome
-
-          ### RECOMMENDATION models
-
-          When creating a model of type `RECOMMENDATION`, the `metadata` part _can_ contain the following additional property:
-          - `storeId`: An optional content/product store ID for which the models is trained. If not provider, the model can work across multiple stores.
-
-          #### ONNX model requirements
-          The ONNX model _can_ use one or more of the following input names:
-          * `id` (str[]): a list of external item IDs for all relevant items the recommender can choose from
-          * `current_item` (str): the id of the current item
-          * `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model
-          ** If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-          * `last_order_date` (int64): the number of hours since the last time the product was ordered by the customer
-          * `shoppingcart` (int64): whether the item is currently in the customer’s cart
-          * `viewed` (int64): the number of times the item was viewed by the customer
-          * `ordered` (int64): the number of times the item was ordered by the customer
-          * `recent_view` (int64): the number of times the item was viewed in the configured timeframe
-          * `recent_click` (int64): the number of times the item was clicked in the configured timeframe
-          * `recent_entrypage` (int64): the number of times the item was the landing page in the configured timeframe
-          * `recent_recommendation_view` (int64): the number of times the item was viewed in a recommendation in the configured timeframe
-          * `recent_shoppingcart` (int64): the number of times the item was added to a shoppingcart in the configured timeframe
-          * `recent_order` (int64): the number of times the item was ordered in the configured timeframe
-
-          The ONNX model must have the following output names:
-          * `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.
+          * `variant_id`: the variant ID that should be served based on the ONNX model outcome
         content:
           multipart/form-data:
             schema:
@@ -2953,7 +2921,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ModelBean"
+                $ref: "#/components/schemas/model"
               examples:
                 Response body with ONNX model (GENERAL):
                   description: Response body with ONNX model (GENERAL)
@@ -3008,31 +2976,6 @@ paths:
                       "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
                       "tags" : [ ],
                       "type" : "DIALOGUE"
-                    }
-                Response body with ONNX model (RECOMMENDATION):
-                  description: Response body with ONNX model (RECOMMENDATION)
-                  value: |-
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                      "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                      "name" : "Recommendation model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                      "tags" : [ ],
-                      "type" : "RECOMMENDATION",
-                      "storeId": "e7b65b21-3e6b-4009-8b6b-3cd26862a689"
                     }
                 Response body without ONNX model (GENERAL):
                   description: Response body without ONNX model (GENERAL)
@@ -3128,7 +3071,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ModelBean"
+                $ref: "#/components/schemas/model"
               examples:
                 Response body (GENERAL):
                   description: Response body (GENERAL)
@@ -3184,31 +3127,6 @@ paths:
                       "tags" : [ ],
                       "type" : "DIALOGUE"
                     }
-                Response body (RECOMMENDATION):
-                  description: Response body (RECOMMENDATION)
-                  value: |-
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                      "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                      "name" : "Recommendation model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                      "tags" : [ ],
-                      "type" : "RECOMMENDATION",
-                      "storeId": "e7b65b21-3e6b-4009-8b6b-3cd26862a689"
-                    }
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -3249,9 +3167,9 @@ paths:
           For the `metadata` part, no partial updates are supported. The entire metadata object must be provided in the request.<br/>
           At least one part needs to be supplied, otherwise a HTTP 400 is returned.
 
-          ### DIALOGUE and RECOMMENDATION models
+          ### DIALOGUE models
 
-          When updating a model of type `DIALOGUE`or `RECOMMENDATION`, the `metadata` part must contain the following additional property:
+          When updating a model of type `DIALOGUE`, the `metadata` part must contain the following additional property:
           - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).
 
           Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
@@ -3269,36 +3187,11 @@ paths:
 
           #### ONNX model requirements
           The ONNX model must have the following input names:
-          * `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model
+          * `variant_ids`: the list of variant IDs to consider in the ONNX model
           * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
 
           The ONNX model must have the following output names:
-          * `variant_id` (str): the variant ID that should be served based on the ONNX model outcome
-
-          ### RECOMMENDATION models
-
-          When updating a model of type `RECOMMENDATION`, the `metadata` part _can_ contain the following additional property:
-          - `storeId`: An optional content/product store ID for which the models is trained. If not provider, the model can work across multiple stores.
-
-          #### ONNX model requirements
-          The ONNX model _can_ use one or more of the following input names:
-          * `id` (str[]): a list of external item IDs for all relevant items the recommender can choose from
-          * `current_item` (str): the id of the current item
-          * `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model
-          ** If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-          * `last_order_date` (int64): the number of hours since the last time the product was ordered by the customer
-          * `shoppingcart` (int64): whether the item is currently in the customer’s cart
-          * `viewed` (int64): the number of times the item was viewed by the customer
-          * `ordered` (int64): the number of times the item was ordered by the customer
-          * `recent_view` (int64): the number of times the item was viewed in the configured timeframe
-          * `recent_click` (int64): the number of times the item was clicked in the configured timeframe
-          * `recent_entrypage` (int64): the number of times the item was the landing page in the configured timeframe
-          * `recent_recommendation_view` (int64): the number of times the item was viewed in a recommendation in the configured timeframe
-          * `recent_shoppingcart` (int64): the number of times the item was added to a shoppingcart in the configured timeframe
-          * `recent_order` (int64): the number of times the item was ordered in the configured timeframe
-
-          The ONNX model must have the following output names:
-          * `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.
+          * `variant_id`: the variant ID that should be served based on the ONNX model outcome
         content:
           multipart/form-data:
             schema:
@@ -3310,7 +3203,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ModelBean"
+                $ref: "#/components/schemas/model"
               examples:
                 Response body with ONNX model (GENERAL):
                   description: Response body with ONNX model (GENERAL)
@@ -3365,31 +3258,6 @@ paths:
                       "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
                       "tags" : [ ],
                       "type" : "DIALOGUE"
-                    }
-                Response body with ONNX model (RECOMMENDATION):
-                  description: Response body with ONNX model (RECOMMENDATION)
-                  value: |-
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ],
-                      "id" : "682c7614-4456-4ca8-83d3-17f768b5ca14",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "2e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model",
-                      "name" : "Recommendation model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
-                      "tags" : [ ],
-                      "type" : "RECOMMENDATION",
-                      "storeId": "e7b65b21-3e6b-4009-8b6b-3cd26862a689"
                     }
                 Response body without ONNX model (GENERAL):
                   description: Response body without ONNX model (GENERAL)
@@ -3484,7 +3352,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ModelBean"
+                $ref: "#/components/schemas/model"
               examples:
                 Response body with ONNX model:
                   description: Response body with ONNX model
@@ -3890,7 +3758,6 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "legislations" : [ "PIPEDA", "JAMAICA_DPA", "GDPR" ],
-                        "lastProfileMutationDate": "2025-11-27T10:43:58.004Z",
                         "name" : "marketing_objective",
                         "needsConsent" : true,
                         "objectiveDescription" : "For marketing purposes",
@@ -3971,7 +3838,6 @@ paths:
                         "userName" : "ondemand@blueconic.com"
                       },
                       "legislations" : [ "PIPEDA", "JAMAICA_DPA", "GDPR" ],
-                      "lastProfileMutationDate": "2025-11-27T10:43:58.004Z",
                       "name" : "marketing_objective",
                       "needsConsent" : true,
                       "objectiveDescription" : "For marketing purposes",
@@ -4486,7 +4352,7 @@ paths:
         schema:
           type: integer
           format: int32
-          default: 0
+          default: "0"
         example: 0
       - name: count
         in: query
@@ -4494,7 +4360,7 @@ paths:
         schema:
           type: integer
           format: int32
-          default: 20
+          default: "20"
         example: 20
       responses:
         "200":
@@ -5467,130 +5333,139 @@ paths:
             description: Comma separated list of objective IDs
             value: "objective1,objective2"
       requestBody:
-        description: |-
-          **Timeline event types**
-
-          Timeline event types can be accessed through **Timeline event types** tab in BlueConic. In this tab you can create a new timeline event type, update, or delete existing ones.
-
-          It's possible to add, update, or remove properties and nested properties from a timeline event type. The property ID of timeline event property can only be changed until it's saved.
-          To update the property ID after saving, the property will have to be deleted and recreated with the desired ID.
-
-          **Timeline events**
-
-          Events are data points tied to the [BlueConic Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic) of a profile, e.g. an order the customer placed. BlueConic comes out of the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types).
-          Events can be HIGH or LOW priority. There is a maximum number of 250 events per profile allowed.
-          LOW priority events have a retention period between 1 and 365 days (the default is 30 days).
-          HIGH priority events have a retention period of 1 day and up.
-          The default is indefinitely; however, they are constrained by the total number of events and take precedence over LOW priority events, which are capped at 50 if there are 200 or more HIGH priority events.
-
-          **Privacy legislations and consent management**
-
-          Any `objectiveIds` passed in the query string are matched against the profile that is being created.
-          Matching is done against the special profile property `consented_objectives`, which reflects the objective IDs that the profile has explicitly consented to. So, for the profile to be created, the “properties” should at least contain one of the objective IDs passed in the querystring, for the property with id `consented_objectives`. Otherwise, the `CONSENT_MISMATCH` state is returned in the response.
-
-          The following values are valid privacy legislation zone values.
-
-          | Name                    | Description |
-          |:------------------------| :---------- |
-          | CCPA                    | A profile is governed by CCPA in the State of California. |
-          | GDPR                    | A profile is governed by GDPR in Europe. |
-          | NYPA                    | A profile is governed by NYPA in the State of New York. |
-          | PIPEDA                  | A profile is governed by PIPEDA in Canada. |
-          | SB220                   | A profile is governed by SB220 in the State of Nevada. |
-          | PERU_DPL                | A profile is governed by the Personal Data Protection Law (PDPL) of Peru. |
-          | ARGENTINA_DPL           | A profile is governed by the Personal Data Protection Law (PDPL) of Argentina. |
-          | SB1392                  | A profile is governed by SB1392 of the Commonwealth of Virginia |
-          | SB190                   | A profile is governed by the State of Colorado. |
-          | CDPA_CTCPDA             | A profile is governed by CDPA/CTCPDA in the State of Connecticut. |
-          | UCPA                    | A profile is governed by UCPA in the State of Utah. |
-          | BRAZIL_LGPD             | A profile is governed by the Brazilian General Protection Law. |
-          | ISRAEL_PPL              | A profile is governed by the Israel Protection Privacy Law. |
-          | JAPAN_APPI              | A profile is governed by the Japan APPI. |
-          | MEXICO_LFPDPPP          | A profile is governed by the Mexico LFPDPPP. |
-          | NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New Zealand Privacy Act. |
-          | SWITZERLAND_DPA         | A profile is governed by the Switzerland Data Protection Act (DPA). |
-          | UK_GDPR                 | A profile is governed by the United Kingdom General Data Protection Regulation. |
-          | CHINA_PIPL              | A profile is governed by the People's Republic of China PIPL. |
-          | AUSTRALIA_PRIVACY_ACT   | A profile is governed by the Australian Privacy Act. |
-          | TDPSA                   | A profile is governed by TDPSA in the State of Texas. |
-          | MTCDPA                  | A profile is governed by MTCDPA in the State of Montana. |
-          | FDBR                    | A profile is governed by FDBR in the State of Florida. |
-          | OCPA                    | A profile is governed by OCPA in the State of Oregon. |
-          | DPDPA                   | A profile is governed by DPDPA in the State of Delaware. |
-          | ICDPA                   | A profile is governed by ICDPA in the State of Iowa. |
-          | NHPA                    | A profile is governed by NHPA in the State of New Hampshire. |
-          | NJDPA                   | A profile is governed by NJDPA in the State of New Jersey. |
-          | NEDPA                   | A profile is governed by NEDPA in the State of Nebraska. |
-          | HAITI_APD               | A profile is governed by the Haiti Arrêté de Protection des Données (APD). |
-          | JAMAICA_DPA             | A profile is governed by the Jamaica Data Protection Act (DPA). |
-          | TRINIDAD_TOBAGO_DPA     | A profile is governed by the Trinidad & Tobago Data Protection Act (DPA). |
-          | COSTA_RICA_L8968        | A profile is governed by the Costa Rica Law No. 8968 on Protection of Individuals Against the Processing of Personal Data. |
-          | GUATEMALA_LAIP          | A profile is governed by the Guatemala Ley de Acceso a la Información Pública, Decree 57-2008. |
-          | PANAMA_L81              | A profile is governed by the Panama Data Protection Law No. 81. |
-          | HONDURAS_LPDCP          | A profile is governed by the Honduras LPDCP. |
-          | EL_SALVADOR             | A profile is governed by the El Salvador Privacy Statutes. |
-          | COLOMBIA_L1581_D1377    | A profile is governed by the Colombia Law 1581, 2012; Decree 1377, 2013. |
-          | NICARAGUA_L787          | A profile is governed by the Nicaragua Law No. 787. |
-          | CHILE_L19_628           | A profile is governed by the Chile Law No. 19.628 on Protection of Privacy. |
-          | BELIZE_DPA              | A profile is governed by the Belize Data Protection Act (DPA). |
-          | TENNESSEE_TIPA          | A profile is governed by TIPA in the State of Tennessee. |
-          | INDIANA_INCDPA          | A profile is governed by INCDPA in the State of Indiana. |
-          | KENTUCKY_KCDPA          | A profile is governed by KCDPA in the State of Kentucky. |
-          | MINNESOTA_MCDPA         | A profile is governed by MCDPA in the State of Minnesota. |
-          | MARYLAND_MODPA          | A profile is governed by MODPA in the State of Maryland. |
-          | RHODE_ISLAND_RIDTPPA    | A profile is governed by RIDTPPA in the State of Rhode Island. |
-          | SOUTH_KOREA_PIPA        | A profile is governed by the South Korea PIPA. |
-          | NONE                    | The profile is not governed by a known privacy legislation zone; profile will just be created. NONE legislations are also targeted when 'Rest of World' is selected in an objective. |
-
-          **Profile strategy**
-
-          The following values are valid strategies for profile operations. These can be used to create, update or delete profiles.
-
-          | Name         | Description |
-          | :----------- | :---------- |
-          | UPSERT   | Will update (and insert if not found) the profile based on the rules passed along. |
-          | UPDATE   | Will update (but doesn’t insert if not found) the profile based on the rules passed along. |
-          | DELETE   | Will delete the profile with the given ID. |
-
-          **Timeline Strategy**
-
-          The following values are valid timeline strategies. These can either be used for the strategy property for a timeline event as a whole, or when passing rules to apply on nested timeline event properties.
-
-          | Name     | Description |
-          | :--------| :---------- |
-          | SET      | Timeline event will be added to the profile timeline as is, possibly replacing the existing event with the same ID, event type ID, and date. |
-          | UPSERT   | Will update (and insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |
-          | UPDATE   | Will update (but doesn’t insert if not found) the timeline event with the given ID, event type ID, and date, based on the rules that are passed along. |
-          | DELETE   | Will delete the timeline event with the given ID, event type ID and, optionally, a date. If not passed, all events matching the ID and event type ID will be deleted. |
-
-          **Profile and Timeline property strategy**
-
-          The following values are valid property strategies. These rules apply on profile and timeline event properties.
-
-          | Name         | Description |
-          | :----------- | :---------- |
-          | ADD          | Values will be added to the values that already existed in the profile or timeline event property. Duplicates will not be added. |
-          | SET          | Values will overwrite the values that already existed in the profile or timeline event property. |
-          | SET_IF_EMPTY | Only set values if the profile or timeline event property is empty. |
-          | SUM          | Add the value to the value already stored in the profile property. This is not supported for timeline event properties. |
-          | REMOVE       | Remove the value from the list of values already stored in the profile property. This is not yet supported for timeline event properties. |
-
-          **Group property strategy**
-
-          The following values are valid property strategies. These rules apply on group properties.
-
-          | Name         | Description                                                                                                  |
-          | :----------- |:-------------------------------------------------------------------------------------------------------------|
-          | ADD          | Values will be added to the values that already existed in the group property. Duplicates will not be added. |
-          | SET          | Values will overwrite the values that already existed in the group property.                                 |
-          | SET_IF_EMPTY | Only set values if the group property is empty.                                                              |
-          | SUM          | Add the value to the value already stored in the group property.                                             |
-          | REMOVE       | Remove the value from the list of values already stored in the group property.                               |
-
-          **Limits**
-
-          * Each request can contain up to 1000 entries. If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries will be processed and returned in the response).
-          * When too many requests are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends designing your app to be resilient to this scenario. For example, implement a request queue with an exponential backoff algorithm.
+        description: "**Timeline event types**\n\nTimeline event types can be accessed\
+          \ through **Timeline event types** tab in BlueConic. In this tab you can\
+          \ create a new timeline event type, update, or delete existing ones.\n\n\
+          It's possible to add, update, or remove properties and nested properties\
+          \ from a timeline event type. The property ID of timeline event property\
+          \ can only be changed until it's saved.\nTo update the property ID after\
+          \ saving, the property will have to be deleted and recreated with the desired\
+          \ ID.\n\n**Timeline events**\n\nEvents are data points tied to the [BlueConic\
+          \ Timeline](https://support.blueconic.com/hc/en-us/articles/360035962954-About-Timeline-events-in-BlueConic)\
+          \ of a profile, e.g. an order the customer placed. BlueConic comes out of\
+          \ the box with several predefined [BlueConic Timeline event types](https://support.blueconic.com/hc/en-us/articles/360037189454-BlueConic-Timeline-event-types).\
+          \ \nEvents can be HIGH or LOW priority. There is a maximum number of 250\
+          \ events per profile allowed.\nLOW priority events have a retention period\
+          \ between 1 and 365 days (the default is 30 days).\nHIGH priority events\
+          \ have a retention period of 1 day and up.\nThe default is indefinitely;\
+          \ however, they are constrained by the total number of events and take precedence\
+          \ over LOW priority events, which are capped at 50 if there are 200 or more\
+          \ HIGH priority events.\n\n**Privacy legislations and consent management**\n\
+          \nAny `objectiveIds` passed in the query string are matched against the\
+          \ profile that is being created.\nMatching is done against the special profile\
+          \ property `consented_objectives`, which reflects the objective IDs that\
+          \ the profile has explicitly consented to. So, for the profile to be created,\
+          \ the “properties” should at least contain one of the objective IDs passed\
+          \ in the querystring, for the property with id `consented_objectives`. Otherwise,\
+          \ the `CONSENT_MISMATCH` state is returned in the response.\n\nThe following\
+          \ values are valid privacy legislation zone values.\n\n| Name          \
+          \          | Description |\n| :---------------------- | :---------- |\n\
+          | CCPA                    | A profile is governed by CCPA in the State of\
+          \ California. |\n| GDPR                    | A profile is governed by GDPR\
+          \ in Europe. |\n| NYPA                    | A profile is governed by NYPA\
+          \ in the State of New York. |\n| PIPEDA                  | A profile is\
+          \ governed by PIPEDA in Canada. |\n| SB220                   | A profile\
+          \ is governed by SB220 in the State of Nevada. |\n| PERU_DPL           \
+          \     | A profile is governed by the Personal Data Protection Law (PDPL)\
+          \ of Peru. |\n| ARGENTINA_DPL           | A profile is governed by the Personal\
+          \ Data Protection Law (PDPL) of Argentina. |\n| SB1392                 \
+          \ | A profile is governed by SB1392 of the Commonwealth of Virginia |\n\
+          | SB190                   | A profile is governed by the State of Colorado.\
+          \ |\n| CDPA_CTCPDA             | A profile is governed by CDPA/CTCPDA in\
+          \ the State of Connecticut. |\n| UCPA                    | A profile is\
+          \ governed by UCPA in the State of Utah. |\n| BRAZIL_LGPD             |\
+          \ A profile is governed by the Brazilian General Protection Law. |\n| ISRAEL_PPL\
+          \              | A profile is governed by the Israel Protection Privacy\
+          \ Law. |\n| JAPAN_APPI              | A profile is governed by the Japan\
+          \ APPI. |\n| MEXICO_LFPDPPP          | A profile is governed by the Mexico\
+          \ LFPDPPP. |\n| NEW_ZEALAND_PRIVACY_ACT | A profile is governed by the New\
+          \ Zealand Privacy Act. |\n| SWITZERLAND_DPA         | A profile is governed\
+          \ by the Switzerland Data Protection Act (DPA). |\n| UK_GDPR           \
+          \      | A profile is governed by the United Kingdom General Data Protection\
+          \ Regulation. |\n| CHINA_PIPL              | A profile is governed by the\
+          \ People's Republic of China PIPL. |\n| AUSTRALIA_PRIVACY_ACT   | A profile\
+          \ is governed by the Australian Privacy Act. |\n| TDPSA                \
+          \   | A profile is governed by TDPSA in the State of Texas. |\n| MTCDPA\
+          \                  | A profile is governed by MTCDPA in the State of Montana.\
+          \ |\n| FDBR                    | A profile is governed by FDBR in the State\
+          \ of Florida. |\n| OCPA                    | A profile is governed by OCPA\
+          \ in the State of Oregon. |\n| DPDPA                   | A profile is governed\
+          \ by DPDPA in the State of Delaware. |\n| ICDPA                   | A profile\
+          \ is governed by ICDPA in the State of Iowa. |\n| NHPA                 \
+          \   | A profile is governed by NHPA in the State of New Hampshire. |\n|\
+          \ NJDPA                   | A profile is governed by NJDPA in the State\
+          \ of New Jersey. |\n| NEDPA                   | A profile is governed by\
+          \ NEDPA in the State of Nebraska. |\n| HAITI_APD               | A profile\
+          \ is governed by the Haiti Arrêté de Protection des Données (APD). |\n|\
+          \ JAMAICA_DPA             | A profile is governed by the Jamaica Data Protection\
+          \ Act (DPA). |\n| TRINIDAD_TOBAGO_DPA     | A profile is governed by the\
+          \ Trinidad & Tobago Data Protection Act (DPA). |\n| COSTA_RICA_L8968   \
+          \     | A profile is governed by the Costa Rica Law No. 8968 on Protection\
+          \ of Individuals Against the Processing of Personal Data. |\n| GUATEMALA_LAIP\
+          \          | A profile is governed by the Guatemala Ley de Acceso a la Informació\
+          n Pública, Decree 57-2008. |\n| PANAMA_L81              | A profile is governed\
+          \ by the Panama Data Protection Law No. 81. |\n| HONDURAS_LPDCP        \
+          \  | A profile is governed by the Honduras LPDCP. |\n| EL_SALVADOR     \
+          \        | A profile is governed by the El Salvador Privacy Statutes. |\n\
+          | COLOMBIA_L1581_D1377    | A profile is governed by the Colombia Law 1581,\
+          \ 2012; Decree 1377, 2013. |\n| NICARAGUA_L787          | A profile is governed\
+          \ by the Nicaragua Law No. 787. |\n| CHILE_L19_628           | A profile\
+          \ is governed by the Chile Law No. 19.628 on Protection of Privacy. |\n\
+          | BELIZE_DPA              | A profile is governed by the Belieze Data Protection\
+          \ Act (DPA). |\n| NONE                    | The profile is not governed\
+          \ by a known privacy legislation zone; profile will just be created. NONE\
+          \ legislations are also targeted when 'Rest of World' is selected in an\
+          \ objective. |\n\n**Profile strategy**\n\nThe following values are valid\
+          \ strategies for profile operations. These can be used to create, update\
+          \ or delete profiles.\n\n| Name         | Description |\n| :-----------\
+          \ | :---------- |\n| UPSERT   | Will update (and insert if not found) the\
+          \ profile based on the rules passed along. |\n| UPDATE   | Will update (but\
+          \ doesn’t insert if not found) the profile based on the rules passed along.\
+          \ |\n| DELETE   | Will delete the profile with the given ID. |\n\n**Timeline\
+          \ Strategy**\n\nThe following values are valid timeline strategies. These\
+          \ can either be used for the strategy property for a timeline event as a\
+          \ whole, or when passing rules to apply on nested timeline event properties.\n\
+          \n| Name     | Description |\n| :--------| :---------- |\n| SET      | Timeline\
+          \ event will be added to the profile timeline as is, possibly replacing\
+          \ the existing event with the same ID, event type ID, and date. |\n| UPSERT\
+          \   | Will update (and insert if not found) the timeline event with the\
+          \ given ID, event type ID, and date, based on the rules that are passed\
+          \ along. |\n| UPDATE   | Will update (but doesn’t insert if not found) the\
+          \ timeline event with the given ID, event type ID, and date, based on the\
+          \ rules that are passed along. |\n| DELETE   | Will delete the timeline\
+          \ event with the given ID, event type ID and, optionally, a date. If not\
+          \ passed, all events matching the ID and event type ID will be deleted.\
+          \ |\n\n**Profile and Timeline property strategy**\n\nThe following values\
+          \ are valid property strategies. These rules apply on profile and timeline\
+          \ event properties.\n\n| Name         | Description |\n| :----------- |\
+          \ :---------- |\n| ADD          | Values will be added to the values that\
+          \ already existed in the profile or timeline event property. Duplicates\
+          \ will not be added. |\n| SET          | Values will overwrite the values\
+          \ that already existed in the profile or timeline event property. |\n| SET_IF_EMPTY\
+          \ | Only set values if the profile or timeline event property is empty.\
+          \ |\n| SUM          | Add the value to the value already stored in the profile\
+          \ property. This is not supported for timeline event properties. |\n| REMOVE\
+          \       | Remove the value from the list of values already stored in the\
+          \ profile property. This is not yet supported for timeline event properties.\
+          \ |\n\n**Group property strategy**\n\nThe following values are valid property\
+          \ strategies. These rules apply on group properties.\n\n| Name         |\
+          \ Description                                                          \
+          \                                        |\n| :----------- |:-------------------------------------------------------------------------------------------------------------|\n\
+          | ADD          | Values will be added to the values that already existed\
+          \ in the group property. Duplicates will not be added. |\n| SET        \
+          \  | Values will overwrite the values that already existed in the group\
+          \ property.                                 |\n| SET_IF_EMPTY | Only set\
+          \ values if the group property is empty.                               \
+          \                               |\n| SUM          | Add the value to the\
+          \ value already stored in the group property.                          \
+          \                   |\n| REMOVE       | Remove the value from the list of\
+          \ values already stored in the group property.                         \
+          \      |\n\n**Limits**\n\n* Each request can contain up to 1000 entries.\
+          \ If this limit is exceeded, a HTTP 413 will be thrown (the first 1000 entries\
+          \ will be processed and returned in the response).\n* When too many requests\
+          \ are sent concurrently, a HTTP 429 can be thrown. BlueConic recommends\
+          \ designing your app to be resilient to this scenario. For example, implement\
+          \ a request queue with an exponential backoff algorithm."
         content:
           application/json:
             schema:
@@ -6021,7 +5896,7 @@ paths:
         schema:
           type: integer
           format: int32
-          default: 20
+          default: "20"
         example: 10
       - name: fromDate
         in: query
@@ -6043,9 +5918,9 @@ paths:
           to exclude segment information.
         schema:
           type: array
+          default: ""
           items:
             type: string
-            default: ""
         example: profile.segments
       responses:
         "200":
@@ -6401,7 +6276,7 @@ paths:
           audience.
         schema:
           type: boolean
-          default: true
+          default: "true"
         example: true
       - name: trackPropertiesModifiedSince
         in: query
@@ -6648,7 +6523,6 @@ paths:
                           "userName" : "BlueConic"
                         },
                         "name" : "All Visitors",
-                        "profileCount" : 12345,
                         "tags" : ["a tag"]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.843Z",
@@ -6666,7 +6540,6 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour: Afternoon",
-                        "profileCount" : 365,
                         "tags" : [ ]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.848Z",
@@ -6701,7 +6574,6 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour: Morning",
-                        "profileCount" : 13,
                         "tags" : [ ]
                       }, {
                         "creationDate" : "2024-03-21T15:16:26.837Z",
@@ -6719,7 +6591,6 @@ paths:
                           "userName" : "ondemand@blueconic.com"
                         },
                         "name" : "Preferred visit hour : Night",
-                        "profileCount" : 0,
                         "tags" : [ ]
                       } ],
                       "startIndex" : 0,
@@ -6992,7 +6863,7 @@ paths:
           the profile.
         schema:
           type: boolean
-          default: false
+          default: "false"
         example: true
       requestBody:
         description: "The body of a recommendations request consists of a JSON array\
@@ -7962,7 +7833,7 @@ paths:
                           "userName" : "BlueConic"
                         },
                         "name" : "Application Manager",
-                        "permissions" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "PERSONAL", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_INACTIVITY_SETTINGS", "MANAGE_INACTIVITY_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS" ],
+                        "permissions" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "PERSONAL", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_TIMEOUT_SETTINGS", "MANAGE_TIMEOUT_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS" ],
                         "tags" : [ "a tag here" ]
                       } ],
                       "startIndex" : 0,
@@ -8134,8 +8005,8 @@ paths:
                             "MANAGE_TEMPLATES",
                             "MANAGE_TIMELINE_EVENT_ROLLUPS",
                             "MANAGE_TIMELINE_EVENT_TYPES",
-                            "READ_INACTIVITY_SETTINGS",
-                            "MANAGE_INACTIVITY_SETTINGS",
+                            "READ_TIMEOUT_SETTINGS",
+                            "MANAGE_TIMEOUT_SETTINGS",
                             "MANAGE_TRACKERS",
                             "MANAGE_CHANNELS",
                             "MANAGE_USERS"
@@ -8249,8 +8120,8 @@ paths:
                         "MANAGE_TEMPLATES",
                         "MANAGE_TIMELINE_EVENT_ROLLUPS",
                         "MANAGE_TIMELINE_EVENT_TYPES",
-                        "READ_INACTIVITY_SETTINGS",
-                        "MANAGE_INACTIVITY_SETTINGS",
+                        "READ_TIMEOUT_SETTINGS",
+                        "MANAGE_TIMEOUT_SETTINGS",
                         "MANAGE_TRACKERS",
                         "MANAGE_CHANNELS",
                         "MANAGE_USERS"
@@ -8582,8 +8453,8 @@ components:
           - OAUTH_APPLICATION
           - OAUTH_TOKEN
           - TIMELINE_EVENT_ROLLUP
-          - INACTIVITY_SETTING
           - AI_CANVAS
+          - INACTIVITY_TIMEOUT_SETTING
           - MODEL
           - GEN_AI_SETTING
         objects:
@@ -8908,9 +8779,6 @@ components:
         pluginId:
           type: string
           description: The plugin id
-        requiredPermission:
-          type: string
-          description: The required permission for this executable
         scheduleMode:
           type: string
           description: The scheduling mode
@@ -9355,9 +9223,6 @@ components:
         pluginId:
           type: string
           description: The plugin id
-        requiredPermission:
-          type: string
-          description: The required permission for this executable
         tags:
           type: array
           description: The tags (i.e. labels).
@@ -9602,12 +9467,6 @@ components:
     InteractionEventBean:
       type: object
       properties:
-        conversionValue:
-          type: number
-          format: float
-          description: The value of the conversion. Only applicable when `type` is
-            set to `CONVERSION`.
-          example: 12.99
         interactionId:
           type: string
           description: The ID of the interaction. For example the ID of a dialogue
@@ -9624,7 +9483,7 @@ components:
           - VIEW
           - CLICK
           - CONVERSION
-          example: CONVERSION
+          example: VIEW
         url:
           type: string
           description: The URL of the current page.
@@ -9822,13 +9681,11 @@ components:
             featureNames:
               type: array
               description: The features that are used in the model. Only required
-                for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
-                model is provided.
+                for models of type `DIALOGUE` and an ONNX model is provided.
               items:
                 type: string
                 description: The features that are used in the model. Only required
-                  for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
-                  model is provided.
+                  for models of type `DIALOGUE` and an ONNX model is provided.
             id:
               type: string
               description: The object ID.
@@ -9864,16 +9721,11 @@ components:
             profilePropertyIds:
               type: array
               description: The profile properties that are used in the model. Only
-                required for models of type `DIALOGUE` or `RECOMMENDATION`.
+                required for models of type `DIALOGUE`.
               items:
                 type: string
                 description: The profile properties that are used in the model. Only
-                  required for models of type `DIALOGUE` or `RECOMMENDATION`.
-            storeId:
-              type: string
-              description: The store ID of the content/product store this model is
-                designated for (can be empty if the model can work on more than one
-                store). Only relevant for models of type `RECOMMENDATION`.
+                  required for models of type `DIALOGUE`.
             tags:
               type: array
               description: The tags (i.e. labels).
@@ -9884,12 +9736,11 @@ components:
                 example: Address
             type:
               type: string
-              description: "The type of the model. Must be one of the allowed model\
-                \ types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`."
+              description: The type of the model. Must be one of the allowed model
+                types `GENERAL` or `DIALOGUE`.
               enum:
               - GENERAL
               - DIALOGUE
-              - RECOMMENDATION
           required:
           - type
         model:
@@ -9915,7 +9766,7 @@ components:
           type: array
           items:
             type: string
-    ModelBean:
+    model:
       type: object
       properties:
         creationDate:
@@ -9932,13 +9783,11 @@ components:
         featureNames:
           type: array
           description: The features that are used in the model. Only required for
-            models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is
-            provided.
+            models of type `DIALOGUE` and an ONNX model is provided.
           items:
             type: string
             description: The features that are used in the model. Only required for
-              models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model
-              is provided.
+              models of type `DIALOGUE` and an ONNX model is provided.
         id:
           type: string
           description: The object ID.
@@ -9974,16 +9823,11 @@ components:
         profilePropertyIds:
           type: array
           description: The profile properties that are used in the model. Only required
-            for models of type `DIALOGUE` or `RECOMMENDATION`.
+            for models of type `DIALOGUE`.
           items:
             type: string
             description: The profile properties that are used in the model. Only required
-              for models of type `DIALOGUE` or `RECOMMENDATION`.
-        storeId:
-          type: string
-          description: The store ID of the content/product store this model is designated
-            for (can be empty if the model can work on more than one store). Only
-            relevant for models of type `RECOMMENDATION`.
+              for models of type `DIALOGUE`.
         tags:
           type: array
           description: The tags (i.e. labels).
@@ -9994,12 +9838,11 @@ components:
             example: Address
         type:
           type: string
-          description: "The type of the model. Must be one of the allowed model types\
-            \ `GENERAL`, `DIALOGUE` or `RECOMMENDATION`."
+          description: The type of the model. Must be one of the allowed model types
+            `GENERAL` or `DIALOGUE`.
           enum:
           - GENERAL
           - DIALOGUE
-          - RECOMMENDATION
       required:
       - type
     models:
@@ -10013,7 +9856,7 @@ components:
         models:
           type: array
           items:
-            $ref: "#/components/schemas/ModelBean"
+            $ref: "#/components/schemas/model"
         startIndex:
           type: integer
           format: int32
@@ -10069,13 +9912,11 @@ components:
             featureNames:
               type: array
               description: The features that are used in the model. Only required
-                for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
-                model is provided.
+                for models of type `DIALOGUE` and an ONNX model is provided.
               items:
                 type: string
                 description: The features that are used in the model. Only required
-                  for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
-                  model is provided.
+                  for models of type `DIALOGUE` and an ONNX model is provided.
             id:
               type: string
               description: The object ID.
@@ -10111,16 +9952,11 @@ components:
             profilePropertyIds:
               type: array
               description: The profile properties that are used in the model. Only
-                required for models of type `DIALOGUE` or `RECOMMENDATION`.
+                required for models of type `DIALOGUE`.
               items:
                 type: string
                 description: The profile properties that are used in the model. Only
-                  required for models of type `DIALOGUE` or `RECOMMENDATION`.
-            storeId:
-              type: string
-              description: The store ID of the content/product store this model is
-                designated for (can be empty if the model can work on more than one
-                store). Only relevant for models of type `RECOMMENDATION`.
+                  required for models of type `DIALOGUE`.
             tags:
               type: array
               description: The tags (i.e. labels).
@@ -10131,12 +9967,11 @@ components:
                 example: Address
             type:
               type: string
-              description: "The type of the model. Must be one of the allowed model\
-                \ types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`."
+              description: The type of the model. Must be one of the allowed model
+                types `GENERAL` or `DIALOGUE`.
               enum:
               - GENERAL
               - DIALOGUE
-              - RECOMMENDATION
           required:
           - type
         model:
@@ -10205,9 +10040,7 @@ components:
         lastProfileMutationDate:
           type: string
           format: date-time
-          description: The last time a profile consented the objective. Updated once
-            per hour.
-          readOnly: true
+          description: The last time a profile consented/refused the objective.
         legislations:
           type: array
           description: The legislations this objectives applies to.
@@ -11198,13 +11031,6 @@ components:
           - NICARAGUA_L787
           - CHILE_L19_628
           - BELIZE_DPA
-          - TENNESSEE_TIPA
-          - INDIANA_INCDPA
-          - KENTUCKY_KCDPA
-          - MINNESOTA_MCDPA
-          - MARYLAND_MODPA
-          - RHODE_ISLAND_RIDTPPA
-          - SOUTH_KOREA_PIPA
         profileId:
           type: string
           description: "The BlueConic profile ID to search for. When specified, it\
@@ -11380,10 +11206,6 @@ components:
         name:
           type: string
           description: The object name.
-        profileCount:
-          type: integer
-          format: int32
-          description: The number of profiles in this segment.
         tags:
           type: array
           description: The tags (i.e. labels).
@@ -12021,8 +11843,6 @@ components:
             - MANAGE_TIMELINE_EVENT_ROLLUPS
             - READ_TIMEOUT_SETTINGS
             - MANAGE_TIMEOUT_SETTINGS
-            - READ_INACTIVITY_SETTINGS
-            - MANAGE_INACTIVITY_SETTINGS
             - READ_SECURITY_SETTINGS
             - MANAGE_SECURITY_SETTINGS
             - MANAGE_MODELS
@@ -12095,10 +11915,6 @@ components:
         id:
           type: string
           description: The object ID.
-        isActive:
-          type: boolean
-          description: Indicates if the user is active or inactive and can no longer
-            login.
         lastLoginDate:
           type: string
           format: date-time
