@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "100.0"
+  version: "99.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -932,7 +932,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
               examples:
                 Error response body:
                   description: Error response body
@@ -1064,7 +1064,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
               examples:
                 Error response body:
                   description: Error response body
@@ -2016,7 +2016,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/plugin"
+                $ref: "#/components/schemas/PluginImpl"
               examples:
                 Response body:
                   description: Response body
@@ -2125,7 +2125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/plugin"
+                $ref: "#/components/schemas/PluginImpl"
               examples:
                 Response body:
                   description: Response body
@@ -2533,7 +2533,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
         "503":
           description: The server is too busy to handle the request.
   /pageviewEvents:
@@ -2831,11 +2831,9 @@ paths:
                           "name": "mymodel",
                           "parameters": [
                             {
-                              "id": "parameterForModel",
-                              "relation": "sets",
-                              "type": "GENERAL",
+                              "id": "abc",
                               "values": [
-                                "parameter value 1"
+                                "123"
                               ]
                             }
                           ],
@@ -2944,34 +2942,6 @@ paths:
 
           The ONNX model must have the following output names:
           * `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.
-
-          ### CONTINUOUS models
-
-          When creating a model of type `CONTINUOUS`, the `metadata` part _can_ contain the following additional properties:
-          - `profilePropertyIds`: The profile property ID's that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
-          - `segmentId`: An optional segment ID to restrict model execution to profiles that are a member of this segment. If not provided, the model is executed for all profiles.
-
-          Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
-          The `featureNames` must be defined in the following format and is only required when the ONNX model has a `profile` input:
-          ```json
-          {
-            "featureNames": [
-              "age",
-              "lifetime_value",
-              "purchase_frequency",
-              "browsername=edge"
-            ]
-          }
-          ```
-
-          The model is automatically executed when a profile is loaded (via web) or when relevant profile properties are updated (any source). All outputs the model defines will be stored as profile properties on the profile.
-
-          #### ONNX model requirements
-          The ONNX model _can_ use the following input name:
-          * `profile` (float[]): the profile feature vector, based on the `profilePropertyIds` and `featureNames` of the model. This input is optional — if not present, the model is executed without any profile input.
-            * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-
-          The ONNX model can have any number of output names. Each output will be stored as a profile property with the same name on the profile.
         content:
           multipart/form-data:
             schema:
@@ -3064,31 +3034,6 @@ paths:
                       "type" : "RECOMMENDATION",
                       "storeId": "e7b65b21-3e6b-4009-8b6b-3cd26862a689"
                     }
-                Response body with ONNX model (CONTINUOUS):
-                  description: Response body with ONNX model (CONTINUOUS)
-                  value: |
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "id" : "882c7614-4456-4ca8-83d3-17f768b5ca15",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "3e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/882c7614-4456-4ca8-83d3-17f768b5ca15/model",
-                      "name" : "Continuous model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "segmentId" : "c82c7614-4456-4ca8-83d3-17f768b5ca99",
-                      "tags" : [ ],
-                      "type" : "CONTINUOUS"
-                    }
                 Response body without ONNX model (GENERAL):
                   description: Response body without ONNX model (GENERAL)
                   value: |-
@@ -3122,7 +3067,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
               examples:
                 Response body with error in metadata:
                   description: Response body with error in metadata
@@ -3153,7 +3098,7 @@ paths:
         "403":
           description: Authorization failed (incorrect permissions).
         "413":
-          description: "Model is too large, cannot exceed 20MB."
+          description: "Model is too large, cannot exceed 10MB."
         "503":
           description: The server is too busy to handle the request.
       security:
@@ -3264,31 +3209,6 @@ paths:
                       "type" : "RECOMMENDATION",
                       "storeId": "e7b65b21-3e6b-4009-8b6b-3cd26862a689"
                     }
-                Response body (CONTINUOUS):
-                  description: Response body (CONTINUOUS)
-                  value: |
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "id" : "882c7614-4456-4ca8-83d3-17f768b5ca15",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "3e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/882c7614-4456-4ca8-83d3-17f768b5ca15/model",
-                      "name" : "Continuous model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "segmentId" : "c82c7614-4456-4ca8-83d3-17f768b5ca99",
-                      "tags" : [ ],
-                      "type" : "CONTINUOUS"
-                    }
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -3379,34 +3299,6 @@ paths:
 
           The ONNX model must have the following output names:
           * `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.
-
-          ### CONTINUOUS models
-
-          When updating a model of type `CONTINUOUS`, the `metadata` part _can_ contain the following additional properties:
-          - `profilePropertyIds`: The profile property ID's that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
-          - `segmentId`: An optional segment ID to restrict model execution to profiles that are a member of this segment. If not provided, the model is executed for all profiles.
-
-          Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
-          The `featureNames` must be defined in the following format and is only required when the ONNX model has a `profile` input:
-          ```json
-          {
-            "featureNames": [
-              "age",
-              "lifetime_value",
-              "purchase_frequency",
-              "browsername=edge"
-            ]
-          }
-          ```
-
-          The model is automatically executed when a profile is loaded (via web) or when relevant profile properties are updated (any source). All outputs the model defines will be stored as profile properties on the profile.
-
-          #### ONNX model requirements
-          The ONNX model _can_ use the following input name:
-          * `profile` (float[]): the profile feature vector, based on the `profilePropertyIds` and `featureNames` of the model. This input is optional — if not present, the model is executed without any profile input.
-            * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-
-          The ONNX model can have any number of output names. Each output will be stored as a profile property with the same name on the profile.
         content:
           multipart/form-data:
             schema:
@@ -3499,31 +3391,6 @@ paths:
                       "type" : "RECOMMENDATION",
                       "storeId": "e7b65b21-3e6b-4009-8b6b-3cd26862a689"
                     }
-                Response body with ONNX model (CONTINUOUS):
-                  description: Response body with ONNX model (CONTINUOUS)
-                  value: |
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "id" : "882c7614-4456-4ca8-83d3-17f768b5ca15",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "3e9f9c2e7384dd83f0aa015f4c88342f",
-                      "modelUrl" : "/rest/v2/models/882c7614-4456-4ca8-83d3-17f768b5ca15/model",
-                      "name" : "Continuous model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "segmentId" : "c82c7614-4456-4ca8-83d3-17f768b5ca99",
-                      "tags" : [ ],
-                      "type" : "CONTINUOUS"
-                    }
                 Response body without ONNX model (GENERAL):
                   description: Response body without ONNX model (GENERAL)
                   value: |-
@@ -3557,7 +3424,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
               examples:
                 Response body with error in metadata:
                   description: Response body with error in metadata
@@ -3588,7 +3455,7 @@ paths:
         "403":
           description: Authorization failed (incorrect permissions).
         "413":
-          description: "Model is too large, cannot exceed 20MB."
+          description: "Model is too large, cannot exceed 10MB."
         "503":
           description: The server is too busy to handle the request.
       security:
@@ -4307,14 +4174,6 @@ paths:
           type: integer
           format: int32
         example: 20
-      - name: maxHitsAllowed
-        in: query
-        description: "When greater than 0, enables fast approximate export by limiting\
-          \ total hits (e.g. maxHitsAllowed=1000 and count=100 for max 10 pages).\
-          \ Same behavior as segment export."
-        schema:
-          type: integer
-          format: int32
       - name: properties
         in: query
         description: "Specifies which group properties values will be returned for\
@@ -4430,7 +4289,6 @@ paths:
                               "strategy": "SET"
                           }
                       ],
-                      "domainGroup": "DEFAULT",
                       "groupId": "f7daa9db-5ea0-40c8-b9dc-96e519151f8c",
                       "groupType": "company_test",
                       "strategy": "UPSERT"
@@ -4525,7 +4383,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -5575,8 +5433,6 @@ paths:
           description: One or more required parameters are missing or invalid.
         "401":
           description: Authentication failed (unauthorized).
-        "408":
-          description: Request timed out.
         "501":
           description: The specified property is not classified as indexed (unique)
             (not implemented).
@@ -6029,7 +5885,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -6104,7 +5960,6 @@ paths:
           Expand the information in the result set. Use "profile.permissions.exceptions" to include permission level and exception data.
           Use "profile.timeline" to include timeline event information.
           Use "profile.segments" to include the segments a profile is part of.
-          Use "profile.segments.tags" to include segment labels (v2 API only).
           Use multiple "expand" querystring parameters to return combinations.
         schema:
           type: array
@@ -6363,15 +6218,6 @@ paths:
           type: integer
           format: int32
         example: 20
-      - name: maxHitsAllowed
-        in: query
-        description: "When greater than 0, enables fast approximate export by limiting\
-          \ total hits and using segment count from cache. Use with count for consistent\
-          \ paging (e.g. maxHitsAllowed=1000 and count=100 for max 10 pages)."
-        schema:
-          type: integer
-          format: int32
-        example: 0
       - name: properties
         in: query
         description: "Specifies which profile properties values will be returned for\
@@ -7565,7 +7411,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorRequestBean"
+                $ref: "#/components/schemas/BadRequestBean"
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -8958,23 +8804,13 @@ components:
     link:
       type: object
       properties:
-        Href:
+        href:
           type: string
-          description: The href of the link
-        Rel:
+        rel:
           type: string
-          description: "The link rel e.g. 'self', 'next', etc."
-        Type:
+        type:
           type: string
-          description: The type of the link e.g. 'application/json'
-    ErrorBean:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-    ErrorRequestBean:
+    BadRequestBean:
       type: object
       properties:
         code:
@@ -8984,6 +8820,13 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ErrorBean"
+        message:
+          type: string
+    ErrorBean:
+      type: object
+      properties:
+        field:
+          type: string
         message:
           type: string
     ids:
@@ -9068,12 +8911,6 @@ components:
         requiredPermission:
           type: string
           description: The required permission for this executable
-        roles:
-          type: array
-          description: Roles allowed to edit this connection; empty means no role-based
-            restriction
-          items:
-            $ref: "#/components/schemas/SimpleRoleBean"
         scheduleMode:
           type: string
           description: The scheduling mode
@@ -9093,18 +8930,6 @@ components:
           description: The channels.
           items:
             $ref: "#/components/schemas/targetChannels"
-      required:
-      - roles
-    SimpleRoleBean:
-      type: object
-      description: A role with id and name.
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the role.
-        name:
-          type: string
-          description: Name of the role.
     UrlRestriction:
       type: object
       description: URL restriction for a target channel.
@@ -9147,21 +8972,6 @@ components:
           description: The goal statistics
           items:
             $ref: "#/components/schemas/property"
-        lane:
-          type: string
-          description: The lane in which this run was executed
-          enum:
-          - REGULAR
-          - REGULAR2
-          - REGULAR3
-          - REGULAR4
-          - REGULAR5
-          - REGULAR6
-          - REGULAR7
-          - REGULAR8
-          - EXPRESS
-          - RUN_NOW
-          - CONTINUOUS
         message:
           type: string
           description: The message of the run
@@ -9216,21 +9026,6 @@ components:
           description: The goal statistics
           items:
             $ref: "#/components/schemas/property"
-        lane:
-          type: string
-          description: The lane in which this run was executed
-          enum:
-          - REGULAR
-          - REGULAR2
-          - REGULAR3
-          - REGULAR4
-          - REGULAR5
-          - REGULAR6
-          - REGULAR7
-          - REGULAR8
-          - EXPRESS
-          - RUN_NOW
-          - CONTINUOUS
         message:
           type: string
           description: The message of the run
@@ -9576,32 +9371,14 @@ components:
           description: The channels.
           items:
             $ref: "#/components/schemas/targetChannels"
-    DescriptionLabel:
-      type: object
-      description: "Localized description text displayed in the About section of the\
-        \ plugin. Provides a brief summary of the plugin’s purpose or functionality.\
-        \ Note: the UI always displays the description with the key set to en_US."
-      properties:
-        key:
-          type: string
-          description: "Language code that specifies the locale of the description\
-            \ text. Follows the IETF BCP 47 format (e.g., en_US for U.S. English)"
-        value:
-          type: string
-          description: The localized description text for the specified language.
     Label:
       type: object
-      description: "Localized display name of the plugin. Note: the UI always displays\
-        \ the description with the key set to en_US."
       properties:
         key:
           type: string
-          description: "Language code that specifies the locale of the labels text.\
-            \ Follows the IETF BCP 47 format (e.g., en_US for U.S. English)"
         value:
           type: string
-          description: The localized display name for the specified language.
-    plugin:
+    PluginImpl:
       type: object
       properties:
         URL:
@@ -9629,11 +9406,8 @@ components:
           description: The description of the plugin.
         descriptions:
           type: array
-          description: "Localized description text displayed in the About section\
-            \ of the plugin. Provides a brief summary of the plugin’s purpose or functionality.\
-            \ Note: the UI always displays the description with the key set to en_US."
           items:
-            $ref: "#/components/schemas/DescriptionLabel"
+            $ref: "#/components/schemas/Label"
           uniqueItems: true
         id:
           type: string
@@ -9643,8 +9417,6 @@ components:
           description: The index url of the plugin.
         labels:
           type: array
-          description: "Localized display name of the plugin. Note: the UI always\
-            \ displays the description with the key set to en_US."
           items:
             $ref: "#/components/schemas/Label"
           uniqueItems: true
@@ -9670,6 +9442,12 @@ components:
         supportLevel:
           type: string
           description: The support level of the plugin.
+        tags:
+          type: array
+          description: The tags of the plugin.
+          items:
+            type: string
+            description: The tags of the plugin.
         type:
           type: string
           description: The type of the plugin.
@@ -9795,10 +9573,6 @@ components:
           readOnly: true
         lastModifiedUser:
           $ref: "#/components/schemas/UserBean"
-        lastVisitedDate:
-          type: string
-          format: date-time
-          description: The date and time when the channel was last visited.
         logo:
           type: string
           description: The channel logo link.
@@ -10016,13 +9790,21 @@ components:
           type: object
           format: application/json
           description: The model metadata in JSON format (required)
-          example: |
+          example: |-
             {
-              "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-              "name" : "Continuous model with onnx model set",
-              "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-              "segmentId" : "c82c7614-4456-4ca8-83d3-17f768b5ca99",
-              "type" : "CONTINUOUS"
+              "name": "my new model",
+              "description": "A model description",
+              "parameters": [
+                {
+                  "id": "parameterForModel",
+                  "values": [
+                    "parameter value 1"
+                  ]
+                }
+              ],
+              "type": "DIALOGUE",
+              "profilePropertyIds" : [ "browsername", "interactions_clicked" ],
+              "featureNames" : [ "browsername=chrome", "browsername=edge", "browsername=ie", "interactions_clicked" ]
             }
           properties:
             creationDate:
@@ -10039,14 +9821,14 @@ components:
               description: The description.
             featureNames:
               type: array
-              description: "The features that are used in the model. Only required\
-                \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
-                \ and when an ONNX model is provided."
+              description: The features that are used in the model. Only required
+                for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
+                model is provided.
               items:
                 type: string
-                description: "The features that are used in the model. Only required\
-                  \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
-                  \ and when an ONNX model is provided."
+                description: The features that are used in the model. Only required
+                  for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
+                  model is provided.
             id:
               type: string
               description: The object ID.
@@ -10081,17 +9863,12 @@ components:
                 $ref: "#/components/schemas/parameter"
             profilePropertyIds:
               type: array
-              description: "The profile properties that are used in the model. Only\
-                \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+              description: The profile properties that are used in the model. Only
+                required for models of type `DIALOGUE` or `RECOMMENDATION`.
               items:
                 type: string
-                description: "The profile properties that are used in the model. Only\
-                  \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
-            segmentId:
-              type: string
-              description: The segment ID this model is designated for (can be empty
-                if the model can work on more than one segment). Only relevant for
-                models of type `CONTINUOUS`.
+                description: The profile properties that are used in the model. Only
+                  required for models of type `DIALOGUE` or `RECOMMENDATION`.
             storeId:
               type: string
               description: The store ID of the content/product store this model is
@@ -10108,12 +9885,11 @@ components:
             type:
               type: string
               description: "The type of the model. Must be one of the allowed model\
-                \ types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+                \ types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`."
               enum:
               - GENERAL
               - DIALOGUE
               - RECOMMENDATION
-              - CONTINUOUS
           required:
           - type
         model:
@@ -10131,19 +9907,14 @@ components:
       properties:
         id:
           type: string
-          description: The unique identifier of the parameter.
         relation:
           type: string
-          description: The relation of the parameter.
         type:
           type: string
-          description: The type of the parameter.
         values:
           type: array
-          description: The values of the parameter.
           items:
             type: string
-            description: The values of the parameter.
     ModelBean:
       type: object
       properties:
@@ -10160,14 +9931,14 @@ components:
           description: The description.
         featureNames:
           type: array
-          description: "The features that are used in the model. Only required for\
-            \ models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when\
-            \ an ONNX model is provided."
+          description: The features that are used in the model. Only required for
+            models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is
+            provided.
           items:
             type: string
-            description: "The features that are used in the model. Only required for\
-              \ models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when\
-              \ an ONNX model is provided."
+            description: The features that are used in the model. Only required for
+              models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model
+              is provided.
         id:
           type: string
           description: The object ID.
@@ -10202,17 +9973,12 @@ components:
             $ref: "#/components/schemas/parameter"
         profilePropertyIds:
           type: array
-          description: "The profile properties that are used in the model. Only required\
-            \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+          description: The profile properties that are used in the model. Only required
+            for models of type `DIALOGUE` or `RECOMMENDATION`.
           items:
             type: string
-            description: "The profile properties that are used in the model. Only\
-              \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
-        segmentId:
-          type: string
-          description: The segment ID this model is designated for (can be empty if
-            the model can work on more than one segment). Only relevant for models
-            of type `CONTINUOUS`.
+            description: The profile properties that are used in the model. Only required
+              for models of type `DIALOGUE` or `RECOMMENDATION`.
         storeId:
           type: string
           description: The store ID of the content/product store this model is designated
@@ -10229,12 +9995,11 @@ components:
         type:
           type: string
           description: "The type of the model. Must be one of the allowed model types\
-            \ `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+            \ `GENERAL`, `DIALOGUE` or `RECOMMENDATION`."
           enum:
           - GENERAL
           - DIALOGUE
           - RECOMMENDATION
-          - CONTINUOUS
       required:
       - type
     models:
@@ -10303,14 +10068,14 @@ components:
               description: The description.
             featureNames:
               type: array
-              description: "The features that are used in the model. Only required\
-                \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
-                \ and when an ONNX model is provided."
+              description: The features that are used in the model. Only required
+                for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
+                model is provided.
               items:
                 type: string
-                description: "The features that are used in the model. Only required\
-                  \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
-                  \ and when an ONNX model is provided."
+                description: The features that are used in the model. Only required
+                  for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX
+                  model is provided.
             id:
               type: string
               description: The object ID.
@@ -10345,17 +10110,12 @@ components:
                 $ref: "#/components/schemas/parameter"
             profilePropertyIds:
               type: array
-              description: "The profile properties that are used in the model. Only\
-                \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+              description: The profile properties that are used in the model. Only
+                required for models of type `DIALOGUE` or `RECOMMENDATION`.
               items:
                 type: string
-                description: "The profile properties that are used in the model. Only\
-                  \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
-            segmentId:
-              type: string
-              description: The segment ID this model is designated for (can be empty
-                if the model can work on more than one segment). Only relevant for
-                models of type `CONTINUOUS`.
+                description: The profile properties that are used in the model. Only
+                  required for models of type `DIALOGUE` or `RECOMMENDATION`.
             storeId:
               type: string
               description: The store ID of the content/product store this model is
@@ -10372,12 +10132,11 @@ components:
             type:
               type: string
               description: "The type of the model. Must be one of the allowed model\
-                \ types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+                \ types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`."
               enum:
               - GENERAL
               - DIALOGUE
               - RECOMMENDATION
-              - CONTINUOUS
           required:
           - type
         model:
@@ -10868,11 +10627,9 @@ components:
           readOnly: true
     Labels:
       type: object
-      description: The language labels for the unit.
       properties:
         label:
           type: array
-          description: The labels for the name
           items:
             $ref: "#/components/schemas/label"
     currency:
@@ -10888,27 +10645,21 @@ components:
           example: "EUR, USD, etc."
         name:
           type: string
-          description: "The currency name, e.g. \"US Dollar\", \"Euro\", etc."
           readOnly: true
         precision:
           type: integer
           format: int32
-          description: The number of decimal places used by the currency.
           readOnly: true
         symbol:
           type: string
-          description: "The currency symbol, e.g. \"$\", \"€\", etc."
           readOnly: true
     label:
       type: object
-      description: The labels for the name
       properties:
         content:
           type: string
-          description: The label value
         locale:
           type: string
-          description: The label locale
     profileProperty:
       type: object
       properties:
@@ -10967,7 +10718,6 @@ components:
           - DATETIME
         filterTypeSuggestion:
           type: string
-          description: The suggested filter type.
           readOnly: true
         groupTypeId:
           type: string
@@ -10979,9 +10729,7 @@ components:
         indexed:
           type: boolean
           default: false
-          description: "Specifies that the profile property holds a unique value for\
-            \ each profile. When enabled, the property is indexed and used as a unique\
-            \ identifier."
+          description: Whether the property is indexed (unique).
         isIdProperty:
           type: boolean
           description: Whether this is a property that contains references to groups
@@ -10998,7 +10746,7 @@ components:
         lastProfileMutationDate:
           type: string
           format: date-time
-          description: The last time a profile has been updated.
+          description: The date when a profile was last mutated with this property.
           readOnly: true
         linkingGroupTypeId:
           type: string
@@ -11039,7 +10787,6 @@ components:
         profileCount:
           type: integer
           format: int64
-          description: Number of profiles that have a value for this property.
           readOnly: true
         range:
           $ref: "#/components/schemas/range"
@@ -11082,16 +10829,13 @@ components:
           uniqueItems: true
     range:
       type: object
-      description: The interval set for the property
       properties:
         max:
           type: integer
           format: int64
-          description: The maximum value of the range
         min:
           type: integer
           format: int64
-          description: The minimum value of the range
       readOnly: true
     unit:
       type: object
@@ -11107,7 +10851,6 @@ components:
       properties:
         links:
           type: array
-          description: The related links.
           items:
             $ref: "#/components/schemas/link"
     profileProperties:
@@ -11363,12 +11106,6 @@ components:
         name:
           type: string
           description: The name of the segment.
-        tags:
-          type: array
-          description: The labels of the segment (optionally included).
-          items:
-            type: string
-            description: The labels of the segment (optionally included).
     simpleObject:
       type: object
       properties:
@@ -12282,14 +12019,14 @@ components:
             - MANAGE_IP_BASED_ACCESS_SETTINGS
             - MANAGE_SUPPORT_ACCESS_SETTINGS
             - MANAGE_TIMELINE_EVENT_ROLLUPS
+            - READ_TIMEOUT_SETTINGS
+            - MANAGE_TIMEOUT_SETTINGS
             - READ_INACTIVITY_SETTINGS
             - MANAGE_INACTIVITY_SETTINGS
             - READ_SECURITY_SETTINGS
             - MANAGE_SECURITY_SETTINGS
             - MANAGE_MODELS
             - TRANSFER_CONFIGURATION
-        restrictions:
-          $ref: "#/components/schemas/restrictions"
         tags:
           type: array
           description: The tags (i.e. labels).
@@ -12300,38 +12037,6 @@ components:
             example: Address
       required:
       - permissions
-    pluginRestrictionItem:
-      type: object
-      description: "Single plugin restriction: pluginId, access (only 'deny' supported),\
-        \ operations (e.g. create, edit)."
-      properties:
-        access:
-          type: string
-          description: Access type; only 'deny' is supported.
-          enum:
-          - deny
-        operations:
-          type: array
-          description: "Operations to restrict (e.g. create, edit)."
-          items:
-            type: string
-            description: "Operations to restrict (e.g. create, edit)."
-            enum:
-            - create
-            - edit
-        pluginId:
-          type: string
-          description: Plugin identifier.
-    restrictions:
-      type: object
-      description: Plugin restrictions for the role. Single plugins list; only access
-        'deny' is supported.
-      properties:
-        plugins:
-          type: array
-          description: List of plugin restriction items (access deny only).
-          items:
-            $ref: "#/components/schemas/pluginRestrictionItem"
     roles:
       type: object
       properties:
@@ -12430,6 +12135,16 @@ components:
             type: string
             description: The tags (i.e. labels).
             example: Address
+    SimpleRoleBean:
+      type: object
+      description: The roles assigned to this user.
+      properties:
+        id:
+          type: string
+          description: The ID of the role.
+        name:
+          type: string
+          description: The name of the role.
     users:
       type: object
       properties:
@@ -12491,12 +12206,6 @@ components:
         name:
           type: string
           description: The object name.
-        roles:
-          type: array
-          description: Roles allowed to edit this notebook; empty means no role-based
-            restriction
-          items:
-            $ref: "#/components/schemas/SimpleRoleBean"
         tags:
           type: array
           description: The tags (i.e. labels).
@@ -12505,8 +12214,6 @@ components:
             type: string
             description: The tags (i.e. labels).
             example: Address
-      required:
-      - roles
     notebooks:
       type: object
       properties:

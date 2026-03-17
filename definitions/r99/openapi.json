@@ -12,7 +12,7 @@
       "name" : "BlueConic",
       "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
-    "version" : "100.0"
+    "version" : "99.0"
   },
   "servers" : [ {
     "url" : "https://{blueconicHostname}/rest/v2",
@@ -400,7 +400,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 },
                 "examples" : {
                   "Error response body" : {
@@ -547,7 +547,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 },
                 "examples" : {
                   "Error response body" : {
@@ -990,7 +990,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/plugin"
+                  "$ref" : "#/components/schemas/PluginImpl"
                 },
                 "examples" : {
                   "Response body" : {
@@ -1087,7 +1087,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/plugin"
+                  "$ref" : "#/components/schemas/PluginImpl"
                 },
                 "examples" : {
                   "Response body" : {
@@ -1331,7 +1331,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 }
               }
             }
@@ -1517,7 +1517,7 @@
                 "examples" : {
                   "Response body" : {
                     "description" : "Response body",
-                    "value" : "{\n  \"itemsPerPage\": 20,\n  \"models\": [\n    {\n      \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n      \"creator\": {\n        \"fullName\": \"ondemand@blueconic.com\",\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n      \"description\": \"somedescription\",\n      \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n      \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n      \"lastModifiedUser\": {\n        \"fullName\": \"ondemand@blueconic.com\",\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n      \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n      \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n      \"name\": \"mymodel\",\n      \"parameters\": [\n        {\n          \"id\": \"parameterForModel\",\n          \"relation\": \"sets\",\n          \"type\": \"GENERAL\",\n          \"values\": [\n            \"parameter value 1\"\n          ]\n        }\n      ],\n      \"tags\": [],\n      \"type\": \"GENERAL\"\n    },\n    {\n      \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n      \"creator\" : {\n        \"fullName\" : \"ondemand@blueconic.com\",\n        \"userName\" : \"ondemand@blueconic.com\"\n      },\n      \"featureNames\" : [ \"browsername=chrome\", \"browsername=edge\", \"browsername=ie\", \"interactions_clicked\" ],\n      \"id\" : \"682c7614-4456-4ca8-83d3-17f768b5ca14\",\n      \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n      \"lastModifiedUser\" : {\n        \"fullName\" : \"ondemand@blueconic.com\",\n        \"userName\" : \"ondemand@blueconic.com\"\n      },\n      \"modelHash\" : \"2e9f9c2e7384dd83f0aa015f4c88342f\",\n      \"modelUrl\" : \"/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model\",\n      \"name\" : \"Dialogue model with onnx model set\",\n      \"parameters\" : [],\n      \"profilePropertyIds\" : [ \"browsername\", \"interactions_clicked\" ],\n      \"tags\" : [],\n      \"type\" : \"DIALOGUE\"\n    }\n  ],\n  \"startIndex\": 0,\n  \"totalPages\": 1,\n  \"totalResults\": 2\n}"
+                    "value" : "{\n  \"itemsPerPage\": 20,\n  \"models\": [\n    {\n      \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n      \"creator\": {\n        \"fullName\": \"ondemand@blueconic.com\",\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n      \"description\": \"somedescription\",\n      \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n      \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n      \"lastModifiedUser\": {\n        \"fullName\": \"ondemand@blueconic.com\",\n        \"userName\": \"ondemand@blueconic.com\"\n      },\n      \"modelHash\": \"9a9887d8676976851423ac44de8a97d4\",\n      \"modelUrl\": \"/rest/v2/models/2613c9d6-a179-4c79-b6d2-1618a53fbc64/model\",\n      \"name\": \"mymodel\",\n      \"parameters\": [\n        {\n          \"id\": \"abc\",\n          \"values\": [\n            \"123\"\n          ]\n        }\n      ],\n      \"tags\": [],\n      \"type\": \"GENERAL\"\n    },\n    {\n      \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n      \"creator\" : {\n        \"fullName\" : \"ondemand@blueconic.com\",\n        \"userName\" : \"ondemand@blueconic.com\"\n      },\n      \"featureNames\" : [ \"browsername=chrome\", \"browsername=edge\", \"browsername=ie\", \"interactions_clicked\" ],\n      \"id\" : \"682c7614-4456-4ca8-83d3-17f768b5ca14\",\n      \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n      \"lastModifiedUser\" : {\n        \"fullName\" : \"ondemand@blueconic.com\",\n        \"userName\" : \"ondemand@blueconic.com\"\n      },\n      \"modelHash\" : \"2e9f9c2e7384dd83f0aa015f4c88342f\",\n      \"modelUrl\" : \"/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model\",\n      \"name\" : \"Dialogue model with onnx model set\",\n      \"parameters\" : [],\n      \"profilePropertyIds\" : [ \"browsername\", \"interactions_clicked\" ],\n      \"tags\" : [],\n      \"type\" : \"DIALOGUE\"\n    }\n  ],\n  \"startIndex\": 0,\n  \"totalPages\": 1,\n  \"totalResults\": 2\n}"
                   }
                 }
               }
@@ -1543,7 +1543,7 @@
         "description" : "Create a model.",
         "operationId" : "createModel",
         "requestBody" : {
-          "description" : "To create a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `POST` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nThe `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>\nThe `metadata` part is required and must be included in the request.\n\n### DIALOGUE and RECOMMENDATION models\n\nWhen creating a model of type `DIALOGUE` or `RECOMMENDATION`, the following property is optional in the `metadata` part:\n- `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`). This is only relevant for models that have a `profile` input.\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when an ONNX model is provided:\n```json\n{\n  \"featureNames\": [\n    \"browsername=chrome\",\n    \"browsername=edge\",\n    \"lastvisitdate\",\n    \"interactions_clicked\"\n  ]\n}\n```\n\n#### ONNX model requirements\nThe ONNX model must have the following input names:\n* `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model\n* If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model must have the following output names:\n* `variant_id` (str): the variant ID that should be served based on the ONNX model outcome\n\n### RECOMMENDATION models\n\nWhen creating a model of type `RECOMMENDATION`, the `metadata` part _can_ contain the following additional property:\n- `storeId`: An optional content/product store ID for which the models is trained. If not provider, the model can work across multiple stores.\n\n#### ONNX model requirements\nThe ONNX model _can_ use one or more of the following input names:\n* `id` (str[]): a list of external item IDs for all relevant items the recommender can choose from\n* `current_item` (str): the id of the current item\n* `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model\n** If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n* `last_order_date` (int64): the number of hours since the last time the product was ordered by the customer\n* `shoppingcart` (int64): whether the item is currently in the customer’s cart\n* `viewed` (int64): the number of times the item was viewed by the customer\n* `ordered` (int64): the number of times the item was ordered by the customer\n* `recent_view` (int64): the number of times the item was viewed in the configured timeframe\n* `recent_click` (int64): the number of times the item was clicked in the configured timeframe\n* `recent_entrypage` (int64): the number of times the item was the landing page in the configured timeframe\n* `recent_recommendation_view` (int64): the number of times the item was viewed in a recommendation in the configured timeframe\n* `recent_shoppingcart` (int64): the number of times the item was added to a shoppingcart in the configured timeframe\n* `recent_order` (int64): the number of times the item was ordered in the configured timeframe\n\nThe ONNX model must have the following output names:\n* `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.\n\n### CONTINUOUS models\n\nWhen creating a model of type `CONTINUOUS`, the `metadata` part _can_ contain the following additional properties:\n- `profilePropertyIds`: The profile property ID's that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.\n- `segmentId`: An optional segment ID to restrict model execution to profiles that are a member of this segment. If not provided, the model is executed for all profiles.\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when the ONNX model has a `profile` input:\n```json\n{\n  \"featureNames\": [\n    \"age\",\n    \"lifetime_value\",\n    \"purchase_frequency\",\n    \"browsername=edge\"\n  ]\n}\n```\n\nThe model is automatically executed when a profile is loaded (via web) or when relevant profile properties are updated (any source). All outputs the model defines will be stored as profile properties on the profile.\n\n#### ONNX model requirements\nThe ONNX model _can_ use the following input name:\n* `profile` (float[]): the profile feature vector, based on the `profilePropertyIds` and `featureNames` of the model. This input is optional — if not present, the model is executed without any profile input.\n  * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model can have any number of output names. Each output will be stored as a profile property with the same name on the profile.",
+          "description" : "To create a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `POST` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nThe `model` part is optional and can be updated later using the `PUT /models/{modelId}` endpoint.<br/>\nThe `metadata` part is required and must be included in the request.\n\n### DIALOGUE and RECOMMENDATION models\n\nWhen creating a model of type `DIALOGUE` or `RECOMMENDATION`, the following property is optional in the `metadata` part:\n- `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`). This is only relevant for models that have a `profile` input.\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when an ONNX model is provided:\n```json\n{\n  \"featureNames\": [\n    \"browsername=chrome\",\n    \"browsername=edge\",\n    \"lastvisitdate\",\n    \"interactions_clicked\"\n  ]\n}\n```\n\n#### ONNX model requirements\nThe ONNX model must have the following input names:\n* `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model\n* If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model must have the following output names:\n* `variant_id` (str): the variant ID that should be served based on the ONNX model outcome\n\n### RECOMMENDATION models\n\nWhen creating a model of type `RECOMMENDATION`, the `metadata` part _can_ contain the following additional property:\n- `storeId`: An optional content/product store ID for which the models is trained. If not provider, the model can work across multiple stores.\n\n#### ONNX model requirements\nThe ONNX model _can_ use one or more of the following input names:\n* `id` (str[]): a list of external item IDs for all relevant items the recommender can choose from\n* `current_item` (str): the id of the current item\n* `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model\n** If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n* `last_order_date` (int64): the number of hours since the last time the product was ordered by the customer\n* `shoppingcart` (int64): whether the item is currently in the customer’s cart\n* `viewed` (int64): the number of times the item was viewed by the customer\n* `ordered` (int64): the number of times the item was ordered by the customer\n* `recent_view` (int64): the number of times the item was viewed in the configured timeframe\n* `recent_click` (int64): the number of times the item was clicked in the configured timeframe\n* `recent_entrypage` (int64): the number of times the item was the landing page in the configured timeframe\n* `recent_recommendation_view` (int64): the number of times the item was viewed in a recommendation in the configured timeframe\n* `recent_shoppingcart` (int64): the number of times the item was added to a shoppingcart in the configured timeframe\n* `recent_order` (int64): the number of times the item was ordered in the configured timeframe\n\nThe ONNX model must have the following output names:\n* `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.",
           "content" : {
             "multipart/form-data" : {
               "schema" : {
@@ -1574,10 +1574,6 @@
                     "description" : "Response body with ONNX model (RECOMMENDATION)",
                     "value" : "{\n  \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n  \"creator\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"featureNames\" : [ \"browsername=chrome\", \"browsername=edge\", \"browsername=ie\", \"interactions_clicked\" ],\n  \"id\" : \"682c7614-4456-4ca8-83d3-17f768b5ca14\",\n  \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"modelHash\" : \"2e9f9c2e7384dd83f0aa015f4c88342f\",\n  \"modelUrl\" : \"/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model\",\n  \"name\" : \"Recommendation model with onnx model set\",\n  \"parameters\" : [ ],\n  \"profilePropertyIds\" : [ \"browsername\", \"interactions_clicked\" ],\n  \"tags\" : [ ],\n  \"type\" : \"RECOMMENDATION\",\n  \"storeId\": \"e7b65b21-3e6b-4009-8b6b-3cd26862a689\"\n}"
                   },
-                  "Response body with ONNX model (CONTINUOUS)" : {
-                    "description" : "Response body with ONNX model (CONTINUOUS)",
-                    "value" : "{\n  \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n  \"creator\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"featureNames\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"id\" : \"882c7614-4456-4ca8-83d3-17f768b5ca15\",\n  \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"modelHash\" : \"3e9f9c2e7384dd83f0aa015f4c88342f\",\n  \"modelUrl\" : \"/rest/v2/models/882c7614-4456-4ca8-83d3-17f768b5ca15/model\",\n  \"name\" : \"Continuous model with onnx model set\",\n  \"parameters\" : [ ],\n  \"profilePropertyIds\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"segmentId\" : \"c82c7614-4456-4ca8-83d3-17f768b5ca99\",\n  \"tags\" : [ ],\n  \"type\" : \"CONTINUOUS\"\n}\n"
-                  },
                   "Response body without ONNX model (GENERAL)" : {
                     "description" : "Response body without ONNX model (GENERAL)",
                     "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"name\": \"mymodel without onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
@@ -1591,7 +1587,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 },
                 "examples" : {
                   "Response body with error in metadata" : {
@@ -1613,7 +1609,7 @@
             "description" : "Authorization failed (incorrect permissions)."
           },
           "413" : {
-            "description" : "Model is too large, cannot exceed 20MB."
+            "description" : "Model is too large, cannot exceed 10MB."
           },
           "503" : {
             "description" : "The server is too busy to handle the request."
@@ -1665,10 +1661,6 @@
                   "Response body (RECOMMENDATION)" : {
                     "description" : "Response body (RECOMMENDATION)",
                     "value" : "{\n  \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n  \"creator\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"featureNames\" : [ \"browsername=chrome\", \"browsername=edge\", \"browsername=ie\", \"interactions_clicked\" ],\n  \"id\" : \"682c7614-4456-4ca8-83d3-17f768b5ca14\",\n  \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"modelHash\" : \"2e9f9c2e7384dd83f0aa015f4c88342f\",\n  \"modelUrl\" : \"/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model\",\n  \"name\" : \"Recommendation model with onnx model set\",\n  \"parameters\" : [ ],\n  \"profilePropertyIds\" : [ \"browsername\", \"interactions_clicked\" ],\n  \"tags\" : [ ],\n  \"type\" : \"RECOMMENDATION\",\n  \"storeId\": \"e7b65b21-3e6b-4009-8b6b-3cd26862a689\"\n}"
-                  },
-                  "Response body (CONTINUOUS)" : {
-                    "description" : "Response body (CONTINUOUS)",
-                    "value" : "{\n  \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n  \"creator\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"featureNames\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"id\" : \"882c7614-4456-4ca8-83d3-17f768b5ca15\",\n  \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"modelHash\" : \"3e9f9c2e7384dd83f0aa015f4c88342f\",\n  \"modelUrl\" : \"/rest/v2/models/882c7614-4456-4ca8-83d3-17f768b5ca15/model\",\n  \"name\" : \"Continuous model with onnx model set\",\n  \"parameters\" : [ ],\n  \"profilePropertyIds\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"segmentId\" : \"c82c7614-4456-4ca8-83d3-17f768b5ca99\",\n  \"tags\" : [ ],\n  \"type\" : \"CONTINUOUS\"\n}\n"
                   }
                 }
               }
@@ -1712,7 +1704,7 @@
           }
         } ],
         "requestBody" : {
-          "description" : "To update a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `PUT` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The updated metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nBoth parts are optional, meaning that you can update the metadata without providing a new model, or you can provide a new model without updating the metadata.<br/>\nFor the `metadata` part, no partial updates are supported. The entire metadata object must be provided in the request.<br/>\nAt least one part needs to be supplied, otherwise a HTTP 400 is returned.\n\n### DIALOGUE and RECOMMENDATION models\n\nWhen updating a model of type `DIALOGUE`or `RECOMMENDATION`, the `metadata` part must contain the following additional property:\n- `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when an ONNX model is provided:\n```json\n{\n  \"featureNames\": [\n    \"browsername=chrome\",\n    \"browsername=edge\",\n    \"lastvisitdate\",\n    \"interactions_clicked\"\n  ]\n}\n```\n\n#### ONNX model requirements\nThe ONNX model must have the following input names:\n* `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model\n* If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model must have the following output names:\n* `variant_id` (str): the variant ID that should be served based on the ONNX model outcome\n\n### RECOMMENDATION models\n\nWhen updating a model of type `RECOMMENDATION`, the `metadata` part _can_ contain the following additional property:\n- `storeId`: An optional content/product store ID for which the models is trained. If not provider, the model can work across multiple stores.\n\n#### ONNX model requirements\nThe ONNX model _can_ use one or more of the following input names:\n* `id` (str[]): a list of external item IDs for all relevant items the recommender can choose from\n* `current_item` (str): the id of the current item\n* `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model\n** If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n* `last_order_date` (int64): the number of hours since the last time the product was ordered by the customer\n* `shoppingcart` (int64): whether the item is currently in the customer’s cart\n* `viewed` (int64): the number of times the item was viewed by the customer\n* `ordered` (int64): the number of times the item was ordered by the customer\n* `recent_view` (int64): the number of times the item was viewed in the configured timeframe\n* `recent_click` (int64): the number of times the item was clicked in the configured timeframe\n* `recent_entrypage` (int64): the number of times the item was the landing page in the configured timeframe\n* `recent_recommendation_view` (int64): the number of times the item was viewed in a recommendation in the configured timeframe\n* `recent_shoppingcart` (int64): the number of times the item was added to a shoppingcart in the configured timeframe\n* `recent_order` (int64): the number of times the item was ordered in the configured timeframe\n\nThe ONNX model must have the following output names:\n* `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.\n\n### CONTINUOUS models\n\nWhen updating a model of type `CONTINUOUS`, the `metadata` part _can_ contain the following additional properties:\n- `profilePropertyIds`: The profile property ID's that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.\n- `segmentId`: An optional segment ID to restrict model execution to profiles that are a member of this segment. If not provided, the model is executed for all profiles.\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when the ONNX model has a `profile` input:\n```json\n{\n  \"featureNames\": [\n    \"age\",\n    \"lifetime_value\",\n    \"purchase_frequency\",\n    \"browsername=edge\"\n  ]\n}\n```\n\nThe model is automatically executed when a profile is loaded (via web) or when relevant profile properties are updated (any source). All outputs the model defines will be stored as profile properties on the profile.\n\n#### ONNX model requirements\nThe ONNX model _can_ use the following input name:\n* `profile` (float[]): the profile feature vector, based on the `profilePropertyIds` and `featureNames` of the model. This input is optional — if not present, the model is executed without any profile input.\n  * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model can have any number of output names. Each output will be stored as a profile property with the same name on the profile.",
+          "description" : "To update a model, a `multipart/form-data` request can be sent to the `/models` endpoint via the `PUT` method. <br/>\nThe request body can contain multiple parts, named as follows: <br/><br/>\n\n- `metadata`: The updated metadata for the model. This is a JSON object that contains the model's metadata properties.\n- `model`: The binary ONNX model, serialized as specified in the ONNX [documentation](https://onnx.ai/onnx/api/serialization.html).\n\nBoth parts are optional, meaning that you can update the metadata without providing a new model, or you can provide a new model without updating the metadata.<br/>\nFor the `metadata` part, no partial updates are supported. The entire metadata object must be provided in the request.<br/>\nAt least one part needs to be supplied, otherwise a HTTP 400 is returned.\n\n### DIALOGUE and RECOMMENDATION models\n\nWhen updating a model of type `DIALOGUE`or `RECOMMENDATION`, the `metadata` part must contain the following additional property:\n- `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).\n\nOnce the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>\nThe `featureNames` must be defined in the following format and is only required when an ONNX model is provided:\n```json\n{\n  \"featureNames\": [\n    \"browsername=chrome\",\n    \"browsername=edge\",\n    \"lastvisitdate\",\n    \"interactions_clicked\"\n  ]\n}\n```\n\n#### ONNX model requirements\nThe ONNX model must have the following input names:\n* `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model\n* If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n\nThe ONNX model must have the following output names:\n* `variant_id` (str): the variant ID that should be served based on the ONNX model outcome\n\n### RECOMMENDATION models\n\nWhen updating a model of type `RECOMMENDATION`, the `metadata` part _can_ contain the following additional property:\n- `storeId`: An optional content/product store ID for which the models is trained. If not provider, the model can work across multiple stores.\n\n#### ONNX model requirements\nThe ONNX model _can_ use one or more of the following input names:\n* `id` (str[]): a list of external item IDs for all relevant items the recommender can choose from\n* `current_item` (str): the id of the current item\n* `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model\n** If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.\n* `last_order_date` (int64): the number of hours since the last time the product was ordered by the customer\n* `shoppingcart` (int64): whether the item is currently in the customer’s cart\n* `viewed` (int64): the number of times the item was viewed by the customer\n* `ordered` (int64): the number of times the item was ordered by the customer\n* `recent_view` (int64): the number of times the item was viewed in the configured timeframe\n* `recent_click` (int64): the number of times the item was clicked in the configured timeframe\n* `recent_entrypage` (int64): the number of times the item was the landing page in the configured timeframe\n* `recent_recommendation_view` (int64): the number of times the item was viewed in a recommendation in the configured timeframe\n* `recent_shoppingcart` (int64): the number of times the item was added to a shoppingcart in the configured timeframe\n* `recent_order` (int64): the number of times the item was ordered in the configured timeframe\n\nThe ONNX model must have the following output names:\n* `score` (float[]): the `score` that should be used to rank the recommendations. A list of scores between 0 and 1 for all items.",
           "content" : {
             "multipart/form-data" : {
               "schema" : {
@@ -1743,10 +1735,6 @@
                     "description" : "Response body with ONNX model (RECOMMENDATION)",
                     "value" : "{\n  \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n  \"creator\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"featureNames\" : [ \"browsername=chrome\", \"browsername=edge\", \"browsername=ie\", \"interactions_clicked\" ],\n  \"id\" : \"682c7614-4456-4ca8-83d3-17f768b5ca14\",\n  \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"modelHash\" : \"2e9f9c2e7384dd83f0aa015f4c88342f\",\n  \"modelUrl\" : \"/rest/v2/models/682c7614-4456-4ca8-83d3-17f768b5ca14/model\",\n  \"name\" : \"Recommendation model with onnx model set\",\n  \"parameters\" : [ ],\n  \"profilePropertyIds\" : [ \"browsername\", \"interactions_clicked\" ],\n  \"tags\" : [ ],\n  \"type\" : \"RECOMMENDATION\",\n  \"storeId\": \"e7b65b21-3e6b-4009-8b6b-3cd26862a689\"\n}"
                   },
-                  "Response body with ONNX model (CONTINUOUS)" : {
-                    "description" : "Response body with ONNX model (CONTINUOUS)",
-                    "value" : "{\n  \"creationDate\" : \"2025-05-01T08:16:00.458Z\",\n  \"creator\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"featureNames\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"id\" : \"882c7614-4456-4ca8-83d3-17f768b5ca15\",\n  \"lastModifiedDate\" : \"2025-05-14T11:38:42.535Z\",\n  \"lastModifiedUser\" : {\n    \"fullName\" : \"ondemand@blueconic.com\",\n    \"userName\" : \"ondemand@blueconic.com\"\n  },\n  \"modelHash\" : \"3e9f9c2e7384dd83f0aa015f4c88342f\",\n  \"modelUrl\" : \"/rest/v2/models/882c7614-4456-4ca8-83d3-17f768b5ca15/model\",\n  \"name\" : \"Continuous model with onnx model set\",\n  \"parameters\" : [ ],\n  \"profilePropertyIds\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"segmentId\" : \"c82c7614-4456-4ca8-83d3-17f768b5ca99\",\n  \"tags\" : [ ],\n  \"type\" : \"CONTINUOUS\"\n}\n"
-                  },
                   "Response body without ONNX model (GENERAL)" : {
                     "description" : "Response body without ONNX model (GENERAL)",
                     "value" : "{\n  \"creationDate\": \"2025-04-17T14:00:46.920Z\",\n  \"creator\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"description\": \"somedescription\",\n  \"id\": \"2613c9d6-a179-4c79-b6d2-1618a53fbc64\",\n  \"lastModifiedDate\": \"2025-04-17T14:00:46.920Z\",\n  \"lastModifiedUser\": {\n    \"fullName\": \"ondemand@blueconic.com\",\n    \"userName\": \"ondemand@blueconic.com\"\n  },\n  \"name\": \"mymodel without onnx model set\",\n  \"parameters\": [\n    {\n      \"id\": \"abc\",\n      \"values\": [\n        \"123\"\n      ]\n    }\n  ],\n  \"tags\": [],\n  \"type\": \"GENERAL\"\n}"
@@ -1760,7 +1748,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 },
                 "examples" : {
                   "Response body with error in metadata" : {
@@ -1782,7 +1770,7 @@
             "description" : "Authorization failed (incorrect permissions)."
           },
           "413" : {
-            "description" : "Model is too large, cannot exceed 20MB."
+            "description" : "Model is too large, cannot exceed 10MB."
           },
           "503" : {
             "description" : "The server is too busy to handle the request."
@@ -2395,14 +2383,6 @@
           },
           "example" : 20
         }, {
-          "name" : "maxHitsAllowed",
-          "in" : "query",
-          "description" : "When greater than 0, enables fast approximate export by limiting total hits (e.g. maxHitsAllowed=1000 and count=100 for max 10 pages). Same behavior as segment export.",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }, {
           "name" : "properties",
           "in" : "query",
           "description" : "Specifies which group properties values will be returned for each group. If not specified, the values of all group properties will be returned, which may result in a large result set. One or more group property ids, separated by a comma.",
@@ -2465,7 +2445,7 @@
               "examples" : {
                 "Basic create group example" : {
                   "description" : "Example that shows how to create one group.",
-                  "value" : "[{\n    \"properties\": [{\n            \"id\": \"company_test_zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"company_test_email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"domainGroup\": \"DEFAULT\",\n    \"groupId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"groupType\": \"company_test\",\n    \"strategy\": \"UPSERT\"\n}]"
+                  "value" : "[{\n    \"properties\": [{\n            \"id\": \"company_test_zipcode\",\n            \"values\": [\"02111\", \"02112\"],\n            \"strategy\": \"SET\"\n        },\n        {\n            \"id\": \"company_test_email\",\n            \"values\": [\"jane@example.com\"],\n            \"strategy\": \"SET\"\n        }\n    ],\n    \"groupId\": \"f7daa9db-5ea0-40c8-b9dc-96e519151f8c\",\n    \"groupType\": \"company_test\",\n    \"strategy\": \"UPSERT\"\n}]"
                 },
                 "Advanced example" : {
                   "description" : "This request contains three operations:\n\n* The first operation looks up a specific BlueConic group by its id, then sets the property with id crm_id to 003Kz4Bsaa14 and adds a new entry to email property. If the group cannot be found, nothing will happen.\n* The second operation deletes a specific BlueConic group by its id.\n* The third operation tries to find a BlueConic group by its id in the specified domain. If the group is found, three properties will be set:\n    * Zipcodes `02111` and `02112` will be added.\n    * `email` will be set to `jane@example.com.`\n    * `crm_id` will be set to `002wC4BadR1w`.\n    * If no group can be found, a new group is created in the specified domaingroup. The three properties will be set on the group.\n",
@@ -2501,7 +2481,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 }
               }
             }
@@ -2999,9 +2979,6 @@
           "401" : {
             "description" : "Authentication failed (unauthorized)."
           },
-          "408" : {
-            "description" : "Request timed out."
-          },
           "501" : {
             "description" : "The specified property is not classified as indexed (unique) (not implemented)."
           },
@@ -3095,7 +3072,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 }
               }
             }
@@ -3155,7 +3132,7 @@
         }, {
           "name" : "expand",
           "in" : "query",
-          "description" : "Expand the information in the result set. Use \"profile.permissions.exceptions\" to include permission level and exception data.\nUse \"profile.timeline\" to include timeline event information.\nUse \"profile.segments\" to include the segments a profile is part of.\nUse \"profile.segments.tags\" to include segment labels (v2 API only).\nUse multiple \"expand\" querystring parameters to return combinations.\n",
+          "description" : "Expand the information in the result set. Use \"profile.permissions.exceptions\" to include permission level and exception data.\nUse \"profile.timeline\" to include timeline event information.\nUse \"profile.segments\" to include the segments a profile is part of.\nUse multiple \"expand\" querystring parameters to return combinations.\n",
           "schema" : {
             "type" : "array",
             "items" : {
@@ -3321,15 +3298,6 @@
             "format" : "int32"
           },
           "example" : 20
-        }, {
-          "name" : "maxHitsAllowed",
-          "in" : "query",
-          "description" : "When greater than 0, enables fast approximate export by limiting total hits and using segment count from cache. Use with count for consistent paging (e.g. maxHitsAllowed=1000 and count=100 for max 10 pages).",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "example" : 0
         }, {
           "name" : "properties",
           "in" : "query",
@@ -3880,7 +3848,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ErrorRequestBean"
+                  "$ref" : "#/components/schemas/BadRequestBean"
                 }
               }
             }
@@ -4860,32 +4828,18 @@
       "link" : {
         "type" : "object",
         "properties" : {
-          "Href" : {
-            "type" : "string",
-            "description" : "The href of the link"
-          },
-          "Rel" : {
-            "type" : "string",
-            "description" : "The link rel e.g. 'self', 'next', etc."
-          },
-          "Type" : {
-            "type" : "string",
-            "description" : "The type of the link e.g. 'application/json'"
-          }
-        }
-      },
-      "ErrorBean" : {
-        "type" : "object",
-        "properties" : {
-          "field" : {
+          "href" : {
             "type" : "string"
           },
-          "message" : {
+          "rel" : {
+            "type" : "string"
+          },
+          "type" : {
             "type" : "string"
           }
         }
       },
-      "ErrorRequestBean" : {
+      "BadRequestBean" : {
         "type" : "object",
         "properties" : {
           "code" : {
@@ -4897,6 +4851,17 @@
             "items" : {
               "$ref" : "#/components/schemas/ErrorBean"
             }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ErrorBean" : {
+        "type" : "object",
+        "properties" : {
+          "field" : {
+            "type" : "string"
           },
           "message" : {
             "type" : "string"
@@ -5008,13 +4973,6 @@
             "type" : "string",
             "description" : "The required permission for this executable"
           },
-          "roles" : {
-            "type" : "array",
-            "description" : "Roles allowed to edit this connection; empty means no role-based restriction",
-            "items" : {
-              "$ref" : "#/components/schemas/SimpleRoleBean"
-            }
-          },
           "scheduleMode" : {
             "type" : "string",
             "description" : "The scheduling mode",
@@ -5036,21 +4994,6 @@
             "items" : {
               "$ref" : "#/components/schemas/targetChannels"
             }
-          }
-        },
-        "required" : [ "roles" ]
-      },
-      "SimpleRoleBean" : {
-        "type" : "object",
-        "description" : "A role with id and name.",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "Unique identifier of the role."
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "Name of the role."
           }
         }
       },
@@ -5104,11 +5047,6 @@
             "items" : {
               "$ref" : "#/components/schemas/property"
             }
-          },
-          "lane" : {
-            "type" : "string",
-            "description" : "The lane in which this run was executed",
-            "enum" : [ "REGULAR", "REGULAR2", "REGULAR3", "REGULAR4", "REGULAR5", "REGULAR6", "REGULAR7", "REGULAR8", "EXPRESS", "RUN_NOW", "CONTINUOUS" ]
           },
           "message" : {
             "type" : "string",
@@ -5169,11 +5107,6 @@
             "items" : {
               "$ref" : "#/components/schemas/property"
             }
-          },
-          "lane" : {
-            "type" : "string",
-            "description" : "The lane in which this run was executed",
-            "enum" : [ "REGULAR", "REGULAR2", "REGULAR3", "REGULAR4", "REGULAR5", "REGULAR6", "REGULAR7", "REGULAR8", "EXPRESS", "RUN_NOW", "CONTINUOUS" ]
           },
           "message" : {
             "type" : "string",
@@ -5573,35 +5506,18 @@
           }
         }
       },
-      "DescriptionLabel" : {
-        "type" : "object",
-        "description" : "Localized description text displayed in the About section of the plugin. Provides a brief summary of the plugin’s purpose or functionality. Note: the UI always displays the description with the key set to en_US.",
-        "properties" : {
-          "key" : {
-            "type" : "string",
-            "description" : "Language code that specifies the locale of the description text. Follows the IETF BCP 47 format (e.g., en_US for U.S. English)"
-          },
-          "value" : {
-            "type" : "string",
-            "description" : "The localized description text for the specified language."
-          }
-        }
-      },
       "Label" : {
         "type" : "object",
-        "description" : "Localized display name of the plugin. Note: the UI always displays the description with the key set to en_US.",
         "properties" : {
           "key" : {
-            "type" : "string",
-            "description" : "Language code that specifies the locale of the labels text. Follows the IETF BCP 47 format (e.g., en_US for U.S. English)"
+            "type" : "string"
           },
           "value" : {
-            "type" : "string",
-            "description" : "The localized display name for the specified language."
+            "type" : "string"
           }
         }
       },
-      "plugin" : {
+      "PluginImpl" : {
         "type" : "object",
         "properties" : {
           "URL" : {
@@ -5629,9 +5545,8 @@
           },
           "descriptions" : {
             "type" : "array",
-            "description" : "Localized description text displayed in the About section of the plugin. Provides a brief summary of the plugin’s purpose or functionality. Note: the UI always displays the description with the key set to en_US.",
             "items" : {
-              "$ref" : "#/components/schemas/DescriptionLabel"
+              "$ref" : "#/components/schemas/Label"
             },
             "uniqueItems" : true
           },
@@ -5645,7 +5560,6 @@
           },
           "labels" : {
             "type" : "array",
-            "description" : "Localized display name of the plugin. Note: the UI always displays the description with the key set to en_US.",
             "items" : {
               "$ref" : "#/components/schemas/Label"
             },
@@ -5674,6 +5588,14 @@
           "supportLevel" : {
             "type" : "string",
             "description" : "The support level of the plugin."
+          },
+          "tags" : {
+            "type" : "array",
+            "description" : "The tags of the plugin.",
+            "items" : {
+              "type" : "string",
+              "description" : "The tags of the plugin."
+            }
           },
           "type" : {
             "type" : "string",
@@ -5812,11 +5734,6 @@
           },
           "lastModifiedUser" : {
             "$ref" : "#/components/schemas/UserBean"
-          },
-          "lastVisitedDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The date and time when the channel was last visited."
           },
           "logo" : {
             "type" : "string",
@@ -6075,7 +5992,7 @@
             "type" : "object",
             "format" : "application/json",
             "description" : "The model metadata in JSON format (required)",
-            "example" : "{\n  \"featureNames\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"name\" : \"Continuous model with onnx model set\",\n  \"profilePropertyIds\" : [ \"age\", \"lifetime_value\", \"purchase_frequency\" ],\n  \"segmentId\" : \"c82c7614-4456-4ca8-83d3-17f768b5ca99\",\n  \"type\" : \"CONTINUOUS\"\n}\n",
+            "example" : "{\n  \"name\": \"my new model\",\n  \"description\": \"A model description\",\n  \"parameters\": [\n    {\n      \"id\": \"parameterForModel\",\n      \"values\": [\n        \"parameter value 1\"\n      ]\n    }\n  ],\n  \"type\": \"DIALOGUE\",\n  \"profilePropertyIds\" : [ \"browsername\", \"interactions_clicked\" ],\n  \"featureNames\" : [ \"browsername=chrome\", \"browsername=edge\", \"browsername=ie\", \"interactions_clicked\" ]\n}",
             "properties" : {
               "creationDate" : {
                 "type" : "string",
@@ -6092,10 +6009,10 @@
               },
               "featureNames" : {
                 "type" : "array",
-                "description" : "The features that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when an ONNX model is provided.",
+                "description" : "The features that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is provided.",
                 "items" : {
                   "type" : "string",
-                  "description" : "The features that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when an ONNX model is provided."
+                  "description" : "The features that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is provided."
                 }
               },
               "id" : {
@@ -6134,15 +6051,11 @@
               },
               "profilePropertyIds" : {
                 "type" : "array",
-                "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`.",
+                "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION`.",
                 "items" : {
                   "type" : "string",
-                  "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+                  "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION`."
                 }
-              },
-              "segmentId" : {
-                "type" : "string",
-                "description" : "The segment ID this model is designated for (can be empty if the model can work on more than one segment). Only relevant for models of type `CONTINUOUS`."
               },
               "storeId" : {
                 "type" : "string",
@@ -6160,8 +6073,8 @@
               },
               "type" : {
                 "type" : "string",
-                "description" : "The type of the model. Must be one of the allowed model types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`.",
-                "enum" : [ "GENERAL", "DIALOGUE", "RECOMMENDATION", "CONTINUOUS" ]
+                "description" : "The type of the model. Must be one of the allowed model types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`.",
+                "enum" : [ "GENERAL", "DIALOGUE", "RECOMMENDATION" ]
               }
             },
             "required" : [ "type" ]
@@ -6180,23 +6093,18 @@
         "description" : "The parameters of the object, containing optional key/values pairs.",
         "properties" : {
           "id" : {
-            "type" : "string",
-            "description" : "The unique identifier of the parameter."
+            "type" : "string"
           },
           "relation" : {
-            "type" : "string",
-            "description" : "The relation of the parameter."
+            "type" : "string"
           },
           "type" : {
-            "type" : "string",
-            "description" : "The type of the parameter."
+            "type" : "string"
           },
           "values" : {
             "type" : "array",
-            "description" : "The values of the parameter.",
             "items" : {
-              "type" : "string",
-              "description" : "The values of the parameter."
+              "type" : "string"
             }
           }
         }
@@ -6219,10 +6127,10 @@
           },
           "featureNames" : {
             "type" : "array",
-            "description" : "The features that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when an ONNX model is provided.",
+            "description" : "The features that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is provided.",
             "items" : {
               "type" : "string",
-              "description" : "The features that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when an ONNX model is provided."
+              "description" : "The features that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is provided."
             }
           },
           "id" : {
@@ -6261,15 +6169,11 @@
           },
           "profilePropertyIds" : {
             "type" : "array",
-            "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`.",
+            "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION`.",
             "items" : {
               "type" : "string",
-              "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+              "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION`."
             }
-          },
-          "segmentId" : {
-            "type" : "string",
-            "description" : "The segment ID this model is designated for (can be empty if the model can work on more than one segment). Only relevant for models of type `CONTINUOUS`."
           },
           "storeId" : {
             "type" : "string",
@@ -6287,8 +6191,8 @@
           },
           "type" : {
             "type" : "string",
-            "description" : "The type of the model. Must be one of the allowed model types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`.",
-            "enum" : [ "GENERAL", "DIALOGUE", "RECOMMENDATION", "CONTINUOUS" ]
+            "description" : "The type of the model. Must be one of the allowed model types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`.",
+            "enum" : [ "GENERAL", "DIALOGUE", "RECOMMENDATION" ]
           }
         },
         "required" : [ "type" ]
@@ -6353,10 +6257,10 @@
               },
               "featureNames" : {
                 "type" : "array",
-                "description" : "The features that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when an ONNX model is provided.",
+                "description" : "The features that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is provided.",
                 "items" : {
                   "type" : "string",
-                  "description" : "The features that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when an ONNX model is provided."
+                  "description" : "The features that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION` and when an ONNX model is provided."
                 }
               },
               "id" : {
@@ -6395,15 +6299,11 @@
               },
               "profilePropertyIds" : {
                 "type" : "array",
-                "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`.",
+                "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION`.",
                 "items" : {
                   "type" : "string",
-                  "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
+                  "description" : "The profile properties that are used in the model. Only required for models of type `DIALOGUE` or `RECOMMENDATION`."
                 }
-              },
-              "segmentId" : {
-                "type" : "string",
-                "description" : "The segment ID this model is designated for (can be empty if the model can work on more than one segment). Only relevant for models of type `CONTINUOUS`."
               },
               "storeId" : {
                 "type" : "string",
@@ -6421,8 +6321,8 @@
               },
               "type" : {
                 "type" : "string",
-                "description" : "The type of the model. Must be one of the allowed model types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`.",
-                "enum" : [ "GENERAL", "DIALOGUE", "RECOMMENDATION", "CONTINUOUS" ]
+                "description" : "The type of the model. Must be one of the allowed model types `GENERAL`, `DIALOGUE` or `RECOMMENDATION`.",
+                "enum" : [ "GENERAL", "DIALOGUE", "RECOMMENDATION" ]
               }
             },
             "required" : [ "type" ]
@@ -7004,11 +6904,9 @@
       },
       "Labels" : {
         "type" : "object",
-        "description" : "The language labels for the unit.",
         "properties" : {
           "label" : {
             "type" : "array",
-            "description" : "The labels for the name",
             "items" : {
               "$ref" : "#/components/schemas/label"
             }
@@ -7028,33 +6926,27 @@
           },
           "name" : {
             "type" : "string",
-            "description" : "The currency name, e.g. \"US Dollar\", \"Euro\", etc.",
             "readOnly" : true
           },
           "precision" : {
             "type" : "integer",
             "format" : "int32",
-            "description" : "The number of decimal places used by the currency.",
             "readOnly" : true
           },
           "symbol" : {
             "type" : "string",
-            "description" : "The currency symbol, e.g. \"$\", \"€\", etc.",
             "readOnly" : true
           }
         }
       },
       "label" : {
         "type" : "object",
-        "description" : "The labels for the name",
         "properties" : {
           "content" : {
-            "type" : "string",
-            "description" : "The label value"
+            "type" : "string"
           },
           "locale" : {
-            "type" : "string",
-            "description" : "The label locale"
+            "type" : "string"
           }
         }
       },
@@ -7111,7 +7003,6 @@
           },
           "filterTypeSuggestion" : {
             "type" : "string",
-            "description" : "The suggested filter type.",
             "readOnly" : true
           },
           "groupTypeId" : {
@@ -7125,7 +7016,7 @@
           "indexed" : {
             "type" : "boolean",
             "default" : false,
-            "description" : "Specifies that the profile property holds a unique value for each profile. When enabled, the property is indexed and used as a unique identifier."
+            "description" : "Whether the property is indexed (unique)."
           },
           "isIdProperty" : {
             "type" : "boolean",
@@ -7143,7 +7034,7 @@
           "lastProfileMutationDate" : {
             "type" : "string",
             "format" : "date-time",
-            "description" : "The last time a profile has been updated.",
+            "description" : "The date when a profile was last mutated with this property.",
             "readOnly" : true
           },
           "linkingGroupTypeId" : {
@@ -7177,7 +7068,6 @@
           "profileCount" : {
             "type" : "integer",
             "format" : "int64",
-            "description" : "Number of profiles that have a value for this property.",
             "readOnly" : true
           },
           "range" : {
@@ -7225,17 +7115,14 @@
       },
       "range" : {
         "type" : "object",
-        "description" : "The interval set for the property",
         "properties" : {
           "max" : {
             "type" : "integer",
-            "format" : "int64",
-            "description" : "The maximum value of the range"
+            "format" : "int64"
           },
           "min" : {
             "type" : "integer",
-            "format" : "int64",
-            "description" : "The minimum value of the range"
+            "format" : "int64"
           }
         },
         "readOnly" : true
@@ -7258,7 +7145,6 @@
         "properties" : {
           "links" : {
             "type" : "array",
-            "description" : "The related links.",
             "items" : {
               "$ref" : "#/components/schemas/link"
             }
@@ -7545,14 +7431,6 @@
           "name" : {
             "type" : "string",
             "description" : "The name of the segment."
-          },
-          "tags" : {
-            "type" : "array",
-            "description" : "The labels of the segment (optionally included).",
-            "items" : {
-              "type" : "string",
-              "description" : "The labels of the segment (optionally included)."
-            }
           }
         }
       },
@@ -8473,11 +8351,8 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "enum" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "EDIT_AI_AGENT", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "MANAGE_AI_CANVAS", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_INACTIVITY_SETTINGS", "MANAGE_INACTIVITY_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS", "MANAGE_MODELS", "TRANSFER_CONFIGURATION" ]
+              "enum" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "EDIT_AI_AGENT", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "MANAGE_AI_CANVAS", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_TIMEOUT_SETTINGS", "MANAGE_TIMEOUT_SETTINGS", "READ_INACTIVITY_SETTINGS", "MANAGE_INACTIVITY_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS", "MANAGE_MODELS", "TRANSFER_CONFIGURATION" ]
             }
-          },
-          "restrictions" : {
-            "$ref" : "#/components/schemas/restrictions"
           },
           "tags" : {
             "type" : "array",
@@ -8491,43 +8366,6 @@
           }
         },
         "required" : [ "permissions" ]
-      },
-      "pluginRestrictionItem" : {
-        "type" : "object",
-        "description" : "Single plugin restriction: pluginId, access (only 'deny' supported), operations (e.g. create, edit).",
-        "properties" : {
-          "access" : {
-            "type" : "string",
-            "description" : "Access type; only 'deny' is supported.",
-            "enum" : [ "deny" ]
-          },
-          "operations" : {
-            "type" : "array",
-            "description" : "Operations to restrict (e.g. create, edit).",
-            "items" : {
-              "type" : "string",
-              "description" : "Operations to restrict (e.g. create, edit).",
-              "enum" : [ "create", "edit" ]
-            }
-          },
-          "pluginId" : {
-            "type" : "string",
-            "description" : "Plugin identifier."
-          }
-        }
-      },
-      "restrictions" : {
-        "type" : "object",
-        "description" : "Plugin restrictions for the role. Single plugins list; only access 'deny' is supported.",
-        "properties" : {
-          "plugins" : {
-            "type" : "array",
-            "description" : "List of plugin restriction items (access deny only).",
-            "items" : {
-              "$ref" : "#/components/schemas/pluginRestrictionItem"
-            }
-          }
-        }
       },
       "roles" : {
         "type" : "object",
@@ -8649,6 +8487,20 @@
           }
         }
       },
+      "SimpleRoleBean" : {
+        "type" : "object",
+        "description" : "The roles assigned to this user.",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The ID of the role."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the role."
+          }
+        }
+      },
       "users" : {
         "type" : "object",
         "properties" : {
@@ -8724,13 +8576,6 @@
             "type" : "string",
             "description" : "The object name."
           },
-          "roles" : {
-            "type" : "array",
-            "description" : "Roles allowed to edit this notebook; empty means no role-based restriction",
-            "items" : {
-              "$ref" : "#/components/schemas/SimpleRoleBean"
-            }
-          },
           "tags" : {
             "type" : "array",
             "description" : "The tags (i.e. labels).",
@@ -8741,8 +8586,7 @@
               "example" : "Address"
             }
           }
-        },
-        "required" : [ "roles" ]
+        }
       },
       "notebooks" : {
         "type" : "object",
