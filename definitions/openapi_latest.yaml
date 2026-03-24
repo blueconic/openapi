@@ -574,11 +574,12 @@ paths:
       tags:
       - Stores
       summary: Get store items
-      description: "To retrieve items from a content store, a `GET` request can be\
-        \ sent to the `/contentStores/{contentStoreId}/items` endpoint.\nYou can use\
-        \ the `ids` query parameter to retrieve specific items by their IDs. The `ids`\
-        \ parameter accepts a comma-separated list of item IDs.\nIf the `ids` parameter\
-        \ is not provided, all items in the content store will be returned. "
+      description: |-
+        To retrieve items from a content store, a `GET` request can be sent to the `/contentStores/{contentStoreId}/items` endpoint.
+
+        You can use the `filterValue` query parameter to filter the results based on an expression. The expression format is `property<operator>value`, where the supported operators are `=`, `==`, `<`, `>`, `<=`, and `>=`. For example, `name=foo` returns only items whose name equals `foo`, and `publicationDate>=2024-01-01T00:00Z` returns only items published on or after January 1, 2024. The format of `publicationDate` is `2024-01-01T00:00Z` or with a time zone offset `2024-01-01T00:00+05:00`. When using `filterValue` in a URL, ensure the value is URL-encoded (for example, `>=` should be encoded as `%3E%3D`).
+
+        The `filterValue` parameter can be repeated to apply multiple filters. All filters are combined with AND semantics, so only items that match all filters are returned.
       operationId: getContentItemsFromStore
       parameters:
       - name: contentStore
@@ -591,6 +592,22 @@ paths:
           UUID of the content store:
             description: UUID of the content store
             value: 2613c9d6-a179-4c79-b6d2-1618a53fbc64
+      - name: filterValue
+        in: query
+        description: "Filters results using an expression of the form `property<operator>value`.\
+          \ Supported operators are `=`, `==`, `<`, `>`, `<=`, and `>=`. This parameter\
+          \ can be repeated to apply multiple filters (AND semantics)."
+        schema:
+          type: array
+          items:
+            type: string
+        examples:
+          Filter by name:
+            description: Filter by name
+            value: name=foo
+          Filter by publication date:
+            description: Filter by publication date
+            value: publicationDate>=2024-01-01T00:00Z
       - name: startIndex
         in: query
         description: Specifies the index of the first item to include in the result.
@@ -4310,8 +4327,8 @@ paths:
       - name: maxHitsAllowed
         in: query
         description: "When greater than 0, enables fast approximate export by limiting\
-          \ total hits (e.g. maxHitsAllowed=1000 and count=100 for max 10 pages).\
-          \ Same behavior as segment export."
+          \ total hits (e.g. maxHitsAllowed=200 and count=20 for max 10 pages). Same\
+          \ behavior as segment export."
         schema:
           type: integer
           format: int32
@@ -6367,7 +6384,7 @@ paths:
         in: query
         description: "When greater than 0, enables fast approximate export by limiting\
           \ total hits and using segment count from cache. Use with count for consistent\
-          \ paging (e.g. maxHitsAllowed=1000 and count=100 for max 10 pages)."
+          \ paging (e.g. maxHitsAllowed=200 and count=20 for max 10 pages)."
         schema:
           type: integer
           format: int32
@@ -6773,6 +6790,15 @@ paths:
           type: integer
           format: int32
         example: 10
+      - name: filterTag
+        in: query
+        description: "When specified, only segments that have at least one matching\
+          \ tag are returned. Multiple values can be provided by repeating the parameter."
+        schema:
+          type: array
+          items:
+            type: string
+        example: Homepage
       responses:
         "200":
           description: Returns the segments.
@@ -12271,6 +12297,7 @@ components:
             - MANAGE_OBJECTIVES
             - MANAGE_TIMELINE_EVENT_TYPES
             - MANAGE_AI_CANVAS
+            - MANAGE_GROWTH_PLAYS
             - READ_GROUPS
             - MANAGE_GROUPS
             - MANAGE_PII_VALUES
