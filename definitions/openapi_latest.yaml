@@ -7185,17 +7185,22 @@ paths:
           \ are supported:\n\n|Name|Description|Example|\n|:----|:----|:----|\n|Breaking\
           \ news|Items most viewed by all visitors in the time frame defined in the\
           \ collector.|`\"boosts\": [{\"value\": 1, \"algorithm\": \"RECENT_VIEW\"\
-          }]`\n|Viral news|Items most used as a landing page by all visitors in the\
-          \ time frame defined in the collector.|`\"boosts\": [{\"value\": 1, \"algorithm\"\
-          : \"RECENT_ENTRYPAGE\"}]`\n|Recency|Items most recently added items based\
-          \ on the publication date property.|`\"boosts\": [{\"value\": 1, \"algorithm\"\
-          : \"RECENCY\"}]`\n|Recent high CTRs|Items most clicked-through from BlueConic\
-          \ recommendations by all visitors in the time frame defined in the collector.|`\"\
-          boosts\": [{\"value\": 1, \"algorithm\": \"RECENT_CTR\"}]`\n|Recently bought\
-          \ items|Items recently bought by the provided profileId.|`\"boosts\": [{\"\
-          value\": 1, \"algorithm\": \"RECENTLY_BOUGHT\"}]`\n|Recently carted items|Items\
-          \ recently put in the shopping cart by the provided profileId.|`\"boosts\"\
-          : [{\"value\": 1, \"algorithm\": \"RECENTLY_SHOPPINGCART\"}]`\n|Same category|Items\
+          }]`\n|Top carted items|Items most added to shopping carts by all visitors\
+          \ in the time frame defined in the collector.|`\"boosts\": [{\"value\":\
+          \ 1, \"algorithm\": \"RECENT_SHOPPINGCART\"}]`\n|Top ordered items|Items\
+          \ most ordered by all visitors in the time frame defined in the collector.|`\"\
+          boosts\": [{\"value\": 1, \"algorithm\": \"RECENT_ORDER\"}]`\n|Viral news|Items\
+          \ most used as a landing page by all visitors in the time frame defined\
+          \ in the collector.|`\"boosts\": [{\"value\": 1, \"algorithm\": \"RECENT_ENTRYPAGE\"\
+          }]`\n|Recency|Items most recently added items based on the publication date\
+          \ property.|`\"boosts\": [{\"value\": 1, \"algorithm\": \"RECENCY\"}]`\n\
+          |Recent high CTRs|Items most clicked-through from BlueConic recommendations\
+          \ by all visitors in the time frame defined in the collector.|`\"boosts\"\
+          : [{\"value\": 1, \"algorithm\": \"RECENT_CTR\"}]`\n|Recently bought items|Items\
+          \ recently bought by the provided profileId.|`\"boosts\": [{\"value\": 1,\
+          \ \"algorithm\": \"RECENTLY_BOUGHT\"}]`\n|Recently carted items|Items recently\
+          \ put in the shopping cart by the provided profileId.|`\"boosts\": [{\"\
+          value\": 1, \"algorithm\": \"RECENTLY_SHOPPINGCART\"}]`\n|Same category|Items\
           \ of the same category as the item with the provided itemId.|`\"boosts\"\
           : [{\"value\": 1, \"algorithm\": \"SAME_CATEGORY\" }]`\n|Look-alike-articles|Items\
           \ that have similar content to the item with the provided itemId.|`\"boosts\"\
@@ -11854,6 +11859,8 @@ components:
           - RECENCY
           - RECENT_CTR
           - RECENT_ENTRYPAGE
+          - RECENT_ORDER
+          - RECENT_SHOPPINGCART
           - RECENT_VIEW
           - RECENTLY_BOUGHT
           - RECENTLY_SHOPPINGCART
