@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "100.0"
+  version: "101.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -8132,27 +8132,77 @@ paths:
                   description: Response body
                   value: |-
                     {
-                      "itemsPerPage" : 10,
-                      "roles" : [ {
-                        "creationDate" : "2024-01-24T14:06:19.100Z",
-                        "creator" : {
-                          "fullName" : "BlueConic",
-                          "userName" : "BlueConic"
-                        },
-                        "description" : "description here",
-                        "id" : "35718e9a-f8d3-4d2d-8501-a020c563cc25",
-                        "lastModifiedDate" : "2024-01-24T14:06:19.100Z",
-                        "lastModifiedUser" : {
-                          "fullName" : "BlueConic",
-                          "userName" : "BlueConic"
-                        },
-                        "name" : "Application Manager",
-                        "permissions" : [ "MANAGE_PROPERTIES", "READ_PROFILES", "MANAGE_PROFILES", "MANAGE_LISTENERS", "MANAGE_TRACKERS", "MANAGE_SEGMENTS", "MANAGE_PROFILE_MERGE_RULES", "MANAGE_PROFILE_COMPOSITION_RULES", "MANAGE_DIALOGUES", "CREATE_POSITIONS", "MANAGE_INSIGHTS", "MANAGE_EMAIL_NOTIFICATIONS", "MANAGE_LIFECYCLES", "USE_SIMULATOR", "MANAGE_CHANNELS", "MANAGE_PLUGINS", "MANAGE_CONNECTIONS", "MANAGE_API_V1_ACCESS_KEYS", "MANAGE_USERS", "MANAGE_ROLES", "MANAGE_PRIVACY_SETTINGS", "MANAGE_GENERAL_SETTINGS", "PERSONAL", "MANAGE_TEMPLATES", "MANAGE_NOTEBOOKS", "USE_NOTEBOOK_EDITOR", "APPLY_BULK_OPERATIONS", "MANAGE_OBJECTIVES", "MANAGE_TIMELINE_EVENT_TYPES", "READ_GROUPS", "MANAGE_GROUPS", "MANAGE_PII_VALUES", "READ_AUDIT_EVENTS", "READ_EXACT_PROFILE_STATISTICS", "MANAGE_APPLICATIONS", "AUTHORIZE_APPLICATIONS", "MANAGE_SINGLE_SIGN_ON_SETTINGS", "MANAGE_IP_BASED_ACCESS_SETTINGS", "MANAGE_SUPPORT_ACCESS_SETTINGS", "MANAGE_TIMELINE_EVENT_ROLLUPS", "READ_INACTIVITY_SETTINGS", "MANAGE_INACTIVITY_SETTINGS", "READ_SECURITY_SETTINGS", "MANAGE_SECURITY_SETTINGS" ],
-                        "tags" : [ "a tag here" ]
-                      } ],
-                      "startIndex" : 0,
-                      "totalPages" : 14,
-                      "totalResults" : 14
+                      "itemsPerPage": 10,
+                      "roles": [
+                        {
+                          "creationDate": "2024-01-24T14:06:19.100Z",
+                          "creator": {
+                            "fullName": "BlueConic",
+                            "userName": "BlueConic"
+                          },
+                          "description": "description here",
+                          "id": "35718e9a-f8d3-4d2d-8501-a020c563cc25",
+                          "lastModifiedDate": "2024-01-24T14:06:19.100Z",
+                          "lastModifiedUser": {
+                            "fullName": "BlueConic",
+                            "userName": "BlueConic"
+                          },
+                          "name": "Application Manager",
+                          "permissions": [
+                            "MANAGE_PROPERTIES",
+                            "READ_PROFILES",
+                            "MANAGE_PROFILES",
+                            "MANAGE_LISTENERS",
+                            "MANAGE_TRACKERS",
+                            "MANAGE_SEGMENTS",
+                            "MANAGE_PROFILE_MERGE_RULES",
+                            "MANAGE_PROFILE_COMPOSITION_RULES",
+                            "MANAGE_DIALOGUES",
+                            "CREATE_POSITIONS",
+                            "MANAGE_INSIGHTS",
+                            "MANAGE_EMAIL_NOTIFICATIONS",
+                            "MANAGE_LIFECYCLES",
+                            "USE_SIMULATOR",
+                            "USE_CUSTOM_CHANNEL_VIEW",
+                            "MANAGE_CHANNELS",
+                            "MANAGE_PLUGINS",
+                            "MANAGE_CONNECTIONS",
+                            "MANAGE_API_V1_ACCESS_KEYS",
+                            "MANAGE_USERS",
+                            "MANAGE_ROLES",
+                            "MANAGE_PRIVACY_SETTINGS",
+                            "MANAGE_GENERAL_SETTINGS",
+                            "PERSONAL",
+                            "MANAGE_TEMPLATES",
+                            "MANAGE_NOTEBOOKS",
+                            "USE_NOTEBOOK_EDITOR",
+                            "APPLY_BULK_OPERATIONS",
+                            "MANAGE_OBJECTIVES",
+                            "MANAGE_TIMELINE_EVENT_TYPES",
+                            "READ_GROUPS",
+                            "MANAGE_GROUPS",
+                            "MANAGE_PII_VALUES",
+                            "READ_AUDIT_EVENTS",
+                            "READ_EXACT_PROFILE_STATISTICS",
+                            "MANAGE_APPLICATIONS",
+                            "AUTHORIZE_APPLICATIONS",
+                            "MANAGE_SINGLE_SIGN_ON_SETTINGS",
+                            "MANAGE_IP_BASED_ACCESS_SETTINGS",
+                            "MANAGE_SUPPORT_ACCESS_SETTINGS",
+                            "MANAGE_TIMELINE_EVENT_ROLLUPS",
+                            "READ_INACTIVITY_SETTINGS",
+                            "MANAGE_INACTIVITY_SETTINGS",
+                            "READ_SECURITY_SETTINGS",
+                            "MANAGE_SECURITY_SETTINGS"
+                          ],
+                          "tags": [
+                            "a tag here"
+                          ]
+                        }
+                      ],
+                      "startIndex": 0,
+                      "totalPages": 14,
+                      "totalResults": 14
                     }
         "401":
           description: Authentication failed (unauthorized).
@@ -8315,6 +8365,7 @@ paths:
                             "MANAGE_SECURITY_SETTINGS",
                             "MANAGE_SEGMENTS",
                             "USE_SIMULATOR",
+                            "USE_CUSTOM_CHANNEL_VIEW",
                             "MANAGE_SINGLE_SIGN_ON_SETTINGS",
                             "MANAGE_TEMPLATES",
                             "MANAGE_TIMELINE_EVENT_ROLLUPS",
@@ -8430,6 +8481,7 @@ paths:
                         "MANAGE_SECURITY_SETTINGS",
                         "MANAGE_SEGMENTS",
                         "USE_SIMULATOR",
+                        "USE_CUSTOM_CHANNEL_VIEW",
                         "MANAGE_SINGLE_SIGN_ON_SETTINGS",
                         "MANAGE_TEMPLATES",
                         "MANAGE_TIMELINE_EVENT_ROLLUPS",
@@ -8771,6 +8823,8 @@ components:
           - AI_CANVAS
           - MODEL
           - GEN_AI_SETTING
+          - CAMPAIGN
+          - OUTCOME
         objects:
           type: array
           items:
@@ -12039,10 +12093,19 @@ components:
           - BEFORE
           - AFTER
           - WITHIN_LAST
+          - WITHIN_NEXT
           - SQL_BASED_SLIDING_WINDOW
         eventPropertyId:
           type: string
           description: The timeline event type property ID.
+        filterRangeType:
+          type: string
+          description: "Selected range type for sliding window (e.g., CALENDAR_DAYS_UTC,\
+            \ DAYS_24h, HOURS). Applies to WITHIN_LAST and WITHIN_NEXT."
+          enum:
+          - CALENDAR_DAYS_UTC
+          - DAYS_24h
+          - HOURS
         fromDate:
           type: string
           format: date-time
@@ -12288,6 +12351,7 @@ components:
             - MANAGE_EMAIL_NOTIFICATIONS
             - MANAGE_LIFECYCLES
             - USE_SIMULATOR
+            - USE_CUSTOM_CHANNEL_VIEW
             - MANAGE_CHANNELS
             - MANAGE_PLUGINS
             - MANAGE_CONNECTIONS
@@ -12305,6 +12369,7 @@ components:
             - MANAGE_TIMELINE_EVENT_TYPES
             - MANAGE_AI_CANVAS
             - MANAGE_GROWTH_PLAYS
+            - MANAGE_EXPERIENCES
             - READ_GROUPS
             - MANAGE_GROUPS
             - MANAGE_PII_VALUES
@@ -12416,6 +12481,10 @@ components:
             $ref: "#/components/schemas/simpleDomain"
           readOnly: true
           uniqueItems: true
+        externalId:
+          type: string
+          description: External identifier assigned by the identity provider.
+          readOnly: true
         hasAllDomains:
           type: boolean
           description: "Indicates if the user has access to all domains. If false,\
@@ -12428,6 +12497,11 @@ components:
           type: boolean
           description: Indicates if the user is active or inactive and can no longer
             login.
+        isProvisioned:
+          type: boolean
+          description: Indicates whether this user was provisioned via SCIM and is
+            managed by an external Identity Provider.
+          readOnly: true
         lastLoginDate:
           type: string
           format: date-time
