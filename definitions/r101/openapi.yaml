@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "102.0"
+  version: "101.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -2914,7 +2914,7 @@ paths:
           ### DIALOGUE and RECOMMENDATION models
 
           When creating a model of type `DIALOGUE` or `RECOMMENDATION`, the following property is optional in the `metadata` part:
-          - `profilePropertyIds`: The profile property IDs that are used for training the model (for example `['browsername', 'interactions_clicked']`). This is only relevant for models that have a `profile` input.
+          - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`). This is only relevant for models that have a `profile` input.
 
           Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
           The `featureNames` must be defined in the following format and is only required when an ONNX model is provided:
@@ -2965,7 +2965,7 @@ paths:
           ### CONTINUOUS models
 
           When creating a model of type `CONTINUOUS`, the `metadata` part _can_ contain the following additional properties:
-          - `profilePropertyIds`: The profile property IDs that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
+          - `profilePropertyIds`: The profile property ID's that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
           - `segmentId`: An optional segment ID to restrict model execution to profiles that are a member of this segment. If not provided, the model is executed for all profiles.
 
           Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
@@ -2989,36 +2989,6 @@ paths:
             * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
 
           The ONNX model can have any number of output names. Each output will be stored as a profile property with the same name on the profile.
-
-          ### SUPPRESSION models
-
-          When creating a model of type `SUPPRESSION`, the `metadata` part _can_ contain the following additional property:
-          - `profilePropertyIds`: The profile property IDs that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
-
-          Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
-          The `featureNames` must be defined in the following format and is only required when the ONNX model has a `profile` input:
-          ```json
-          {
-            "featureNames": [
-              "age",
-              "lifetime_value",
-              "purchase_frequency",
-              "browsername=edge"
-            ]
-          }
-          ```
-
-          A `SUPPRESSION` model decides whether a profile should be suppressed (for example, excluded from an audience export).
-
-          #### ONNX model requirements
-          The ONNX model _can_ use the following input names (all optional):
-          * `profile` (float[]): the profile feature vector, based on the `profilePropertyIds` and `featureNames` of the model. If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-          * `platform` (str): the platform the profile is being evaluated for, as defined by the model's plugin (for example, `google_ads`).
-          * `campaign_id` (str): the external identifier of the campaign the suppression decision applies to (for example, `summer_sale_2026`).
-
-          The ONNX model must define the following output names:
-          * `suppress` (bool, required): whether the profile should be suppressed.
-          * `re_evaluate_after` (int64, optional): the number of hours after which the suppression decision should be re-evaluated. Defaults to `0`.
         content:
           multipart/form-data:
             schema:
@@ -3135,30 +3105,6 @@ paths:
                       "segmentId" : "c82c7614-4456-4ca8-83d3-17f768b5ca99",
                       "tags" : [ ],
                       "type" : "CONTINUOUS"
-                    }
-                Response body with ONNX model (SUPPRESSION):
-                  description: Response body with ONNX model (SUPPRESSION)
-                  value: |
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "id" : "aa2c7614-4456-4ca8-83d3-17f768b5ca77",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "7a1b3c5d9e2f48a6b0c1d2e3f4a5b6c7",
-                      "modelUrl" : "/rest/v2/models/aa2c7614-4456-4ca8-83d3-17f768b5ca77/model",
-                      "name" : "Suppression model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "tags" : [ ],
-                      "type" : "SUPPRESSION"
                     }
                 Response body without ONNX model (GENERAL):
                   description: Response body without ONNX model (GENERAL)
@@ -3360,30 +3306,6 @@ paths:
                       "tags" : [ ],
                       "type" : "CONTINUOUS"
                     }
-                Response body (SUPPRESSION):
-                  description: Response body (SUPPRESSION)
-                  value: |
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "id" : "aa2c7614-4456-4ca8-83d3-17f768b5ca77",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "7a1b3c5d9e2f48a6b0c1d2e3f4a5b6c7",
-                      "modelUrl" : "/rest/v2/models/aa2c7614-4456-4ca8-83d3-17f768b5ca77/model",
-                      "name" : "Suppression model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "tags" : [ ],
-                      "type" : "SUPPRESSION"
-                    }
         "401":
           description: Authentication failed (unauthorized).
         "403":
@@ -3427,7 +3349,7 @@ paths:
           ### DIALOGUE and RECOMMENDATION models
 
           When updating a model of type `DIALOGUE`or `RECOMMENDATION`, the `metadata` part must contain the following additional property:
-          - `profilePropertyIds`: The profile property IDs that are used for training the model (for example `['browsername', 'interactions_clicked']`).
+          - `profilePropertyIds`: The profile property ID's that are used for training the model (for example `['browsername', 'interactions_clicked']`).
 
           Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
           The `featureNames` must be defined in the following format and is only required when an ONNX model is provided:
@@ -3478,7 +3400,7 @@ paths:
           ### CONTINUOUS models
 
           When updating a model of type `CONTINUOUS`, the `metadata` part _can_ contain the following additional properties:
-          - `profilePropertyIds`: The profile property IDs that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
+          - `profilePropertyIds`: The profile property ID's that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
           - `segmentId`: An optional segment ID to restrict model execution to profiles that are a member of this segment. If not provided, the model is executed for all profiles.
 
           Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
@@ -3502,36 +3424,6 @@ paths:
             * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
 
           The ONNX model can have any number of output names. Each output will be stored as a profile property with the same name on the profile.
-
-          ### SUPPRESSION models
-
-          When updating a model of type `SUPPRESSION`, the `metadata` part _can_ contain the following additional property:
-          - `profilePropertyIds`: The profile property IDs that are used as input features for the model (for example `['age', 'lifetime_value']`). This is only relevant for models that have a `profile` input.
-
-          Once the model is sufficiently trained, the `featureNames` can be extracted (from a [`DictVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html)) and used to update the model metadata.<br/>
-          The `featureNames` must be defined in the following format and is only required when the ONNX model has a `profile` input:
-          ```json
-          {
-            "featureNames": [
-              "age",
-              "lifetime_value",
-              "purchase_frequency",
-              "browsername=edge"
-            ]
-          }
-          ```
-
-          A `SUPPRESSION` model decides whether a profile should be suppressed (for example, excluded from an audience export).
-
-          #### ONNX model requirements
-          The ONNX model _can_ use the following input names (all optional):
-          * `profile` (float[]): the profile feature vector, based on the `profilePropertyIds` and `featureNames` of the model. If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-          * `platform` (str): the platform the profile is being evaluated for, as defined by the model's plugin (for example, `google_ads`).
-          * `campaign_id` (str): the external identifier of the campaign the suppression decision applies to (for example, `summer_sale_2026`).
-
-          The ONNX model must define the following output names:
-          * `suppress` (bool, required): whether the profile should be suppressed.
-          * `re_evaluate_after` (int64, optional): the number of hours after which the suppression decision should be re-evaluated. Defaults to `0`.
         content:
           multipart/form-data:
             schema:
@@ -3648,30 +3540,6 @@ paths:
                       "segmentId" : "c82c7614-4456-4ca8-83d3-17f768b5ca99",
                       "tags" : [ ],
                       "type" : "CONTINUOUS"
-                    }
-                Response body with ONNX model (SUPPRESSION):
-                  description: Response body with ONNX model (SUPPRESSION)
-                  value: |
-                    {
-                      "creationDate" : "2025-05-01T08:16:00.458Z",
-                      "creator" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "featureNames" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "id" : "aa2c7614-4456-4ca8-83d3-17f768b5ca77",
-                      "lastModifiedDate" : "2025-05-14T11:38:42.535Z",
-                      "lastModifiedUser" : {
-                        "fullName" : "ondemand@blueconic.com",
-                        "userName" : "ondemand@blueconic.com"
-                      },
-                      "modelHash" : "7a1b3c5d9e2f48a6b0c1d2e3f4a5b6c7",
-                      "modelUrl" : "/rest/v2/models/aa2c7614-4456-4ca8-83d3-17f768b5ca77/model",
-                      "name" : "Suppression model with onnx model set",
-                      "parameters" : [ ],
-                      "profilePropertyIds" : [ "age", "lifetime_value", "purchase_frequency" ],
-                      "tags" : [ ],
-                      "type" : "SUPPRESSION"
                     }
                 Response body without ONNX model (GENERAL):
                   description: Response body without ONNX model (GENERAL)
@@ -7597,15 +7465,15 @@ paths:
             example: 6e264f9d-4305-426e-9a7e-7e6ec9b2a18c
       - name: startDate
         in: query
-        description: Specifies the startDate of the reporting period (inclusive).
-          Defaults to 30 days ago if not specified. Format is yyyy-MM-dd.
+        description: Specifies the startDate of the reporting period. Defaults to
+          30 days ago if not specified. Format is yyyy-MM-dd.
         schema:
           type: string
           example: 2024-11-08
       - name: endDate
         in: query
-        description: Specifies the endDate of the reporting period (inclusive). Defaults
-          to today if not specified. Format is yyyy-MM-dd.
+        description: Specifies the endDate of the reporting period. Defaults to today
+          if not specified. Format is yyyy-MM-dd.
         schema:
           type: string
           example: 2025-01-25
@@ -7638,7 +7506,7 @@ paths:
                   description: Response body
                   value: |-
                     {
-                      "dialogueStatistics" : [ {
+                      "entries" : [ {
                         "dialogueId" : "7c2c3c90-679b-4cf8-a957-27e629b7a24e",
                         "isEnabled" : false,
                         "name" : "Copy of example LB",
@@ -7648,7 +7516,7 @@ paths:
                           "conversionClickRatio" : null,
                           "conversions" : 0,
                           "conversionUniqueviewRatio" : null,
-                          "conversionValue" : 0,
+                          "conversionValue" : 0.00,
                           "conversionValueClickRatio" : null,
                           "conversionValueConversionRatio" : null,
                           "conversionValueViewRatio" : null,
@@ -7684,15 +7552,15 @@ paths:
                         "name" : "example LB",
                         "statistics" : {
                           "clicks" : 0,
-                          "clickViewRatio" : 0.0000,
+                          "clickViewRatio" : 0.00,
                           "conversionClickRatio" : null,
                           "conversions" : 0,
-                          "conversionUniqueviewRatio" : 0.0000,
-                          "conversionValue" : 0,
+                          "conversionUniqueviewRatio" : 0.00,
+                          "conversionValue" : 0.00,
                           "conversionValueClickRatio" : null,
                           "conversionValueConversionRatio" : null,
-                          "conversionValueViewRatio" : 0.0000,
-                          "conversionViewRatio" : 0.0000,
+                          "conversionValueViewRatio" : 0.00,
+                          "conversionViewRatio" : 0.00,
                           "indirectConversions" : 0,
                           "liftClickViewRatio" : null,
                           "liftConversionClickRatio" : null,
@@ -7712,13 +7580,15 @@ paths:
                           "uniqueIndirectConversions" : 0,
                           "uniqueTotalConversionDialogues" : 0,
                           "uniqueTotalConversions" : 0,
-                          "uniquetotalconversionUniqueviewRatio" : 0.0000,
+                          "uniquetotalconversionUniqueviewRatio" : 0.00,
                           "uniqueViewDialogues" : 1,
                           "uniqueViews" : 2,
                           "views" : 4,
-                          "viewUniqueviewRatio" : 200.0000
+                          "viewUniqueviewRatio" : 200.00
                         }
                       } ],
+                      "startIndex" : 0,
+                      "timestamp" : "2025-09-20 to 2025-09-22",
                       "totalResults" : 2
                     }
         "400":
@@ -10255,13 +10125,13 @@ components:
             featureNames:
               type: array
               description: "The features that are used in the model. Only required\
-                \ for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or\
-                \ `SUPPRESSION` and when an ONNX model is provided."
+                \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
+                \ and when an ONNX model is provided."
               items:
                 type: string
                 description: "The features that are used in the model. Only required\
-                  \ for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-                  \ or `SUPPRESSION` and when an ONNX model is provided."
+                  \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
+                  \ and when an ONNX model is provided."
             id:
               type: string
               description: The object ID.
@@ -10297,13 +10167,11 @@ components:
             profilePropertyIds:
               type: array
               description: "The profile properties that are used in the model. Only\
-                \ required for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-                \ or `SUPPRESSION`."
+                \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
               items:
                 type: string
                 description: "The profile properties that are used in the model. Only\
-                  \ required for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-                  \ or `SUPPRESSION`."
+                  \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
             segmentId:
               type: string
               description: The segment ID this model is designated for (can be empty
@@ -10325,13 +10193,12 @@ components:
             type:
               type: string
               description: "The type of the model. Must be one of the allowed model\
-                \ types `GENERAL`, `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or `SUPPRESSION`."
+                \ types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
               enum:
               - GENERAL
               - DIALOGUE
               - RECOMMENDATION
               - CONTINUOUS
-              - SUPPRESSION
           required:
           - type
         model:
@@ -10379,13 +10246,13 @@ components:
         featureNames:
           type: array
           description: "The features that are used in the model. Only required for\
-            \ models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or `SUPPRESSION`\
-            \ and when an ONNX model is provided."
+            \ models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when\
+            \ an ONNX model is provided."
           items:
             type: string
             description: "The features that are used in the model. Only required for\
-              \ models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or `SUPPRESSION`\
-              \ and when an ONNX model is provided."
+              \ models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS` and when\
+              \ an ONNX model is provided."
         id:
           type: string
           description: The object ID.
@@ -10421,12 +10288,11 @@ components:
         profilePropertyIds:
           type: array
           description: "The profile properties that are used in the model. Only required\
-            \ for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or `SUPPRESSION`."
+            \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
           items:
             type: string
             description: "The profile properties that are used in the model. Only\
-              \ required for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-              \ or `SUPPRESSION`."
+              \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
         segmentId:
           type: string
           description: The segment ID this model is designated for (can be empty if
@@ -10448,13 +10314,12 @@ components:
         type:
           type: string
           description: "The type of the model. Must be one of the allowed model types\
-            \ `GENERAL`, `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or `SUPPRESSION`."
+            \ `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
           enum:
           - GENERAL
           - DIALOGUE
           - RECOMMENDATION
           - CONTINUOUS
-          - SUPPRESSION
       required:
       - type
     models:
@@ -10524,13 +10389,13 @@ components:
             featureNames:
               type: array
               description: "The features that are used in the model. Only required\
-                \ for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or\
-                \ `SUPPRESSION` and when an ONNX model is provided."
+                \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
+                \ and when an ONNX model is provided."
               items:
                 type: string
                 description: "The features that are used in the model. Only required\
-                  \ for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-                  \ or `SUPPRESSION` and when an ONNX model is provided."
+                  \ for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`\
+                  \ and when an ONNX model is provided."
             id:
               type: string
               description: The object ID.
@@ -10566,13 +10431,11 @@ components:
             profilePropertyIds:
               type: array
               description: "The profile properties that are used in the model. Only\
-                \ required for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-                \ or `SUPPRESSION`."
+                \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
               items:
                 type: string
                 description: "The profile properties that are used in the model. Only\
-                  \ required for models of type `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS`\
-                  \ or `SUPPRESSION`."
+                  \ required for models of type `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
             segmentId:
               type: string
               description: The segment ID this model is designated for (can be empty
@@ -10594,13 +10457,12 @@ components:
             type:
               type: string
               description: "The type of the model. Must be one of the allowed model\
-                \ types `GENERAL`, `DIALOGUE`, `RECOMMENDATION`, `CONTINUOUS` or `SUPPRESSION`."
+                \ types `GENERAL`, `DIALOGUE`, `RECOMMENDATION` or `CONTINUOUS`."
               enum:
               - GENERAL
               - DIALOGUE
               - RECOMMENDATION
               - CONTINUOUS
-              - SUPPRESSION
           required:
           - type
         model:
