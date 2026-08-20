@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: 103.0-SNAPSHOT
+  version: "102.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -2039,7 +2039,7 @@ paths:
                   description: Response body
                   value: |-
                     {
-                      "URL": "https://plugins.blueconic.net/connection_facebook_ads/5.5.0/connection_facebook_ads.xml",
+                      "URL": "http://plugins.blueconic.net/connection_facebook_ads/5.5.0/connection_facebook_ads.xml",
                       "channelTypes": [
                         "WEBSITE"
                       ],
@@ -2052,7 +2052,7 @@ paths:
                         }
                       ],
                       "id": "connection_facebook_ads",
-                      "indexURL": "https://plugins.blueconic.net/connection_facebook_ads/index.xml",
+                      "indexURL": "http://plugins.blueconic.net/connection_facebook_ads/index.xml",
                       "labels": [
                         {
                           "key": "en_US",
@@ -2151,13 +2151,13 @@ paths:
                       "itemsPerPage": 4,
                       "plugins": [
                         {
-                          "URL": "https://plugins.blueconic.net/analyzer_blueconic/1.0.0/analyzer_blueconic.xml",
+                          "URL": "http://plugins.blueconic.net/analyzer_blueconic/1.0.0/analyzer_blueconic.xml",
                           "channelTypes": [],
                           "creationDate": "2025-09-30T13:50:54.986Z",
                           "description": "",
                           "descriptions": [],
                           "id": "analyzer_blueconic",
-                          "indexURL": "https://plugins.blueconic.net/analyzer_blueconic/index.xml",
+                          "indexURL": "http://plugins.blueconic.net/analyzer_blueconic/index.xml",
                           "labels": [
                             {
                               "key": "en_US",
@@ -2179,13 +2179,13 @@ paths:
                           "version": "1.0.0"
                         },
                         {
-                          "URL": "https://plugins.blueconic.net/connection/1.0.0/connection.xml",
+                          "URL": "http://plugins.blueconic.net/connection/1.0.0/connection.xml",
                           "channelTypes": [],
                           "creationDate": "2025-09-30T13:50:36.248Z",
                           "description": "",
                           "descriptions": [],
                           "id": "connection",
-                          "indexURL": "https://plugins.blueconic.net/connection/index.xml",
+                          "indexURL": "http://plugins.blueconic.net/connection/index.xml",
                           "labels": [],
                           "lastModifiedDate": "2025-09-30T13:50:36.248Z",
                           "latestVersion": true,
@@ -2196,7 +2196,7 @@ paths:
                           "version": "1.0.0"
                         },
                         {
-                          "URL": "https://plugins.blueconic.net/connection_facebook_ads/5.5.0/connection_facebook_ads.xml",
+                          "URL": "http://plugins.blueconic.net/connection_facebook_ads/5.5.0/connection_facebook_ads.xml",
                           "channelTypes": [
                             "WEBSITE"
                           ],
@@ -2209,7 +2209,7 @@ paths:
                             }
                           ],
                           "id": "connection_facebook_ads",
-                          "indexURL": "https://plugins.blueconic.net/connection_facebook_ads/index.xml",
+                          "indexURL": "http://plugins.blueconic.net/connection_facebook_ads/index.xml",
                           "labels": [
                             {
                               "key": "en_US",
@@ -2228,7 +2228,7 @@ paths:
                           "version": "5.5.0"
                         },
                         {
-                          "URL": "https://plugins.blueconic.net/contentinteractiontype/1.4.0/contentinteractiontype.xml",
+                          "URL": "http://plugins.blueconic.net/contentinteractiontype/1.4.0/contentinteractiontype.xml",
                           "channelTypes": [
                             "WEBSITE"
                           ],
@@ -2241,7 +2241,7 @@ paths:
                             }
                           ],
                           "id": "contentinteractiontype",
-                          "indexURL": "https://plugins.blueconic.net/contentinteractiontype/index.xml",
+                          "indexURL": "http://plugins.blueconic.net/contentinteractiontype/index.xml",
                           "labels": [
                             {
                               "key": "en_US",
