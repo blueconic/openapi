@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "104.0"
+  version: "103.0"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -2932,23 +2932,7 @@ paths:
           #### ONNX model requirements
           The ONNX model must have the following input names:
           * `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model
-
-          In addition, the ONNX model _can_ use one or more of the following input names:
-          * `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model
-            * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-          * `dialogue_ids` (str[]): the ID of the dialogue that each variant belongs to. A single model can be used by several dialogues, in which case the candidate variants of all of them are passed in one `variant_ids` list, and this input tells them apart. A variant whose dialogue cannot be resolved is passed as an empty string.
-          * `views` (int64[]): the total number of view events for the variant
-          * `clicks` (int64[]): the total number of click events for the variant
-          * `conversions` (int64[]): the total number of conversion events for the variant
-          * `conversion_value` (float[]): the total value of the conversion events for the variant
-          * `indirect_conversions` (int64[]): the number of times the variant was a candidate for a conversion that another variant won
-          * `unique_views` (int64[]): the number of profiles that have viewed the variant
-          * `unique_clicks` (int64[]): the number of profiles that have clicked the variant
-          * `unique_conversions` (int64[]): the number of profiles that have converted for the variant
-          * `unique_indirect_conversions` (int64[]): the number of profiles that were a candidate for a conversion but lost
-
-          Every input except `profile` is a list with one entry per variant, at the same position as that variant in `variant_ids`.
-          BlueConic supplies every input that the model declares, so the model must not declare inputs that it does not use. Declaring an input that is not listed above makes the upload fail.
+          * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
 
           The ONNX model must have the following output names:
           * `variant_id` (str): the variant ID that should be served based on the ONNX model outcome
@@ -3461,23 +3445,7 @@ paths:
           #### ONNX model requirements
           The ONNX model must have the following input names:
           * `variant_ids` (str[]): the list of variant IDs to consider in the ONNX model
-
-          In addition, the ONNX model _can_ use one or more of the following input names:
-          * `profile` (float[]): the profile feature vector, based on the `propertyIds` and `featureNames` of the model
-            * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
-          * `dialogue_ids` (str[]): the ID of the dialogue that each variant belongs to. A single model can be used by several dialogues, in which case the candidate variants of all of them are passed in one `variant_ids` list, and this input tells them apart. A variant whose dialogue cannot be resolved is passed as an empty string.
-          * `views` (int64[]): the total number of view events for the variant
-          * `clicks` (int64[]): the total number of click events for the variant
-          * `conversions` (int64[]): the total number of conversion events for the variant
-          * `conversion_value` (float[]): the total value of the conversion events for the variant
-          * `indirect_conversions` (int64[]): the number of times the variant was a candidate for a conversion that another variant won
-          * `unique_views` (int64[]): the number of profiles that have viewed the variant
-          * `unique_clicks` (int64[]): the number of profiles that have clicked the variant
-          * `unique_conversions` (int64[]): the number of profiles that have converted for the variant
-          * `unique_indirect_conversions` (int64[]): the number of profiles that were a candidate for a conversion but lost
-
-          Every input except `profile` is a list with one entry per variant, at the same position as that variant in `variant_ids`.
-          BlueConic supplies every input that the model declares, so the model must not declare inputs that it does not use. Declaring an input that is not listed above makes the upload fail.
+          * If the model contains a `profile` input name, then the length of the input array should be equal to the length of the `featureNames`.
 
           The ONNX model must have the following output names:
           * `variant_id` (str): the variant ID that should be served based on the ONNX model outcome
@@ -5444,12 +5412,11 @@ paths:
       parameters:
       - name: count
         in: query
-        description: "Specifies the number of results to return. Defaults to 20, unless\
-          \ `ids` is specified without an explicit `count`, in which case all matching\
-          \ ids are returned."
+        description: Specifies the number of results to return.
         schema:
           type: integer
           format: int64
+          default: 20
           example: 10
       - name: startIndex
         in: query
@@ -5498,19 +5465,6 @@ paths:
           items:
             type: string
             example: household
-      - name: ids
-        in: query
-        description: "Only return the properties with these ids, filtering out anything\
-          \ else. If specified without `count`, all matching ids are returned instead\
-          \ of the default page size. Note that the response's `totalResults` reflects\
-          \ the property count before this filter is applied, not the number of matching\
-          \ ids."
-        schema:
-          type: array
-          example: currentbrowsername
-          items:
-            type: string
-            example: currentbrowsername
       responses:
         "200":
           description: ' Returns the property.'
@@ -6360,7 +6314,7 @@ paths:
         description: The maximum number of timeline events to return.
         schema:
           type: integer
-          format: number
+          format: int32
           default: 20
         example: 10
       - name: fromDate
@@ -12571,7 +12525,6 @@ components:
             - MANAGE_SECURITY_SETTINGS
             - MANAGE_MODELS
             - TRANSFER_CONFIGURATION
-            - BLUESHIFT_ACCESS
         restrictions:
           $ref: "#/components/schemas/restrictions"
         tags:
