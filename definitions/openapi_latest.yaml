@@ -107,7 +107,7 @@ info:
   license:
     name: BlueConic
     url: https://github.com/blueconic/openapi/blob/main/LICENSE.MD
-  version: "104.0"
+  version: "105.9"
 servers:
 - url: "https://{blueconicHostname}/rest/v2"
   description: The BlueConic server
@@ -210,13 +210,17 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                    |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GEN_AI_SETTING</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
+    \                    |\n|objectType|Object of the action.| <ul><li>BLUECONIC_HOSTNAME</li><li>BLUECONIC_SUPPORT_ACCESS_SETTING</li><li>CHANNEL</li><li>CLEAN_UP_RULE</li><li>CONNECTION</li><li>DASHBOARD</li><li>DIALOGUE</li><li>DOMAIN_GROUP</li><li>GEN_AI_SETTING</li><li>GROUP</li><li>GROUP_TYPE</li><li>IP_RANGE</li><li>LANGUAGE</li><li>LIFECYCLE</li><li>LISTENER</li><li>MERGE_RULE</li><li>NOTEBOOK</li><li>OBJECTIVE</li><li>PLUGIN</li><li>PRIVACY_SETTING</li><li>PROFILE</li><li>PROFILE_PROPERTY</li><li>ROLE</li><li>SECURITY_SETTING</li><li>SEGMENT</li><li>SINGLE_SIGN_ON_SETTING</li><li>SUPPORTED_LEGISLATION_ZONE</li><li>TRACKER</li><li>USER</li></ul>\
     \ |\n|objectId|<ul><li>Email address in case of a user. <ul><li>In the case of\
     \ LOGIN_FAILED and a user tried to login with an invalid format email address,\
     \ it could be that the user filled the password in the email address field. In\
     \ that case the objectId is empty</li></ul></li><li>Grouptype_GroupID in case\
-    \ of a group</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectId\
-    \ is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li>\
+    \ of a group</li><li> For EGRESS_BLOCKED, KERNEL_START, RUN_STOPPED, KERNEL_KILLED\
+    \ and PACKAGE_INSTALL, the objectId is the id of the notebook that the event is\
+    \ attributed to. For KERNEL_START and KERNEL_KILLED the objectId is empty when\
+    \ the notebook is not known. For PACKAGE_INSTALL the objectId is empty when the\
+    \ notebook is not saved yet.</li><li> For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING,\
+    \ the objectId is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</li><li>\
     \ For BLUECONIC_SUPPORT_ACCESS_SETTING the objectID contains the new settings.<ul><li>\
     \ `\"objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or </li><li>`\"\
     objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\"\
@@ -236,8 +240,24 @@ tags:
     \ the case of LOGIN_FAILED and a user tried to login with an invalid format email\
     \ address, it could be that the user filled the password in the email address\
     \ field. In that case, the objectName is empty.</li></ul><p>For groups, the name\
-    \ is the group id.</p><p><span>For PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING,\
-    \ the objectName is the name(s) of the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For\
+    \ is the group id.</p><p>For KERNEL_START, RUN_STOPPED and KERNEL_KILLED, the\
+    \ objectName holds the notebook name. For PACKAGE_INSTALL, the objectName holds\
+    \ the notebook name, the project, the version, the result (downloaded, refused,\
+    \ failed or installed) and the source (the host name of the package index, or\
+    \ default index), for example My notebook: tabulate 0.9.0 (downloaded, pypi.example.com).\
+    \ For a notebook that is not saved yet, the objectName starts with unsaved notebook:\
+    \ in place of the notebook name. A note at the end can say one of several running\
+    \ notebooks, scheduled run, user not known, or no running notebook found. An install\
+    \ gets one event. When more than one notebook can be the source, the event holds\
+    \ all of them as objects, and the event has a user only when all of them have\
+    \ the same user.</p><p>For EGRESS_BLOCKED, the objectName holds the notebook name,\
+    \ the blocked destination (a host name, or the label (direct connections) for\
+    \ connections to an address that is not allowed), the type (dns or packet), and\
+    \ the number of attempts in a period of one minute. E.g. My notebook: example.org\
+    \ (dns, 12 attempts). When more than one notebook was running, the text ends with:\
+    \ one of several running notebooks, and the event is written for each of them.</p><p><span>For\
+    \ PRIVACY_SETTING and SINGLE_SIGN_ON_SETTING, the objectName is the name(s) of\
+    \ the changed setting. E.g. Status, Identity_Provider_Issuer_URL_Entity_ID.</span></p><p>For\
     \ BLUECONIC_SUPPORT_ACCESS_SETTING the objectName contains the new settings.</p><ul><li><p>`\"\
     objects\" : [ {\"name\" : \"No Access\", \"id\" : \"none\" } ]` or</p></li><li\
     \ ><p> `\"objects\" : [ {\"name\" : \"User name here\", \"id\" : \"user1@blueconic.com\"\
@@ -266,7 +286,7 @@ tags:
     \                                                                            \
     \                                                                            \
     \                                                                            \
-    \                     | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li></ul>\
+    \                     | <ul><li>CREATE</li><li>UPDATE</li><li>DELETE</li><li>EDITOR_RUN</li><li>READ</li><li>LOGIN</li><li>LOGIN_FAILED</li><li>LOGOUT</li><li>MANUAL_RUN</li><li>PASSWORD_RESET_REQUESTED</li><li>PASSWORD_CHANGE</li><li>SCHEDULED_RUN</li><li>EGRESS_BLOCKED</li><li>KERNEL_START</li><li>RUN_STOPPED</li><li>KERNEL_KILLED</li><li>PACKAGE_INSTALL</li></ul>\
     \                                                                            \
     \                                                                            \
     \                                                                            \
@@ -4441,7 +4461,9 @@ paths:
           \ value is not in the last given number of hours |\n| IN_NEXT_HOURS    \
           \       | If the given property value is in the next given number of hours\
           \ |\n| NOT_IN_NEXT_HOURS       | If the given property value is not in the\
-          \ next given number of hours |"
+          \ next given number of hours |\n\nFor text-property refinements, `filterMode`\
+          \ is optional and defaults to\n`EQUALS`. `STARTS_WITH` is allowed only with\n\
+          `CONTAINS_ANY`, `CONTAINS_ALL`, `NOT_CONTAINS_ANY`, or `NOT_CONTAINS_ALL`.\n"
         schema:
           $ref: "#/components/schemas/RefinementBean"
         examples:
@@ -4471,6 +4493,15 @@ paths:
                 "operator": "IN_RANGE",
                 "fromValue": 1,
                 "toValue": 10
+              }
+          Example starts-with property refinement (not yet URL-encoded):
+            description: Example starts-with property refinement (not yet URL-encoded)
+            value: |
+              {
+                "property": "email",
+                "operator": "CONTAINS_ANY",
+                "values": ["sales@", "support@"],
+                "filterMode": "STARTS_WITH"
               }
       - name: cursor
         in: query
@@ -5096,6 +5127,7 @@ paths:
                       "precision" : 0,
                       "profileCount" : 0,
                       "showInUI" : true,
+                      "availableToNotebooks" : true,
                       "tags" : [ "Tech", "Metrics" ],
                       "totalProfileCount" : 130300,
                       "useValidation" : true,
@@ -5140,6 +5172,7 @@ paths:
                       "precision": 0,
                       "profileCount": 0,
                       "showInUI": true,
+                      "availableToNotebooks": true,
                       "tags": [],
                       "totalProfileCount": 1,
                       "useValidation": true,
@@ -5188,6 +5221,7 @@ paths:
                     "createNewProfile": false,
                     "availableForSegmentation": true,
                     "showInUI": true,
+                    "availableToNotebooks": true,
                     "canRead": true,
                     "canWrite": true,
                     "filterType": "RANGE",
@@ -5222,6 +5256,7 @@ paths:
                     "id": "company_new_property",
                     "availableForSegmentation": true,
                     "showInUI": true,
+                    "availableToNotebooks": true,
                     "filterType": "CURRENCY",
                     "description": "My description",
                     "dataSensitivity": "PII",
@@ -5285,6 +5320,7 @@ paths:
                       "precision" : 2,
                       "profileCount" : 0,
                       "showInUI" : true,
+                      "availableToNotebooks" : true,
                       "tags" : [ "Metrics" ],
                       "totalProfileCount" : 130300,
                       "useValidation" : true,
@@ -5328,6 +5364,7 @@ paths:
                       "profileCount" : 0,
                       "readOnly" : false,
                       "showInUI" : true,
+                      "availableToNotebooks" : true,
                       "tags" : [ "Tech", "Metrics" ],
                       "totalProfileCount" : 130300,
                       "unit" : {
@@ -5419,6 +5456,7 @@ paths:
                       "precision" : 0,
                       "profileCount" : 0,
                       "showInUI" : true,
+                      "availableToNotebooks" : true,
                       "tags" : [ "Tech", "Metrics" ],
                       "totalProfileCount" : 130300,
                       "useValidation" : true,
@@ -5558,6 +5596,7 @@ paths:
                         "precision": 0,
                         "profileCount": 0,
                         "showInUI": false,
+                        "availableToNotebooks": true,
                         "tags": ["Identifier"],
                         "totalProfileCount": 130300,
                         "useValidation": true,
@@ -5590,6 +5629,7 @@ paths:
                         "precision" : 0,
                         "profileCount" : 0,
                         "showInUI" : true,
+                        "availableToNotebooks" : true,
                         "tags" : [ "Address", "Process" ],
                         "totalProfileCount" : 130300,
                         "useValidation" : true,
@@ -5647,6 +5687,7 @@ paths:
                           "precision": 0,
                           "profileCount": 0,
                           "showInUI": true,
+                          "availableToNotebooks": true,
                           "tags": [],
                           "totalProfileCount": 1,
                           "useValidation": true,
@@ -5688,6 +5729,7 @@ paths:
                           "precision": 0,
                           "profileCount": 0,
                           "showInUI": true,
+                          "availableToNotebooks": true,
                           "tags": [],
                           "totalProfileCount": 1,
                           "useValidation": true,
@@ -6360,7 +6402,7 @@ paths:
         description: The maximum number of timeline events to return.
         schema:
           type: integer
-          format: number
+          format: int64
           default: 20
         example: 10
       - name: fromDate
@@ -6633,13 +6675,17 @@ paths:
           \ value is not in the last given number of hours |\n| IN_NEXT_HOURS    \
           \       | If the given property value is in the next given number of hours\
           \ |\n| NOT_IN_NEXT_HOURS       | If the given property value is not in the\
-          \ next given number of hours |\n\n**Objective**\n\nThe objectives used to\
-          \ filter the property or objectives within a profile.\n\n| Name        \
-          \            | Description |\n| :---------------------- | :---------- |\n\
-          | CONSENTED               | Objective consented |\n| REFUSED           \
-          \      | Objective refused |\n| UNKNOWN                 | Unknown |\n| REFUSED_OR_UNKNOWN\
-          \      | Refused or unknown | \n| CONSENTED_OR_UNNEEDED   | Consented or\
-          \ unneeded |\n\nCan only be used with the operators CONTAINS_ANY and CONTAINS_ALL"
+          \ next given number of hours |\n\nFor text-property refinements, `filterMode`\
+          \ defaults to `EQUALS` and is allowed only with\n`CONTAINS_ANY`, `CONTAINS_ALL`,\
+          \ `NOT_CONTAINS_ANY`, or `NOT_CONTAINS_ALL`.\n`SUBSTRING` values must contain\
+          \ at least three Unicode code points.\n\n**Objective**\n\nThe objectives\
+          \ used to filter the property or objectives within a profile.\n\n| Name\
+          \                    | Description |\n| :---------------------- | :----------\
+          \ |\n| CONSENTED               | Objective consented |\n| REFUSED      \
+          \           | Objective refused |\n| UNKNOWN                 | Unknown |\n\
+          | REFUSED_OR_UNKNOWN      | Refused or unknown | \n| CONSENTED_OR_UNNEEDED\
+          \   | Consented or unneeded |\n\nCan only be used with the operators CONTAINS_ANY\
+          \ and CONTAINS_ALL\n"
         schema:
           $ref: "#/components/schemas/RefinementBean"
         examples:
@@ -6669,6 +6715,15 @@ paths:
                 "operator": "IN_RANGE",
                 "fromValue": 1,
                 "toValue": 10
+              }
+          Example starts-with property refinement (not yet URL-encoded):
+            description: Example starts-with property refinement (not yet URL-encoded)
+            value: |
+              {
+                "property": "email",
+                "operator": "CONTAINS_ANY",
+                "values": ["sales@", "support@"],
+                "filterMode": "STARTS_WITH"
               }
           Example objective filter refinement (not yet URL-encoded):
             description: Example objective filter refinement (not yet URL-encoded)
@@ -8330,6 +8385,7 @@ paths:
                             "MANAGE_PROFILES",
                             "MANAGE_LISTENERS",
                             "MANAGE_TRACKERS",
+                            "READ_SEGMENTS",
                             "MANAGE_SEGMENTS",
                             "MANAGE_PROFILE_MERGE_RULES",
                             "MANAGE_PROFILE_COMPOSITION_RULES",
@@ -8539,6 +8595,7 @@ paths:
                             "MANAGE_ROLES",
                             "READ_SECURITY_SETTINGS",
                             "MANAGE_SECURITY_SETTINGS",
+                            "READ_SEGMENTS",
                             "MANAGE_SEGMENTS",
                             "USE_SIMULATOR",
                             "USE_CUSTOM_CHANNEL_VIEW",
@@ -8655,6 +8712,7 @@ paths:
                         "MANAGE_ROLES",
                         "READ_SECURITY_SETTINGS",
                         "MANAGE_SECURITY_SETTINGS",
+                        "READ_SEGMENTS",
                         "MANAGE_SEGMENTS",
                         "USE_SIMULATOR",
                         "USE_CUSTOM_CHANNEL_VIEW",
@@ -8999,6 +9057,7 @@ components:
           - AI_CANVAS
           - MODEL
           - GEN_AI_SETTING
+          - SECURITY_SETTING
           - CAMPAIGN
           - OUTCOME
         objects:
@@ -9021,6 +9080,11 @@ components:
           - MANUAL_RUN
           - SCHEDULED_RUN
           - EDITOR_RUN
+          - EGRESS_BLOCKED
+          - KERNEL_START
+          - RUN_STOPPED
+          - KERNEL_KILLED
+          - PACKAGE_INSTALL
         username:
           type: string
       required:
@@ -10857,6 +10921,14 @@ components:
           type: integer
           format: int32
           description: The days count
+        filterMode:
+          type: string
+          description: How each requested value is matched
+          enum:
+          - EQUALS
+          - STARTS_WITH
+          - ENDS_WITH
+          - SUBSTRING
         filters:
           type: array
           items:
@@ -11185,6 +11257,14 @@ components:
           type: boolean
           default: false
           description: Whether the property is available as a filter to create segments.
+        availableToNotebooks:
+          type: boolean
+          default: true
+          description: "Whether AI Workbench notebooks may read and write the property.\
+            \ When false, a notebook does not get the values of the property, cannot\
+            \ write to it, and gets no profiles when it filters on it. Other callers\
+            \ are not affected. When the value is omitted or null, the stored value\
+            \ is kept (true for a new property)."
         canRead:
           type: boolean
           default: false
@@ -11325,6 +11405,15 @@ components:
             type: string
             description: The tags (i.e. labels).
             example: Address
+        textMatchingIndexMode:
+          type: string
+          default: NONE
+          description: Optional structural text index for SELECT and EMAIL profile
+            properties.
+          enum:
+          - NONE
+          - ENDS_WITH
+          - CONTAINS
         totalProfileCount:
           type: integer
           format: int64
@@ -12526,6 +12615,7 @@ components:
             - MANAGE_PROFILES
             - MANAGE_LISTENERS
             - MANAGE_TRACKERS
+            - READ_SEGMENTS
             - MANAGE_SEGMENTS
             - MANAGE_PROFILE_MERGE_RULES
             - MANAGE_PROFILE_COMPOSITION_RULES
