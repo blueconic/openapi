@@ -12,7 +12,7 @@
       "name" : "BlueConic",
       "url" : "https://github.com/blueconic/openapi/blob/main/LICENSE.MD"
     },
-    "version" : "105.9"
+    "version" : "105.0"
   },
   "servers" : [ {
     "url" : "https://{blueconicHostname}/rest/v2",
